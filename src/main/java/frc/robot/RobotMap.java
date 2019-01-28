@@ -35,11 +35,20 @@ public class RobotMap {
     public static final int HATCH_SOLENOID_OFF = 0;
 
     //arm
-    //when the motor controller is figured out, replace the "MOTOR" with the correct controller
     public static final int ARM_VERTICAL_TALON = 0;
     public static final int ARM_SWIVEL_TALON = 0;
 
     //pneumatics
     public static final int PCM = 0;
+
+    //encoders
+    public static final int ENCODER_VERTICAL_DI1 = 0;
+    public static final int ENCODER_VERTICAL_DI2 = 0;
+
+    public static final int ENCODER_SWIVEL_DI1 = 0;
+    public static final int ENCODER_SWIVEL_DI2 = 0;
+
+    public static final int ENCODER_TALON_GEAR_RATIO_DPP = 0;
+    public static final int ENCODER_SAMPLES_TO_AVERAGE = 0;
 
 }
