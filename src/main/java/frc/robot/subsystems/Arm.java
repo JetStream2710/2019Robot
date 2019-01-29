@@ -10,7 +10,7 @@ import frc.robot.RobotMap;
 import frc.robot.commands.VerticalArm;
 
 public class Arm extends Subsystem {
-
+ 
   public static final boolean DEBUG = false;
   //change values from 0
   public static final double verticalMax = 0;
