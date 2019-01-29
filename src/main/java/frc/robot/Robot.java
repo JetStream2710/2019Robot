@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.DriveCommand;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Cargo;
+import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Hatch;
@@ -19,6 +20,7 @@ public class Robot extends TimedRobot {
   public static Arm arm;
   public static Cargo cargo;
   public static Hatch hatch;
+  public static Climb climb;
 
   public static boolean isAuto; 
 

@@ -38,6 +38,11 @@ public class RobotMap {
     public static final int ARM_VERTICAL_TALON = 0;
     public static final int ARM_SWIVEL_TALON = 0;
 
+    //climb
+    public static final int CLIMB_FRONT_LEFT_VICTOR = 0;
+    public static final int CLIMB_FRONT_RIGHT_VICTOR = 0;
+    public static final int CLIMB_BACK_VICTOR = 0;
+
     //pneumatics
     public static final int PCM = 0;
 
