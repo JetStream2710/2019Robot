@@ -7,12 +7,23 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
+import frc.robot.commands.VerticalArm;
 
 public class Arm extends Subsystem {
 
   public static final boolean DEBUG = false;
-  public static boolean verticalMax = false;
-  public static boolean swivelMax = false;
+  //change values from 0
+  public static final double verticalMax = 0;
+  public static final double swivelMax = 0;
+  public static final double verticalMin = 0;
+  public static final double swivelMin = 0;
+  private static final long pollFrequencyMillis = 16;
+
+  private ArmThread thread;
+  private boolean isRunning;
+
+  public static double verticalMeasure;
+  public static double swivelMeasure;
 
   private WPI_TalonSRX verticalTalon = null;
   private WPI_TalonSRX swivelTalon = null;
@@ -33,7 +44,7 @@ public class Arm extends Subsystem {
     swivelTalon.setNeutralMode(NeutralMode.Brake);
 
     // Set max and min sensor positions here based the current position
-    verticalTalon.getSelectedSensorPosition();
+    //CAN I DEFINE IT ABOVE? -- 
 
     encoderVertical = new Encoder(RobotMap.ENCODER_VERTICAL_DI1, RobotMap.ENCODER_VERTICAL_DI2, 
       false, Encoder.EncodingType.k2X);
@@ -51,26 +62,25 @@ public class Arm extends Subsystem {
   // provide functions that can return the max/min/current vertical/swivel encoder values
   
   public void verticalArm(double speed){
-    debug("verticalArm encoder speed:" + speed + " swivelMax: " + swivelMax);
-    
+    debug("verticalArm encoder speed:" + speed + " swivelMax: " + swivelMax);    
     // check to see if the current is = > < max/min values and set speed to 0 instead if so
-    if(!swivelMax){
-      verticalTalon.set(ControlMode.PercentOutput, speed);
-    }
-    else{
-      System.out.println("vertical arm max reached");
-    }
+    if(!verticalIsValid()){
+      verticalTalon.set(ControlMode.PercentOutput, 0);
+    }  
+    verticalTalon.set(ControlMode.PercentOutput, speed);
   }
 
   // MAKE SURE TO TEST THIS BECAUSE IT MIGHT BE BACKWARDS
   public void moveTogether(double speed){  
     debug("moveTogether speed: " + speed + " swivelMax: " + swivelMax + " verticalMax: " + verticalMax);
-    if(!swivelMax && !verticalMax){
-      verticalTalon.set(ControlMode.PercentOutput, speed);
-      swivelTalon.set(ControlMode.PercentOutput, -speed);
-    }    else{
-      System.out.println("some max reached");
+    if(!verticalIsValid()){
+      verticalTalon.set(ControlMode.PercentOutput, 0);
+    }  
+    if(!swivelIsValid()){
+      swivelTalon.set(ControlMode.PercentOutput, 0);
     }
+    verticalTalon.set(ControlMode.PercentOutput, speed);
+    swivelTalon.set(ControlMode.PercentOutput, -speed);
   }
 
   public void switchToHatch(){
@@ -81,34 +91,45 @@ public class Arm extends Subsystem {
     debug("switchtoCargo called");
   }
 
-  public void maximumCheck(){
-    double verticalDistance = encoderVertical.getDistance();
-    double swivelDistance = encoderSwivel.getDistance();
-
-    debug("maximumCheck vertical distance: " + verticalDistance + " swivel distance: " + swivelDistance
-      + " vertical boolean: " + verticalMax + " swivel boolean: " + swivelMax);
-
-    if(verticalDistance>0 && verticalDistance<0){
-      verticalMax = false;
-    } else{
-      verticalMax = true;
-    }
-
-    if(swivelDistance>0 && swivelDistance<0){
-      swivelMax = false;
-    } else{
-      swivelMax = true;
-    }
-  }
-
   @Override
   public void initDefaultCommand() {
   }
+
+  public final class ArmThread extends Thread{
+    @Override
+    public void run(){
+        System.out.println("starting arm thread");
+        while(isRunning){
+          verticalMeasure = verticalTalon.getSelectedSensorPosition();
+          swivelMeasure = swivelTalon.getSelectedSensorPosition();      
+        }
+          try{
+           Thread.sleep(pollFrequencyMillis);
+          }  catch(InterruptedException e){
+           System.out.println("arm thread was interrupted");
+           }
+        System.out.println("stopping arm thread");
+        debug("vertical Measure: " + verticalMeasure + " swivel Measure: " + swivelMeasure);
+      }
+    }
+  
+  private boolean verticalIsValid(){
+    if(verticalMax < verticalMeasure || verticalMin > verticalMeasure){
+      return false;
+   }
+    return true;
+    }
+  private boolean swivelIsValid(){
+    if(swivelMax < swivelMeasure || swivelMin > swivelMeasure){
+      return false;
+    }
+    return true;
+  }
+
 
   private void debug(String s) {
 		if (DEBUG) {
 			System.out.println("Arm Subsystem: " + s);
 		}
-	}
-
+  }
 }
