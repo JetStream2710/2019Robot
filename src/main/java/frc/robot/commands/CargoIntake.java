@@ -9,14 +9,13 @@ public class CargoIntake extends Command {
 
   public CargoIntake() {
     debug("constructor");
-
     requires(Robot.cargo);
   }
 
   @Override
   protected void initialize() {
+    debug("initialize");
     Robot.cargo.cargoIntake();
-    System.out.println("Cargo Intake");
   }
 
   @Override
@@ -26,7 +25,7 @@ public class CargoIntake extends Command {
   @Override
   protected boolean isFinished() {
     debug("finished");
-    return false;
+    return true;
   }
 
   @Override
@@ -42,9 +41,8 @@ public class CargoIntake extends Command {
   }
 
   private void debug(String s) {
-		if (DEBUG) {
-			System.out.println("CorgoIntake command: " + s);
-		}
-	}
-
+    if (DEBUG) {
+      System.out.println("CargoIntake command: " + s);
+    }
+  }
 }

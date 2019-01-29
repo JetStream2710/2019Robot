@@ -9,11 +9,12 @@ import frc.robot.RobotMap;
 
 public class Cargo extends Subsystem {
 
-  private static final boolean DEBUG = false; 
+  private static final boolean DEBUG = false;
 
   private WPI_VictorSPX leftVictor = null;
   private WPI_VictorSPX rightVictor = null;
 
+  // TODO: In general, we define constants using UPPER_SNAKE_CASE
   private double speedIn = -0.5;
   private double speedOut = 0.5;
 
@@ -35,7 +36,6 @@ public class Cargo extends Subsystem {
   public void cargoIntake(){
     debug("cargoIntake called");
 
-    // TODO: make these values constants
     leftVictor.set(ControlMode.PercentOutput, speedIn);
     rightVictor.set(ControlMode.PercentOutput, speedIn);
   }
@@ -59,9 +59,8 @@ public class Cargo extends Subsystem {
   }
 
   private void debug(String s) {
-		if (DEBUG) {
-			System.out.println("Cargo Subsystem: " + s);
-		}
-	}
-
+    if (DEBUG) {
+      System.out.println("Cargo Subsystem: " + s);
+    }
+  }
 }

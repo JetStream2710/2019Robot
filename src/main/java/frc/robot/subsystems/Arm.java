@@ -10,15 +10,16 @@ import frc.robot.RobotMap;
 import frc.robot.commands.VerticalArm;
 
 public class Arm extends Subsystem {
- 
+
   public static final boolean DEBUG = false;
-  //change values from 0
+  // TODO: change values from 0
   public static final double verticalMax = 0;
-  public static final double swivelMax = 0;
   public static final double verticalMin = 0;
+  public static final double swivelMax = 0;
   public static final double swivelMin = 0;
   private static final long pollFrequencyMillis = 16;
 
+  // TODO: review thread vs non-thread pros/cons
   private ArmThread thread;
   private boolean isRunning;
 
@@ -44,14 +45,17 @@ public class Arm extends Subsystem {
     swivelTalon.setNeutralMode(NeutralMode.Brake);
 
     // Set max and min sensor positions here based the current position
-    //CAN I DEFINE IT ABOVE? -- 
+    //CAN I DEFINE IT ABOVE?
+    // Brian: Yes, you should use the constants you've defined for vertical/swivel min/max
 
-    encoderVertical = new Encoder(RobotMap.ENCODER_VERTICAL_DI1, RobotMap.ENCODER_VERTICAL_DI2, 
+    // TODO: Let's assume we are using the sensor controls provided on the talon
+    // https://phoenix-documentation.readthedocs.io/en/latest/ch14_MCSensor.html#software-select-sensor-type
+    encoderVertical = new Encoder(RobotMap.ENCODER_VERTICAL_DI1, RobotMap.ENCODER_VERTICAL_DI2,
       false, Encoder.EncodingType.k2X);
     encoderVertical.setDistancePerPulse(RobotMap.ENCODER_TALON_GEAR_RATIO_DPP);
     encoderVertical.setSamplesToAverage(RobotMap.ENCODER_SAMPLES_TO_AVERAGE);
 
-    encoderSwivel = new Encoder(RobotMap.ENCODER_VERTICAL_DI1, RobotMap.ENCODER_SWIVEL_DI2, 
+    encoderSwivel = new Encoder(RobotMap.ENCODER_VERTICAL_DI1, RobotMap.ENCODER_SWIVEL_DI2,
       false, Encoder.EncodingType.k2X);
     encoderSwivel.setDistancePerPulse(RobotMap.ENCODER_TALON_GEAR_RATIO_DPP);
     encoderSwivel.setSamplesToAverage(RobotMap.ENCODER_SAMPLES_TO_AVERAGE);
@@ -60,22 +64,22 @@ public class Arm extends Subsystem {
   }
 
   // provide functions that can return the max/min/current vertical/swivel encoder values
-  
+
   public void verticalArm(double speed){
-    debug("verticalArm encoder speed:" + speed + " swivelMax: " + swivelMax);    
+    debug("verticalArm encoder speed:" + speed + " swivelMax: " + swivelMax);
     // check to see if the current is = > < max/min values and set speed to 0 instead if so
     if(!verticalIsValid()){
       verticalTalon.set(ControlMode.PercentOutput, 0);
-    }  
+    }
     verticalTalon.set(ControlMode.PercentOutput, speed);
   }
 
   // MAKE SURE TO TEST THIS BECAUSE IT MIGHT BE BACKWARDS
-  public void moveTogether(double speed){  
+  public void moveTogether(double speed){
     debug("moveTogether speed: " + speed + " swivelMax: " + swivelMax + " verticalMax: " + verticalMax);
     if(!verticalIsValid()){
       verticalTalon.set(ControlMode.PercentOutput, 0);
-    }  
+    }
     if(!swivelIsValid()){
       swivelTalon.set(ControlMode.PercentOutput, 0);
     }
@@ -83,8 +87,9 @@ public class Arm extends Subsystem {
     swivelTalon.set(ControlMode.PercentOutput, -speed);
   }
 
+  // TODO: since this is something of interest to a lot of systems, lets keep these functions/variables on the robot
   public void switchToHatch(){
-    debug("switchToHatch called");    
+    debug("switchToHatch called");
   }
 
   public void switchToCargo(){
@@ -101,7 +106,7 @@ public class Arm extends Subsystem {
         System.out.println("starting arm thread");
         while(isRunning){
           verticalMeasure = verticalTalon.getSelectedSensorPosition();
-          swivelMeasure = swivelTalon.getSelectedSensorPosition();      
+          swivelMeasure = swivelTalon.getSelectedSensorPosition();
         }
           try{
            Thread.sleep(pollFrequencyMillis);

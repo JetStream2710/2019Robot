@@ -14,8 +14,8 @@ public class SwitchToCargo extends Command {
 
   @Override
   protected void initialize() {
+    debug("initialize");
     Robot.arm.switchToCargo();
-    System.out.println("Switch to Cargo");
   }
 
   @Override
@@ -40,9 +40,8 @@ public class SwitchToCargo extends Command {
   }
 
   private void debug(String s) {
-		if (DEBUG) {
-			System.out.println("SwitchToCargo command: " + s);
-		}
-	}
-
+    if (DEBUG) {
+      System.out.println("SwitchToCargo command: " + s);
+    }
+  }
 }

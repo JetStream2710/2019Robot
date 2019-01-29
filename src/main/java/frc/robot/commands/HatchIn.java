@@ -3,6 +3,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
+// TODO: let's talk about combining hatch in/out. it may be easier to do in/out with one button press
 public class HatchIn extends Command {
 
   private static final boolean DEBUG = false;
@@ -14,8 +15,8 @@ public class HatchIn extends Command {
 
   @Override
   protected void initialize() {
+    debug("initialize");
     Robot.hatch.hatchIn();
-    System.out.println("Hatch In");
   }
 
   @Override
@@ -31,6 +32,7 @@ public class HatchIn extends Command {
   @Override
   protected void end() {
     debug("end");
+    // TODO: anything we need to worry about for the end state?
   }
 
   @Override
@@ -40,9 +42,8 @@ public class HatchIn extends Command {
   }
 
   private void debug(String s) {
-		if (DEBUG) {
-			System.out.println("HatchIn command: " + s);
-		}
-	}
-
+    if (DEBUG) {
+      System.out.println("HatchIn command: " + s);
+    }
+  }
 }

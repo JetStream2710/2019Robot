@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
 
+// TODO: let's check the solenoids for hatch
 public class Hatch extends Subsystem {
 
   private static final boolean DEBUG = false;
@@ -20,16 +21,17 @@ public class Hatch extends Subsystem {
   }
 
   public void hatchIn() {
+    debug("hatchIn called");
+
     solenoidOn.set(true);
     solenoidOff.set(false);
-    
-    debug("hatchIn called");
   }
 
   public void hatchOut(){
+    debug("hatchOut called");
+
     solenoidOn.set(false);
     solenoidOff.set(true);
-    debug("hatchOut called");
   }
 
   @Override
@@ -37,9 +39,8 @@ public class Hatch extends Subsystem {
   }
 
   private void debug(String s) {
-		if (DEBUG) {
-			System.out.println("Hatch Subsystem: " + s);
-		}
-	}
-
+    if (DEBUG) {
+      System.out.println("Hatch Subsystem: " + s);
+    }
+  }
 }

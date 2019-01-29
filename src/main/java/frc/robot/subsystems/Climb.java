@@ -37,6 +37,8 @@ public class Climb extends Subsystem {
     debug("constructor");
   }
 
+  // Did we want to be able to control movement of the victors independently?
+
   public void climbMech(){
     group.set(speed);
   }
@@ -46,8 +48,8 @@ public class Climb extends Subsystem {
   }
 
   private void debug(String s) {
-		if (DEBUG) {
-			System.out.println("Climb Subsystem: " + s);
-		}
-	}
+    if (DEBUG) {
+      System.out.println("Climb Subsystem: " + s);
+    }
+  }
 }

@@ -20,13 +20,12 @@ public class DriveCommand extends Command {
   @Override
   protected void execute() {
     if(Robot.isAuto) {
-			return;
-		}
-		double moveSpeed = Robot.oi.drivestick.getRawAxis(RobotMap.DRIVER_MOVE_AXIS);
-		double rotateSpeed = Robot.oi.drivestick.getRawAxis(RobotMap.DRIVER_ROTATE_AXIS);
-    Robot.drivetrain.arcadeDrive(moveSpeed, rotateSpeed);
-    
+      return;
+    }
+    double moveSpeed = Robot.oi.drivestick.getRawAxis(RobotMap.DRIVER_MOVE_AXIS);
+    double rotateSpeed = Robot.oi.drivestick.getRawAxis(RobotMap.DRIVER_ROTATE_AXIS);
     debug("execute moveSpeed: " + moveSpeed + " rotateSpeed: " + rotateSpeed);
+    Robot.drivetrain.arcadeDrive(moveSpeed, rotateSpeed);
   }
 
   @Override
@@ -37,19 +36,19 @@ public class DriveCommand extends Command {
 
   @Override
   protected void end() {
-    Robot.drivetrain.arcadeDrive(0, 0);
     debug("end");
+    Robot.drivetrain.arcadeDrive(0, 0);
   }
 
   @Override
   protected void interrupted() {
     debug("interrupted");
+    end();
   }
 
   private void debug(String s) {
-		if (DEBUG) {
-			System.out.println("DriveCommand command: " + s);
-		}
-	}
-
+    if (DEBUG) {
+      System.out.println("DriveCommand command: " + s);
+    }
+  }
 }

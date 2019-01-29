@@ -21,8 +21,9 @@ public class Robot extends TimedRobot {
   public static Cargo cargo;
   public static Hatch hatch;
   public static Climb climb;
+  // TODO: add the AHRS here
 
-  public static boolean isAuto; 
+  public static boolean isAuto;
 
   Command m_autonomousCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
@@ -30,6 +31,8 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     oi = new OI();
+    // TODO: intialize everything else as well, like...
+    // drivetrain = new Drivetrain()
     m_chooser.setDefaultOption("Default Auto", new DriveCommand());
     // chooser.addOption("My Auto", new MyAutoCommand());
     SmartDashboard.putData("Auto mode", m_chooser);
@@ -50,6 +53,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
+    // TODO: set isAuto to true here
     m_autonomousCommand = m_chooser.getSelected();
 
     if (m_autonomousCommand != null) {
@@ -64,13 +68,14 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
+    // TODO: set isAuto to false here
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
   }
 
   @Override
-  public void teleopPeriodic() { 
+  public void teleopPeriodic() {
     Scheduler.getInstance().run();
   }
 

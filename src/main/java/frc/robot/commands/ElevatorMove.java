@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
 
+// TODO: move to preset points
 public class ElevatorMove extends Command {
 
   public static final boolean DEBUG = false;
@@ -20,11 +21,11 @@ public class ElevatorMove extends Command {
   @Override
   protected void execute() {
     if(Robot.isAuto) {
-			return;
-		}
-		double moveSpeed = Robot.oi.auxstick.getRawAxis(RobotMap.VERTICAL_AXIS);
-    Robot.elevator.elevatorMove(moveSpeed);
+      return;
+    }
+    double moveSpeed = Robot.oi.auxstick.getRawAxis(RobotMap.VERTICAL_AXIS);
     debug("execute movespeed: " + moveSpeed);
+    Robot.elevator.elevatorMove(moveSpeed);
   }
 
   @Override
@@ -36,17 +37,18 @@ public class ElevatorMove extends Command {
   @Override
   protected void end() {
     debug("end");
+    // TODO: set speed to 0?
   }
 
   @Override
   protected void interrupted() {
     debug("interrupted");
+    end();
   }
 
   private void debug(String s) {
-		if (DEBUG) {
-			System.out.println("ElevatorMove command: " + s);
-		}
-	}
-
+    if (DEBUG) {
+      System.out.println("ElevatorMove command: " + s);
+    }
+  }
 }

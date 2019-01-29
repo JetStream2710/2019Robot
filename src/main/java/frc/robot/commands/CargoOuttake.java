@@ -4,9 +4,9 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
 public class CargoOuttake extends Command {
-  
+
   public static final boolean DEBUG = false;
-  
+
   public CargoOuttake() {
     debug("constructor");
     requires(Robot.cargo);
@@ -14,8 +14,8 @@ public class CargoOuttake extends Command {
 
   @Override
   protected void initialize() {
+    debug("initialize");
     Robot.cargo.cargoOuttake();
-    System.out.println("Cargo Outake");
   }
 
   @Override
@@ -25,7 +25,7 @@ public class CargoOuttake extends Command {
   @Override
   protected boolean isFinished() {
     debug("finished");
-    return false;
+    return true;
   }
 
   @Override
@@ -37,12 +37,12 @@ public class CargoOuttake extends Command {
   @Override
   protected void interrupted() {
     debug("interrupted");
+    end();
   }
 
   private void debug(String s) {
-		if (DEBUG) {
-			System.out.println("CargoOuttake command: " + s);
-		}
-	}
-
+    if (DEBUG) {
+      System.out.println("CargoOuttake command: " + s);
+    }
+  }
 }

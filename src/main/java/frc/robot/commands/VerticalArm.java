@@ -20,12 +20,11 @@ public class VerticalArm extends Command {
   @Override
   protected void execute() {
     if(Robot.isAuto) {
-			return;
-		}
-		double moveSpeed = Robot.oi.auxstick.getRawAxis(RobotMap.NOTHER_AXIS);
-    Robot.arm.verticalArm(moveSpeed);
-
+      return;
+    }
+    double moveSpeed = Robot.oi.auxstick.getRawAxis(RobotMap.NOTHER_AXIS);
     debug("execute move speed: " + moveSpeed);
+    Robot.arm.verticalArm(moveSpeed);
   }
 
   @Override
@@ -42,12 +41,12 @@ public class VerticalArm extends Command {
   @Override
   protected void interrupted() {
     debug("interrupted");
+    end();
   }
 
   private void debug(String s) {
-		if (DEBUG) {
-			System.out.println("VerticalArm Command: " + s);
-		}
-	}
-
+    if (DEBUG) {
+      System.out.println("VerticalArm Command: " + s);
+    }
+  }
 }

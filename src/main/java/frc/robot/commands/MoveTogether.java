@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
 
+// TODO: make some pre-set positions
 public class MoveTogether extends Command {
 
   public static final boolean DEBUG = false;
@@ -19,12 +20,13 @@ public class MoveTogether extends Command {
 
   @Override
   protected void execute() {
+    // TODO: may need to set isAuto during button-triggered movements
     if(Robot.isAuto) {
-			return;
-		}
-		double moveSpeed = Robot.oi.auxstick.getRawAxis(RobotMap.VERTICAL_AXIS);
-    Robot.arm.moveTogether(moveSpeed);
+      return;
+    }
+    double moveSpeed = Robot.oi.auxstick.getRawAxis(RobotMap.VERTICAL_AXIS);
     debug("execute movespeed: " + moveSpeed);
+    Robot.arm.moveTogether(moveSpeed);
 
   }
 
@@ -46,8 +48,8 @@ public class MoveTogether extends Command {
   }
 
   private void debug(String s) {
-		if (DEBUG) {
-			System.out.println("MoveTogether Command: " + s);
-		}
-	}
+    if (DEBUG) {
+      System.out.println("MoveTogether Command: " + s);
+    }
+  }
 }

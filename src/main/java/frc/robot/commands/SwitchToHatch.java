@@ -14,8 +14,8 @@ public class SwitchToHatch extends Command {
 
   @Override
   protected void initialize() {
+    debug("initialize");
     Robot.arm.switchToHatch();
-    System.out.println("Switch to Hatch");
   }
 
   @Override
@@ -35,14 +35,13 @@ public class SwitchToHatch extends Command {
 
   @Override
   protected void interrupted() {
-    debug("interrupred");
+    debug("interrupted");
     end();
   }
 
   private void debug(String s) {
-		if (DEBUG) {
-			System.out.println("SwitchToHatch command: " + s);
-		}
-	}
-
+    if (DEBUG) {
+      System.out.println("SwitchToHatch command: " + s);
+    }
+  }
 }

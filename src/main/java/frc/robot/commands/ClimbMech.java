@@ -8,14 +8,14 @@ public class ClimbMech extends Command {
   private static final boolean DEBUG = false;
 
   public ClimbMech() {
-    requires(Robot.climb);
     debug("constructor");
+    requires(Robot.climb);
   }
 
   @Override
   protected void initialize() {
+    debug("initialize");
     Robot.climb.climbMech();
-    debug("initialized");
   }
 
   @Override
@@ -35,13 +35,13 @@ public class ClimbMech extends Command {
 
   @Override
   protected void interrupted() {
+    debug("interrupted");
     end();
-    debug("end");
   }
 
   private void debug(String s) {
-		if (DEBUG) {
-			System.out.println("ClimbMech Command: " + s);
-		}
-	}
+    if (DEBUG) {
+      System.out.println("ClimbMech Command: " + s);
+    }
+  }
 }

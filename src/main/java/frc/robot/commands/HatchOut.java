@@ -14,9 +14,8 @@ public class HatchOut extends Command {
 
   @Override
   protected void initialize() {
-    debug("constructor");
+    debug("initialize");
     Robot.hatch.hatchOut();
-    System.out.println("Hatch Out");
   }
 
   @Override
@@ -41,9 +40,8 @@ public class HatchOut extends Command {
   }
 
   private void debug(String s) {
-		if (DEBUG) {
-			System.out.println("HatchOut command: " + s);
-		}
-	}
-
+    if (DEBUG) {
+      System.out.println("HatchOut command: " + s);
+    }
+  }
 }
