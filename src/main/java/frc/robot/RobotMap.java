@@ -6,7 +6,6 @@ public class RobotMap {
     public static final int DRIVER_MOVE_AXIS = 1;
     public static final int DRIVER_ROTATE_AXIS = 0;
 
-    // TODO: What are VERTICAL & NOTHER for?
     public static final int VERTICAL_AXIS = 0;
     public static final int NOTHER_AXIS = 0;
 

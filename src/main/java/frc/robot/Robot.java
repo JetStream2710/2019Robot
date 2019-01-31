@@ -5,6 +5,8 @@ import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Cargo;
 import frc.robot.subsystems.Climb;
@@ -41,7 +43,7 @@ public class Robot extends TimedRobot {
 
     isHatchMode = true;
 
-    debug("constructor");
+    debug("robotInit");
   }
 
   @Override
@@ -50,6 +52,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledInit() {
+    debug("disabledInit");
   }
 
   @Override
@@ -59,6 +62,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
+    debug("autonomousInit");
     isAuto = true;
   }
 
@@ -69,6 +73,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
+    debug("teleopInit");
     isAuto = false;
   }
 
@@ -78,22 +83,23 @@ public class Robot extends TimedRobot {
   }
 
   public boolean isHatchMode(){
-    debug("isHatchMode mode: " + isHatchMode);
     return isHatchMode;
   }
 
   public void switchToHatchMode(){
+    debug("isHatchMode mode on");
     isHatchMode = true;
   }
 
   public void switchToCargoMode(){
+    debug("isHatchMode mode off");
     isHatchMode = false;
   }
 
   private void debug(String s) {
     if (DEBUG) {
-      System.out.println("Robot java: " + s);
+      System.out.println("Robot: " + s);
+      SmartDashboard.putString("Robot: ", s);
     }
   }
-
 }

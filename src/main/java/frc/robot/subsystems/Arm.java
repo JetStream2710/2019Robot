@@ -3,48 +3,45 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
 import frc.robot.util.JetstreamTalon;
+import frc.robot.util.Logger;
 
 public class Arm extends Subsystem {
-
-  public static final boolean DEBUG = false;
 
   public static final double VERTICAL_MAX = Double.MAX_VALUE;
   public static final double VERTICAL_MIN = Double.MIN_VALUE;
   public static final double SWIVEL_MAX = Double.MAX_VALUE;
   public static final double SWIVEL_MIN = Double.MIN_VALUE;
 
-  private JetstreamTalon verticalTalon = null;
-  private JetstreamTalon swivelTalon = null;
+  private Logger logger = new Logger(Arm.class.getName());
+  private JetstreamTalon verticalTalon;
+  private JetstreamTalon swivelTalon;
 
-  // TODO: insert safety parameters, how far vertical and swivel talon can turn in current mode
-  public Arm(){
+  public Arm() {
     super();
+    logger.detail("constructor");
+    
     verticalTalon = new JetstreamTalon(RobotMap.ARM_VERTICAL_TALON, VERTICAL_MIN, VERTICAL_MAX);
     swivelTalon = new JetstreamTalon(RobotMap.ARM_SWIVEL_TALON, SWIVEL_MIN, SWIVEL_MAX);
-
-    debug("constructor");
   }
 
-  // provide functions that can return the max/min/current vertical/swivel encoder values
-
-  public void verticalArm(double speed){
-    debug("verticalArm speed:" + speed);
-    // check to see if the current is = > < max/min values and set speed to 0 instead if so
+  public void moveVerticalArm(double speed) {
+    logger.info("moveVerticalArm speed: " + speed);
     verticalTalon.setSpeed(speed);
   }
 
-  public void swivelArm(double speed){
-    debug("swivelArm speed: " + speed);
+  public void moveSwivelArm(double speed) {
+    logger.info("moveSwivelArm speed: " + speed);
     swivelTalon.setSpeed(speed); 
   }
 
   // MAKE SURE TO TEST THIS BECAUSE IT MIGHT BE BACKWARDS
-  public void moveTogether(double speed){
-    debug("moveTogether speed: " + speed);
-    if(verticalTalon.isSpeedValid(speed) && swivelTalon.isSpeedValid(-speed)){
+  public void moveTogether(double speed) {
+    if (verticalTalon.isSpeedValid(speed) && swivelTalon.isSpeedValid(-speed)) {
+      logger.info("moveTogether speed: " + speed);
       verticalTalon.setSpeed(speed);
       swivelTalon.setSpeed(-speed);
     } else {
+      logger.warning("moveTogether stopped");
       verticalTalon.setSpeed(0);
       swivelTalon.setSpeed(0);
     }
@@ -54,35 +51,26 @@ public class Arm extends Subsystem {
   public void initDefaultCommand() {
   }
   
-  public void checkAllMotors(){
+  public void checkAllMotors() {
+    // TODO: let's add a convenience method to check the current speed
     double verticalSpeed = verticalTalon.getSpeed();
-    double swivelSpeed = swivelTalon.getSpeed();
-
-    if(!verticalTalon.isSpeedValid(verticalSpeed)){
+    if (!verticalTalon.isSpeedValid(verticalSpeed)) {
       verticalTalon.setSpeed(0);
+      // TODO: get rid of all println
       System.out.println("vertical Talon stopped");
     }
-    if(!swivelTalon.isSpeedValid(swivelSpeed)){
+    double swivelSpeed = swivelTalon.getSpeed();
+    if (!swivelTalon.isSpeedValid(swivelSpeed)) {
       swivelTalon.setSpeed(0);
       System.out.println("swivel Talon stopped");
     }
   }
 
-  public int getVerticalMotorPosition(){
-    int position = verticalTalon.getSensorPosition();
-    debug("getVerticalMotorPosition position: " + position);
-    return position;
+  public int getVerticalMotorPosition() {
+    return verticalTalon.getSensorPosition();
   }
 
-  public int getSwivelMotorPosition(){
-    int position = swivelTalon.getSensorPosition();
-    debug("getSwivelMotorPosition position: " + position);
-    return position;
-  }
-
-  private void debug(String s) {
-		if (DEBUG) {
-			System.out.println("Arm Subsystem: " + s);
-		}
+  public int getSwivelMotorPosition() {
+    return swivelTalon.getSensorPosition();
   }
 }
