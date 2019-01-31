@@ -1,5 +1,8 @@
 package frc.robot;
 
+import com.kauailabs.navx.frc.AHRS;
+
+import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -21,21 +24,24 @@ public class Robot extends TimedRobot {
   public static Cargo cargo;
   public static Hatch hatch;
   public static Climb climb;
-  // TODO: add the AHRS here
+
+  public static AHRS ahrs = new AHRS(SPI.Port.kMXP);
 
   public static boolean isAuto;
 
-  Command m_autonomousCommand;
-  SendableChooser<Command> m_chooser = new SendableChooser<>();
+  public static boolean isHatchMode;
 
   @Override
   public void robotInit() {
     oi = new OI();
-    // TODO: intialize everything else as well, like...
-    // drivetrain = new Drivetrain()
-    m_chooser.setDefaultOption("Default Auto", new DriveCommand());
-    // chooser.addOption("My Auto", new MyAutoCommand());
-    SmartDashboard.putData("Auto mode", m_chooser);
+    drivetrain = new Drivetrain();
+    elevator = new Elevator();
+    arm = new Arm();
+    cargo = new Cargo();
+    hatch = new Hatch();
+    climb = new Climb();
+
+    isHatchMode = true;
   }
 
   @Override
@@ -53,12 +59,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    // TODO: set isAuto to true here
-    m_autonomousCommand = m_chooser.getSelected();
-
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.start();
-    }
+    isAuto = true;
   }
 
   @Override
@@ -68,10 +69,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-    // TODO: set isAuto to false here
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.cancel();
-    }
+    isAuto = false;
   }
 
   @Override
@@ -79,7 +77,15 @@ public class Robot extends TimedRobot {
     Scheduler.getInstance().run();
   }
 
-  @Override
-  public void testPeriodic() {
+  public boolean isHatchMode(){
+    return isHatchMode;
+  }
+
+  public void switchToHatchMode(){
+    isHatchMode = true;
+  }
+
+  public void switchToCargoMode(){
+    isHatchMode = false;
   }
 }

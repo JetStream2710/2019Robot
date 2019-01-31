@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
@@ -15,9 +16,7 @@ public class Climb extends Subsystem {
   private WPI_VictorSPX frontRightVictor = null;
   private WPI_VictorSPX backVictor = null;
 
-  private SpeedControllerGroup group;
-
-  private double speed = 0;
+  private SpeedControllerGroup frontGroup;
 
   public Climb(){
     frontLeftVictor = new WPI_VictorSPX(RobotMap.CLIMB_FRONT_LEFT_VICTOR);
@@ -32,15 +31,29 @@ public class Climb extends Subsystem {
     frontRightVictor.setSafetyEnabled(false);
     backVictor.setSafetyEnabled(false);
 
-    group = new SpeedControllerGroup(frontLeftVictor, frontRightVictor, backVictor);
+    frontLeftVictor.setSelectedSensorPosition(0);
+
+    frontGroup = new SpeedControllerGroup(frontLeftVictor, frontRightVictor);
 
     debug("constructor");
   }
 
   // Did we want to be able to control movement of the victors independently?
 
-  public void climbMech(){
-    group.set(speed);
+  public void setFrontMotorSpeed(double speed){
+    frontGroup.set(speed);
+  }
+
+  public void setBackMotorSpeed(double speed){
+    backVictor.set(ControlMode.PercentOutput, speed);
+  }
+
+  public double getFrontEncoderValue(){
+    return frontLeftVictor.getSelectedSensorPosition();
+  }
+
+  public double getBackEncoderValue(){
+    return backVictor.getSelectedSensorPosition();
   }
 
   @Override

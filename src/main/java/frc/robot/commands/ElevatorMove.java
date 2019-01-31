@@ -9,6 +9,7 @@ public class ElevatorMove extends Command {
 
   public static final boolean DEBUG = false;
 
+
   public ElevatorMove() {
     debug("constructor");
     requires(Robot.elevator);

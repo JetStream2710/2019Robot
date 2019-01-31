@@ -14,9 +14,8 @@ public class Cargo extends Subsystem {
   private WPI_VictorSPX leftVictor = null;
   private WPI_VictorSPX rightVictor = null;
 
-  // TODO: In general, we define constants using UPPER_SNAKE_CASE
-  private double speedIn = -0.5;
-  private double speedOut = 0.5;
+  private double SPEED_IN = -0.5;
+  private double SPEED_OUT = 0.5;
 
   public Cargo(){
     super();
@@ -36,15 +35,15 @@ public class Cargo extends Subsystem {
   public void cargoIntake(){
     debug("cargoIntake called");
 
-    leftVictor.set(ControlMode.PercentOutput, speedIn);
-    rightVictor.set(ControlMode.PercentOutput, speedIn);
+    leftVictor.set(ControlMode.PercentOutput, SPEED_IN);
+    rightVictor.set(ControlMode.PercentOutput, SPEED_IN);
   }
 
   public void cargoOuttake(){
     debug("cargoOuttake called");
 
-    leftVictor.set(ControlMode.PercentOutput, speedOut);
-    rightVictor.set(ControlMode.PercentOutput, speedOut);
+    leftVictor.set(ControlMode.PercentOutput, SPEED_OUT);
+    rightVictor.set(ControlMode.PercentOutput, SPEED_OUT);
   }
 
   public void cargoStop(){

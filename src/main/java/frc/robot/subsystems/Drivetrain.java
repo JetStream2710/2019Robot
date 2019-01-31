@@ -16,7 +16,7 @@ public class Drivetrain extends Subsystem {
   //motor controllers initialized
   private WPI_TalonSRX frontLeftTalon = null;
   private WPI_TalonSRX frontRightTalon = null;
-  private WPI_TalonSRX rearLeftTalon = null;\
+  private WPI_TalonSRX rearLeftTalon = null;
   private WPI_TalonSRX rearRightTalon = null;
 
   //differential drive initialized
