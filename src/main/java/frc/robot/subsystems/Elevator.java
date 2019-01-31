@@ -6,11 +6,14 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
+import frc.robot.util.JetstreamTalon;
 
 // TODO: insert limits for movement and decide if we want joystick movement
 public class Elevator extends Subsystem {
 
   private static final boolean DEBUG = false;
+  private static final double MAX = Double.MAX_VALUE;
+  private static final double MIN = Double.MIN_VALUE;
 
   public static int TOP_HATCH_POSITION = 1000;
   public static int MID_HATCH_POSITION = 700;
@@ -19,21 +22,15 @@ public class Elevator extends Subsystem {
   public static int MID_CARGO_POSITION = 750;
   public static int LOW_CARGO_POSITION = 450;
 
-  private WPI_TalonSRX leftTalon;
-  private WPI_TalonSRX rightTalon;
+  private JetstreamTalon leftTalon;
+  private JetstreamTalon rightTalon;
 
   private SpeedControllerGroup group;
 
   public Elevator() {
     super();
-    leftTalon = new WPI_TalonSRX(RobotMap.ELEVATOR_LEFT_TALON);
-    rightTalon = new WPI_TalonSRX(RobotMap.ELEVATOR_RIGHT_TALON);
-
-    leftTalon.setNeutralMode(NeutralMode.Brake);
-    rightTalon.setNeutralMode(NeutralMode.Brake);
-
-    leftTalon.setSafetyEnabled(false);
-    rightTalon.setSafetyEnabled(false);
+    leftTalon = new JetstreamTalon(RobotMap.ELEVATOR_LEFT_TALON, MIN, MAX);
+    rightTalon = new JetstreamTalon(RobotMap.ELEVATOR_RIGHT_TALON, MIN, MAX);
 
     group = new SpeedControllerGroup(leftTalon, rightTalon);
 

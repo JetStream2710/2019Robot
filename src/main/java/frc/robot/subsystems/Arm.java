@@ -7,7 +7,7 @@ import frc.robot.util.JetstreamTalon;
 public class Arm extends Subsystem {
 
   public static final boolean DEBUG = false;
-  // TODO: change values from 0
+
   public static final double VERTICAL_MAX = Double.MAX_VALUE;
   public static final double VERTICAL_MIN = Double.MIN_VALUE;
   public static final double SWIVEL_MAX = Double.MAX_VALUE;
@@ -21,9 +21,6 @@ public class Arm extends Subsystem {
     super();
     verticalTalon = new JetstreamTalon(RobotMap.ARM_VERTICAL_TALON, VERTICAL_MIN, VERTICAL_MAX);
     swivelTalon = new JetstreamTalon(RobotMap.ARM_SWIVEL_TALON, SWIVEL_MIN, SWIVEL_MAX);
-
-    // TODO: Let's assume we are using the sensor controls provided on the talon
-    // https://phoenix-documentation.readthedocs.io/en/latest/ch14_MCSensor.html#software-select-sensor-type
 
     debug("constructor");
   }
@@ -72,11 +69,15 @@ public class Arm extends Subsystem {
   }
 
   public int getVerticalMotorPosition(){
-    return verticalTalon.getSensorPosition();
+    int position = verticalTalon.getSensorPosition();
+    debug("getVerticalMotorPosition position: " + position);
+    return position;
   }
 
   public int getSwivelMotorPosition(){
-    return swivelTalon.getSensorPosition();
+    int position = swivelTalon.getSensorPosition();
+    debug("getSwivelMotorPosition position: " + position);
+    return position;
   }
 
   private void debug(String s) {

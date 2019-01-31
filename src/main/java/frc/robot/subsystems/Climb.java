@@ -1,39 +1,29 @@
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
+import frc.robot.util.JetstreamVictor;
 
 public class Climb extends Subsystem {
 
   private static final boolean DEBUG = false;
 
-  private WPI_VictorSPX frontLeftVictor = null;
-  private WPI_VictorSPX frontRightVictor = null;
-  private WPI_VictorSPX backVictor = null;
+  private JetstreamVictor frontLeftVictor = null;
+  private JetstreamVictor frontRightVictor = null;
+  private JetstreamVictor backVictor = null;
 
   private SpeedControllerGroup frontGroup;
 
   public Climb(){
-    frontLeftVictor = new WPI_VictorSPX(RobotMap.CLIMB_FRONT_LEFT_VICTOR);
-    frontRightVictor = new WPI_VictorSPX(RobotMap.CLIMB_FRONT_RIGHT_VICTOR);
-    backVictor = new WPI_VictorSPX(RobotMap.CLIMB_BACK_VICTOR);
+    frontLeftVictor = new JetstreamVictor(RobotMap.CLIMB_FRONT_LEFT_VICTOR);
+    frontRightVictor = new JetstreamVictor(RobotMap.CLIMB_FRONT_RIGHT_VICTOR);
+    backVictor = new JetstreamVictor(RobotMap.CLIMB_BACK_VICTOR);
 
-    frontLeftVictor.setNeutralMode(NeutralMode.Brake);
-    frontRightVictor.setNeutralMode(NeutralMode.Brake);
-    backVictor.setNeutralMode(NeutralMode.Brake);
-
-    frontLeftVictor.setSafetyEnabled(false);
-    frontRightVictor.setSafetyEnabled(false);
-    backVictor.setSafetyEnabled(false);
-
-    frontLeftVictor.setSelectedSensorPosition(0);
-
-    frontGroup = new SpeedControllerGroup(frontLeftVictor, frontRightVictor);
+    frontGroup = new SpeedControllerGroup(new WPI_VictorSPX(frontLeftVictor.getPort()), 
+      new WPI_VictorSPX(frontRightVictor.getPort()));
 
     debug("constructor");
   }
@@ -42,18 +32,12 @@ public class Climb extends Subsystem {
 
   public void setFrontMotorSpeed(double speed){
     frontGroup.set(speed);
+    debug("setFrontMotorSpeed speed: " + speed);
   }
 
   public void setBackMotorSpeed(double speed){
-    backVictor.set(ControlMode.PercentOutput, speed);
-  }
-
-  public double getFrontEncoderValue(){
-    return frontLeftVictor.getSelectedSensorPosition();
-  }
-
-  public double getBackEncoderValue(){
-    return backVictor.getSelectedSensorPosition();
+    backVictor.setSpeed(speed);
+    debug("setBackMotorSpeed speed : " + speed);
   }
 
   @Override

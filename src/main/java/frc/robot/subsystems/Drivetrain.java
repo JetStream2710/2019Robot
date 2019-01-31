@@ -8,16 +8,17 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import frc.robot.RobotMap;
 import frc.robot.commands.DriveCommand;
+import frc.robot.util.JetstreamTalon;
 
 // TODO: add speed limits
 public class Drivetrain extends Subsystem {
   private static final boolean DEBUG = false;
 
   //motor controllers initialized
-  private WPI_TalonSRX frontLeftTalon = null;
-  private WPI_TalonSRX frontRightTalon = null;
-  private WPI_TalonSRX rearLeftTalon = null;
-  private WPI_TalonSRX rearRightTalon = null;
+  private JetstreamTalon frontLeftTalon = null;
+  private JetstreamTalon frontRightTalon = null;
+  private JetstreamTalon rearLeftTalon = null;
+  private JetstreamTalon rearRightTalon = null;
 
   //differential drive initialized
   private DifferentialDrive differentialDrive = null;
@@ -25,20 +26,10 @@ public class Drivetrain extends Subsystem {
   //establish motors
   public Drivetrain() {
     super();
-    frontLeftTalon = new WPI_TalonSRX(RobotMap.DRIVETRAIN_FRONT_LEFT_TALON);
-    frontRightTalon = new WPI_TalonSRX(RobotMap.DRIVETRAIN_FRONT_RIGHT_TALON);
-    rearLeftTalon = new WPI_TalonSRX(RobotMap.DRIVETRAIN_REAR_LEFT_TALON);
-    rearRightTalon = new WPI_TalonSRX(RobotMap.DRIVETRAIN_REAR_RIGHT_TALON);
-
-    frontLeftTalon.setNeutralMode(NeutralMode.Brake);
-    rearLeftTalon.setNeutralMode(NeutralMode.Brake);
-    frontRightTalon.setNeutralMode(NeutralMode.Brake);
-    rearRightTalon.setNeutralMode(NeutralMode.Brake);
-
-    frontLeftTalon.setSafetyEnabled(false);
-    frontRightTalon.setSafetyEnabled(false);
-    rearLeftTalon.setSafetyEnabled(false);
-    rearRightTalon.setSafetyEnabled(false);
+    frontLeftTalon = new JetstreamTalon(RobotMap.DRIVETRAIN_FRONT_LEFT_TALON, Double.MIN_VALUE, Double.MAX_VALUE);
+    frontRightTalon = new JetstreamTalon(RobotMap.DRIVETRAIN_FRONT_RIGHT_TALON, Double.MIN_VALUE, Double.MAX_VALUE);
+    rearLeftTalon = new JetstreamTalon(RobotMap.DRIVETRAIN_REAR_LEFT_TALON, Double.MIN_VALUE, Double.MAX_VALUE);
+    rearRightTalon = new JetstreamTalon(RobotMap.DRIVETRAIN_REAR_RIGHT_TALON, Double.MIN_VALUE, Double.MAX_VALUE);
 
     SpeedControllerGroup leftGroup = new SpeedControllerGroup(frontLeftTalon, rearLeftTalon);
     SpeedControllerGroup rightGroup = new SpeedControllerGroup(frontRightTalon, rearRightTalon);

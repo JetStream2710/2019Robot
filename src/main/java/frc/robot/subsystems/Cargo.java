@@ -1,32 +1,24 @@
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
-
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
+import frc.robot.util.JetstreamVictor;
 
 public class Cargo extends Subsystem {
 
   private static final boolean DEBUG = false;
 
-  private WPI_VictorSPX leftVictor = null;
-  private WPI_VictorSPX rightVictor = null;
+  private JetstreamVictor leftVictor = null;
+  private JetstreamVictor rightVictor = null;
 
   private double SPEED_IN = -0.5;
   private double SPEED_OUT = 0.5;
 
   public Cargo(){
     super();
-    leftVictor = new WPI_VictorSPX(RobotMap.CARGO_LEFT_VICTOR);
-    rightVictor = new WPI_VictorSPX(RobotMap.CARGO_RIGHT_VICTOR);
 
-    leftVictor.setNeutralMode(NeutralMode.Brake);
-    rightVictor.setNeutralMode(NeutralMode.Brake);
-
-    leftVictor.setSafetyEnabled(false);
-    rightVictor.setSafetyEnabled(false);
+    leftVictor = new JetstreamVictor(RobotMap.CARGO_LEFT_VICTOR);
+    rightVictor = new JetstreamVictor(RobotMap.CARGO_RIGHT_VICTOR);
 
     debug("constructor");
   }
@@ -35,22 +27,22 @@ public class Cargo extends Subsystem {
   public void cargoIntake(){
     debug("cargoIntake called");
 
-    leftVictor.set(ControlMode.PercentOutput, SPEED_IN);
-    rightVictor.set(ControlMode.PercentOutput, SPEED_IN);
+    leftVictor.setSpeed(SPEED_IN);
+    rightVictor.setSpeed(SPEED_IN);
   }
 
   public void cargoOuttake(){
     debug("cargoOuttake called");
 
-    leftVictor.set(ControlMode.PercentOutput, SPEED_OUT);
-    rightVictor.set(ControlMode.PercentOutput, SPEED_OUT);
+    leftVictor.setSpeed(SPEED_OUT);
+    rightVictor.setSpeed(SPEED_OUT);
   }
 
   public void cargoStop(){
     debug("cargoStop called");
 
-    leftVictor.set(ControlMode.PercentOutput, 0);
-    rightVictor.set(ControlMode.PercentOutput, 0);
+    leftVictor.setSpeed(0);
+    rightVictor.setSpeed(0);
   }
 
   @Override

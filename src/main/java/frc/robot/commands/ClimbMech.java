@@ -15,7 +15,7 @@ public class ClimbMech extends Command {
   @Override
   protected void initialize() {
     debug("initialize");
-    Robot.climb.climbMech();
+//    Robot.climb.climbMech();
   }
 
   @Override

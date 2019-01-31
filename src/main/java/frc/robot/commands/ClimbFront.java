@@ -27,7 +27,7 @@ public class ClimbFront extends Command {
   @Override
   protected boolean isFinished() {
     debug("finished");
-    return Robot.climb.getFrontEncoderValue() > ;
+    return false;
   }
 
   @Override

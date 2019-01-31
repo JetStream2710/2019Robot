@@ -15,7 +15,7 @@ public class SwitchToCargo extends Command {
   @Override
   protected void initialize() {
     debug("initialize");
-    Robot.arm.switchToCargo();
+//    Robot.arm.switchToCargo();
   }
 
   @Override

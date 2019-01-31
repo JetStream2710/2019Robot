@@ -4,11 +4,7 @@ import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.commands.DriveCommand;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Cargo;
 import frc.robot.subsystems.Climb;
@@ -17,6 +13,8 @@ import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Hatch;
 
 public class Robot extends TimedRobot {
+  private static final boolean DEBUG = false;
+
   public static OI oi;
   public static Drivetrain drivetrain;
   public static Elevator elevator;
@@ -42,6 +40,8 @@ public class Robot extends TimedRobot {
     climb = new Climb();
 
     isHatchMode = true;
+
+    debug("constructor");
   }
 
   @Override
@@ -78,6 +78,7 @@ public class Robot extends TimedRobot {
   }
 
   public boolean isHatchMode(){
+    debug("isHatchMode mode: " + isHatchMode);
     return isHatchMode;
   }
 
@@ -88,4 +89,11 @@ public class Robot extends TimedRobot {
   public void switchToCargoMode(){
     isHatchMode = false;
   }
+
+  private void debug(String s) {
+    if (DEBUG) {
+      System.out.println("Robot java: " + s);
+    }
+  }
+
 }

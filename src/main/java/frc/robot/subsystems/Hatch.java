@@ -4,7 +4,6 @@ import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
 
-// TODO: let's check the solenoids for hatch
 public class Hatch extends Subsystem {
 
   private static final boolean DEBUG = false;

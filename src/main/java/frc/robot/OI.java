@@ -8,11 +8,7 @@ public class OI {
   public Joystick auxstick = new Joystick(RobotMap.JOYSTICK_AUX);
 
   //buttons defined
-  public Button A;
-  public Button B;
-  public Button X;
-  public Button Y;
-
+  
   public OI() {
   }
 }
