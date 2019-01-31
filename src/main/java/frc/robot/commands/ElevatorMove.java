@@ -9,7 +9,6 @@ public class ElevatorMove extends Command {
 
   public static final boolean DEBUG = false;
 
-
   public ElevatorMove() {
     debug("constructor");
     requires(Robot.elevator);
@@ -21,7 +20,7 @@ public class ElevatorMove extends Command {
 
   @Override
   protected void execute() {
-    if(Robot.isAuto) {
+    if (Robot.isAuto) {
       return;
     }
     double moveSpeed = Robot.oi.auxstick.getRawAxis(RobotMap.VERTICAL_AXIS);

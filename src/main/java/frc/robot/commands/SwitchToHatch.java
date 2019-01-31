@@ -15,7 +15,7 @@ public class SwitchToHatch extends Command {
   @Override
   protected void initialize() {
     debug("initialize");
-//    Robot.arm.switchToHatch();
+    //    Robot.arm.switchToHatch();
   }
 
   @Override

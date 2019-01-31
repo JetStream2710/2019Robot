@@ -22,20 +22,20 @@ public class Cargo extends Subsystem {
     rightVictor = new JetstreamVictor(RobotMap.CARGO_RIGHT_VICTOR);
   }
 
-  //CHECK THESE VALUES
+  // CHECK THESE VALUES
   public void cargoIntake() {
     logger.info("cargoIntake speed: " + SPEED_IN);
     leftVictor.setSpeed(SPEED_IN);
     rightVictor.setSpeed(SPEED_IN);
   }
 
-  public void cargoOuttake(){
+  public void cargoOuttake() {
     logger.info("cargoOuttake speed: " + SPEED_OUT);
     leftVictor.setSpeed(SPEED_OUT);
     rightVictor.setSpeed(SPEED_OUT);
   }
 
-  public void cargoStop(){
+  public void cargoStop() {
     logger.info("cargoStop");
     leftVictor.setSpeed(0);
     rightVictor.setSpeed(0);

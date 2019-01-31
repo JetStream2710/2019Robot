@@ -1,12 +1,10 @@
 package frc.robot;
 
 import com.kauailabs.navx.frc.AHRS;
-
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Cargo;
 import frc.robot.subsystems.Climb;
@@ -82,16 +80,16 @@ public class Robot extends TimedRobot {
     Scheduler.getInstance().run();
   }
 
-  public boolean isHatchMode(){
+  public boolean isHatchMode() {
     return isHatchMode;
   }
 
-  public void switchToHatchMode(){
+  public void switchToHatchMode() {
     debug("isHatchMode mode on");
     isHatchMode = true;
   }
 
-  public void switchToCargoMode(){
+  public void switchToCargoMode() {
     debug("isHatchMode mode off");
     isHatchMode = false;
   }

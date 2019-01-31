@@ -3,7 +3,8 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-// TODO: let's talk about combining hatch in/out. it may be easier to do in/out with one button press
+// TODO: let's talk about combining hatch in/out. it may be easier to do in/out with one button
+// press
 public class HatchIn extends Command {
 
   private static final boolean DEBUG = false;

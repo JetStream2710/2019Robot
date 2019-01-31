@@ -19,7 +19,7 @@ public class Arm extends Subsystem {
   public Arm() {
     super();
     logger.detail("constructor");
-    
+
     verticalTalon = new JetstreamTalon(RobotMap.ARM_VERTICAL_TALON, VERTICAL_MIN, VERTICAL_MAX);
     swivelTalon = new JetstreamTalon(RobotMap.ARM_SWIVEL_TALON, SWIVEL_MIN, SWIVEL_MAX);
   }
@@ -31,7 +31,7 @@ public class Arm extends Subsystem {
 
   public void moveSwivelArm(double speed) {
     logger.info("moveSwivelArm speed: " + speed);
-    swivelTalon.setSpeed(speed); 
+    swivelTalon.setSpeed(speed);
   }
 
   // MAKE SURE TO TEST THIS BECAUSE IT MIGHT BE BACKWARDS
@@ -50,7 +50,7 @@ public class Arm extends Subsystem {
   @Override
   public void initDefaultCommand() {
   }
-  
+
   public void checkAllMotors() {
     // TODO: let's add a convenience method to check the current speed
     double verticalSpeed = verticalTalon.getSpeed();

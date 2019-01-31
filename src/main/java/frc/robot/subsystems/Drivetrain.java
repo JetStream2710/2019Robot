@@ -1,8 +1,5 @@
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -14,22 +11,29 @@ import frc.robot.util.JetstreamTalon;
 public class Drivetrain extends Subsystem {
   private static final boolean DEBUG = false;
 
-  //motor controllers initialized
+  // motor controllers initialized
   private JetstreamTalon frontLeftTalon = null;
   private JetstreamTalon frontRightTalon = null;
   private JetstreamTalon rearLeftTalon = null;
   private JetstreamTalon rearRightTalon = null;
 
-  //differential drive initialized
+  // differential drive initialized
   private DifferentialDrive differentialDrive = null;
 
-  //establish motors
+  // establish motors
   public Drivetrain() {
     super();
-    frontLeftTalon = new JetstreamTalon(RobotMap.DRIVETRAIN_FRONT_LEFT_TALON, Double.MIN_VALUE, Double.MAX_VALUE);
-    frontRightTalon = new JetstreamTalon(RobotMap.DRIVETRAIN_FRONT_RIGHT_TALON, Double.MIN_VALUE, Double.MAX_VALUE);
-    rearLeftTalon = new JetstreamTalon(RobotMap.DRIVETRAIN_REAR_LEFT_TALON, Double.MIN_VALUE, Double.MAX_VALUE);
-    rearRightTalon = new JetstreamTalon(RobotMap.DRIVETRAIN_REAR_RIGHT_TALON, Double.MIN_VALUE, Double.MAX_VALUE);
+    frontLeftTalon =
+        new JetstreamTalon(
+            RobotMap.DRIVETRAIN_FRONT_LEFT_TALON, Double.MIN_VALUE, Double.MAX_VALUE);
+    frontRightTalon =
+        new JetstreamTalon(
+            RobotMap.DRIVETRAIN_FRONT_RIGHT_TALON, Double.MIN_VALUE, Double.MAX_VALUE);
+    rearLeftTalon =
+        new JetstreamTalon(RobotMap.DRIVETRAIN_REAR_LEFT_TALON, Double.MIN_VALUE, Double.MAX_VALUE);
+    rearRightTalon =
+        new JetstreamTalon(
+            RobotMap.DRIVETRAIN_REAR_RIGHT_TALON, Double.MIN_VALUE, Double.MAX_VALUE);
 
     SpeedControllerGroup leftGroup = new SpeedControllerGroup(frontLeftTalon, rearLeftTalon);
     SpeedControllerGroup rightGroup = new SpeedControllerGroup(frontRightTalon, rearRightTalon);

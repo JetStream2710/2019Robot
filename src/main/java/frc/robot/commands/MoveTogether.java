@@ -21,13 +21,12 @@ public class MoveTogether extends Command {
   @Override
   protected void execute() {
     // TODO: may need to set isAuto during button-triggered movements
-    if(Robot.isAuto) {
+    if (Robot.isAuto) {
       return;
     }
     double moveSpeed = Robot.oi.auxstick.getRawAxis(RobotMap.VERTICAL_AXIS);
     debug("execute movespeed: " + moveSpeed);
     Robot.arm.moveTogether(moveSpeed);
-
   }
 
   @Override

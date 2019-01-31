@@ -19,7 +19,7 @@ public class DriveCommand extends Command {
 
   @Override
   protected void execute() {
-    if(Robot.isAuto) {
+    if (Robot.isAuto) {
       return;
     }
     double moveSpeed = Robot.oi.drivestick.getRawAxis(RobotMap.DRIVER_MOVE_AXIS);
