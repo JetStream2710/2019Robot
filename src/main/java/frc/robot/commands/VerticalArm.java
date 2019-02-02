@@ -24,7 +24,7 @@ public class VerticalArm extends Command {
     }
     double moveSpeed = Robot.oi.auxstick.getRawAxis(RobotMap.NOTHER_AXIS);
     debug("execute move speed: " + moveSpeed);
-    Robot.arm.verticalArm(moveSpeed);
+    Robot.arm.moveVerticalArm(moveSpeed);
   }
 
   @Override

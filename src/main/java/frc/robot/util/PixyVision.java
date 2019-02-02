@@ -61,8 +61,8 @@ public class PixyVision {
 
   class PixyVisionThread extends Thread {
     // private PixyI2CDriver driver = new PixyI2CDriver();
-    private PixySpiDriver lineDriver = new PixySpiDriver(SPI.Port.kOnboardCS0);
-    private PixySpiDriver blockDriver = new PixySpiDriver(SPI.Port.kOnboardCS1);
+    private PixySPIDriver lineDriver = new PixySPIDriver(SPI.Port.kOnboardCS0);
+    private PixySPIDriver blockDriver = new PixySPIDriver(SPI.Port.kOnboardCS1);
 
     @Override
     public void run() {

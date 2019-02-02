@@ -8,7 +8,7 @@ public class JetstreamTalon {
 
   private Logger logger = new Logger(JetstreamTalon.class.getName());
 
-  private WPI_TalonSRX talon;
+  WPI_TalonSRX talon;
   private double min;
   private double max;
 
@@ -50,9 +50,5 @@ public class JetstreamTalon {
 
   public int getSensorPosition() {
     return talon.getSelectedSensorPosition();
-  }
-
-  public static SpeedControllerGroup createGroup(JetstreamTalon talon1, JetstreamTalon talon2) {
-    return new SpeedControllerGroup(talon1.talon, talon2.talon);
   }
 }
