@@ -1,6 +1,5 @@
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
 import frc.robot.util.JetstreamControllerGroup;
@@ -11,10 +10,9 @@ public class Climb extends Subsystem {
 
   private Logger logger = new Logger(Climb.class.getName());
 
-  // TODO: no need to initialize these to null
-  private JetstreamVictor frontLeftVictor = null;
-  private JetstreamVictor frontRightVictor = null;
-  private JetstreamVictor backVictor = null;
+  private JetstreamVictor frontLeftVictor;
+  private JetstreamVictor frontRightVictor;
+  private JetstreamVictor backVictor;
   private JetstreamControllerGroup frontGroup;
 
   public Climb() {
@@ -26,9 +24,6 @@ public class Climb extends Subsystem {
     backVictor = new JetstreamVictor(RobotMap.CLIMB_BACK_VICTOR);
     frontGroup = new JetstreamControllerGroup(frontLeftVictor, frontRightVictor);
   }
-
-  // Did we want to be able to control movement of the victors independently?
-  // Brian: Probably not, just front/back is fine
 
   public void setFrontMotorSpeed(double speed) {
     logger.info("setFrontMotorSpeed speed: " + speed);

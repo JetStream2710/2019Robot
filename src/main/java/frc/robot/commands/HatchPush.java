@@ -2,37 +2,39 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
+import frc.robot.util.Logger;
 
 // TODO: let's talk about combining hatch in/out. it may be easier to do in/out with one button
 // press
-public class HatchIn extends Command {
+public class HatchPush extends Command {
 
-  private static final boolean DEBUG = false;
+  private Logger logger = new Logger(HatchPush.class.getName());
 
-  public HatchIn() {
-    debug("constructor");
+  public HatchPush() {
+    logger.detail("constructor");
     requires(Robot.hatch);
   }
 
   @Override
   protected void initialize() {
-    debug("initialize");
-    Robot.hatch.hatchIn();
+    logger.detail("initialize");
   }
 
   @Override
   protected void execute() {
+    logger.info("execute");
+    Robot.hatch.hatchPush();
   }
 
   @Override
   protected boolean isFinished() {
-    debug("finished");
-    return true;
+    logger.info("finished");
+    return false;
   }
 
   @Override
   protected void end() {
-    debug("end");
+    logger.info("end");
     // TODO: anything we need to worry about for the end state?
   }
 

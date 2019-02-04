@@ -1,6 +1,5 @@
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
 import frc.robot.util.JetstreamControllerGroup;
@@ -13,6 +12,7 @@ public class Elevator extends Subsystem {
   private static final double MIN = Double.MIN_VALUE;
   private static final double MAX = Double.MAX_VALUE;
 
+  // CHECK
   public static int TOP_HATCH_POSITION = 1000;
   public static int MID_HATCH_POSITION = 700;
   public static int LOW_HATCH_POSITION = 400;
@@ -20,7 +20,7 @@ public class Elevator extends Subsystem {
   public static int MID_CARGO_POSITION = 750;
   public static int LOW_CARGO_POSITION = 450;
 
-  private Logger logger = new Logger(JetstreamTalon.class.getName());
+  private Logger logger = new Logger(Elevator.class.getName());
   private JetstreamTalon leftTalon;
   private JetstreamTalon rightTalon;
   private JetstreamControllerGroup group;

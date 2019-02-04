@@ -1,44 +1,30 @@
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
+import frc.robot.util.JetstreamTalon;
+import frc.robot.util.Logger;
 
 public class Hatch extends Subsystem {
 
-  private static final boolean DEBUG = false;
+  public static final double MAX = Double.MAX_VALUE;
+  public static final double MIN = Double.MIN_VALUE;
+  public static final double SPEED = 0.5;
 
-  private Solenoid solenoidOn;
-  private Solenoid solenoidOff;
+  private Logger logger = new Logger(Hatch.class.getName());
+  private JetstreamTalon talon;
 
   public Hatch() {
     super();
-    solenoidOn = new Solenoid(RobotMap.PCM, RobotMap.HATCH_SOLENOID_ON);
-    solenoidOff = new Solenoid(RobotMap.PCM, RobotMap.HATCH_SOLENOID_OFF);
-
-    debug("constructor");
+    logger.detail("constructor");
+    talon = new JetstreamTalon(RobotMap.HATCH_TALON, MAX, MIN);
   }
 
-  public void hatchIn() {
-    debug("hatchIn called");
-
-    solenoidOn.set(true);
-    solenoidOff.set(false);
-  }
-
-  public void hatchOut() {
-    debug("hatchOut called");
-
-    solenoidOn.set(false);
-    solenoidOff.set(true);
+  public void hatchPush() {
+    logger.info("hatchPush called");
+    talon.setSpeed(SPEED);
   }
 
   @Override
   public void initDefaultCommand() {}
-
-  private void debug(String s) {
-    if (DEBUG) {
-      System.out.println("Hatch Subsystem: " + s);
-    }
-  }
 }

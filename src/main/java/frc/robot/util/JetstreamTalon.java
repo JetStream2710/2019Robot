@@ -2,7 +2,6 @@ package frc.robot.util;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-import edu.wpi.first.wpilibj.SpeedControllerGroup;
 
 public class JetstreamTalon {
 
@@ -22,17 +21,15 @@ public class JetstreamTalon {
     talon.setSelectedSensorPosition(0);
   }
 
+  //CAN'T I MAKE "isCurrentSpeedValid()" AND "isSpeedValid(double speed)" into one method?
+  public boolean isCurrentSpeedValid(){
+    return isSpeedValid(getSpeed());
+  }
+
   public boolean isSpeedValid(double speed) {
     double position = talon.getSelectedSensorPosition();
-    // TODO: we can also write the following as:
-    // return !(position > max && speed > 0) && !(position < min && speed < 0);
-    if (position > max && speed > 0) {
-      return false;
-    }
-    if (position < min && speed < 0) {
-      return false;
-    }
-    return true;
+    logger.info("isSpeedValid speed: " + speed + " position: " + position);
+    return !(position > max && speed > 0) && !(position < min && speed < 0);
   }
 
   public void setSpeed(double speed) {
@@ -43,7 +40,6 @@ public class JetstreamTalon {
   }
 
   public double getSpeed() {
-    // TODO: in general, we don't need to log getter methods since they're called a lot
     double speed = talon.get();
     return speed;
   }

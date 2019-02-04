@@ -52,17 +52,14 @@ public class Arm extends Subsystem {
   }
 
   public void checkAllMotors() {
-    // TODO: let's add a convenience method to check the current speed
-    double verticalSpeed = verticalTalon.getSpeed();
-    if (!verticalTalon.isSpeedValid(verticalSpeed)) {
+    if (!verticalTalon.isCurrentSpeedValid()) {
       verticalTalon.setSpeed(0);
-      // TODO: get rid of all println
-      System.out.println("vertical Talon stopped");
+      logger.warning("Vertical Talon stopped");
     }
     double swivelSpeed = swivelTalon.getSpeed();
     if (!swivelTalon.isSpeedValid(swivelSpeed)) {
       swivelTalon.setSpeed(0);
-      System.out.println("swivel Talon stopped");
+      logger.warning("Swivel Talon stopped");
     }
   }
 

@@ -13,9 +13,8 @@ import frc.robot.util.Logger;
 // TODO: add speed limits
 public class Drivetrain extends Subsystem {
 
-  private Logger logger = new Logger(Climb.class.getName());
+  private Logger logger = new Logger(Drivetrain.class.getName());
 
-  // motor controllers initialized
   private WPI_TalonSRX frontLeftTalon;
   private WPI_TalonSRX frontRightTalon;
   private WPI_TalonSRX rearLeftTalon;
@@ -24,10 +23,8 @@ public class Drivetrain extends Subsystem {
   private SpeedControllerGroup leftGroup;
   private SpeedControllerGroup rightGroup;
 
-  // differential drive initialized
   private DifferentialDrive differentialDrive = null;
 
-  // establish motors
   public Drivetrain() {
     super();
     logger.detail("constructor");

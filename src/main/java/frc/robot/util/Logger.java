@@ -31,8 +31,7 @@ public class Logger {
     LOG_LEVELS.put(ClimbMech.class.getName(), Level.WARNING);
     LOG_LEVELS.put(DriveCommand.class.getName(), Level.WARNING);
     LOG_LEVELS.put(ElevatorMove.class.getName(), Level.WARNING);
-    LOG_LEVELS.put(HatchIn.class.getName(), Level.WARNING);
-    LOG_LEVELS.put(HatchOut.class.getName(), Level.WARNING);
+    LOG_LEVELS.put(HatchPush.class.getName(), Level.WARNING);
     LOG_LEVELS.put(MoveTogether.class.getName(), Level.WARNING);
     LOG_LEVELS.put(SwitchToCargo.class.getName(), Level.WARNING);
     LOG_LEVELS.put(SwitchToHatch.class.getName(), Level.WARNING);
