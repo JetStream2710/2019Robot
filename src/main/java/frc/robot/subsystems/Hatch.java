@@ -25,6 +25,11 @@ public class Hatch extends Subsystem {
     talon.setSpeed(SPEED);
   }
 
+  public void hatchIn(){
+    logger.info("hatchIn called");
+    talon.setSpeed(-SPEED);
+  }
+
   @Override
   public void initDefaultCommand() {}
 }

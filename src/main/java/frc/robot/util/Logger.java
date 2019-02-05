@@ -25,6 +25,10 @@ public class Logger {
     LOG_LEVELS.put(Hatch.class.getName(), Level.INFO);
 
     // Commands
+    LOG_LEVELS.put(ArmCargoDown.class.getName(), Level.WARNING);
+    LOG_LEVELS.put(ArmCargoUp.class.getName(), Level.WARNING);
+    LOG_LEVELS.put(ArmHatchDown.class.getName(), Level.WARNING);
+    LOG_LEVELS.put(ArmHatchUp.class.getName(), Level.WARNING);
     LOG_LEVELS.put(CargoIntake.class.getName(), Level.WARNING);
     LOG_LEVELS.put(CargoOuttake.class.getName(), Level.WARNING);
     LOG_LEVELS.put(ClimbFront.class.getName(), Level.WARNING);
@@ -32,10 +36,8 @@ public class Logger {
     LOG_LEVELS.put(DriveCommand.class.getName(), Level.WARNING);
     LOG_LEVELS.put(ElevatorMove.class.getName(), Level.WARNING);
     LOG_LEVELS.put(HatchPush.class.getName(), Level.WARNING);
-    LOG_LEVELS.put(MoveTogether.class.getName(), Level.WARNING);
     LOG_LEVELS.put(SwitchToCargo.class.getName(), Level.WARNING);
     LOG_LEVELS.put(SwitchToHatch.class.getName(), Level.WARNING);
-    LOG_LEVELS.put(VerticalArm.class.getName(), Level.WARNING);
   }
 
   public enum Level {

@@ -2,46 +2,42 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
+import frc.robot.util.Logger;
 
 public class SwitchToHatch extends Command {
 
-  private static final boolean DEBUG = false;
+  private Logger logger = new Logger(SwitchToHatch.class.getName());
 
   public SwitchToHatch() {
-    debug("constructor");
+    logger.detail("constructor");
     requires(Robot.arm);
   }
 
   @Override
   protected void initialize() {
-    debug("initialize");
+    logger.info("initialize");
     //    Robot.arm.switchToHatch();
   }
 
   @Override
   protected void execute() {
+    logger.detail("execute");
   }
 
   @Override
   protected boolean isFinished() {
-    debug("finished");
+    logger.info("finished");
     return true;
   }
 
   @Override
   protected void end() {
-    debug("end");
+    logger.info("end");
   }
 
   @Override
   protected void interrupted() {
-    debug("interrupted");
+    logger.warning("interrupted");
     end();
-  }
-
-  private void debug(String s) {
-    if (DEBUG) {
-      System.out.println("SwitchToHatch command: " + s);
-    }
   }
 }

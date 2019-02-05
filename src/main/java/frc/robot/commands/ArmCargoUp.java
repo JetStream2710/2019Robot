@@ -4,30 +4,30 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 import frc.robot.util.Logger;
 
-public class ClimbMech extends Command {
+public class ArmCargoUp extends Command {
 
-  private Logger logger = new Logger(ClimbMech.class.getName());
+  private Logger logger = new Logger(ArmCargoUp.class.getName());
 
-  public ClimbMech() {
+  public ArmCargoUp() {
     logger.detail("constructor");
-    requires(Robot.climb);
+    requires(Robot.arm);
   }
+
 
   @Override
   protected void initialize() {
     logger.info("initialize");
-    //    Robot.climb.climbMech();
   }
 
   @Override
   protected void execute() {
-    logger.detail("execute");
+    logger.info("execute");
   }
 
   @Override
   protected boolean isFinished() {
-    logger.info("finished");
-    return true;
+    logger.info("isFinished");
+    return false;
   }
 
   @Override
@@ -38,6 +38,5 @@ public class ClimbMech extends Command {
   @Override
   protected void interrupted() {
     logger.warning("interrupted");
-    end();
   }
 }

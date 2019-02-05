@@ -2,47 +2,43 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
+import frc.robot.util.Logger;
 
 public class CargoOuttake extends Command {
 
-  public static final boolean DEBUG = false;
+  private Logger logger = new Logger(CargoOuttake.class.getName());
 
   public CargoOuttake() {
-    debug("constructor");
+    logger.detail("constructor");
     requires(Robot.cargo);
   }
 
   @Override
   protected void initialize() {
-    debug("initialize");
+    logger.info("initialize");
     Robot.cargo.cargoOuttake();
   }
 
   @Override
   protected void execute() {
+    logger.detail("execute");
   }
 
   @Override
   protected boolean isFinished() {
-    debug("finished");
+    logger.info("finished");
     return true;
   }
 
   @Override
   protected void end() {
-    debug("end");
+    logger.info("end");
     Robot.cargo.cargoStop();
   }
 
   @Override
   protected void interrupted() {
-    debug("interrupted");
+    logger.warning("interrupted");
     end();
-  }
-
-  private void debug(String s) {
-    if (DEBUG) {
-      System.out.println("CargoOuttake command: " + s);
-    }
   }
 }

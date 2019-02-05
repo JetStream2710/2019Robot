@@ -4,11 +4,11 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 import frc.robot.util.Logger;
 
-// TODO: let's talk about combining hatch in/out. it may be easier to do in/out with one button
-// press
 public class HatchPush extends Command {
 
   private Logger logger = new Logger(HatchPush.class.getName());
+  private long time;
+  private long timePassed;
 
   public HatchPush() {
     logger.detail("constructor");
@@ -17,36 +17,45 @@ public class HatchPush extends Command {
 
   @Override
   protected void initialize() {
-    logger.detail("initialize");
+    logger.info("initialize");
+    time = System.currentTimeMillis();
+    logger.detail("time: " + time);
   }
 
+  // SHOULD LOGGER RECORD timePassed
+  // NEEDS TO BE CHECKED -- just want to retract motor all the way
   @Override
   protected void execute() {
     logger.info("execute");
-    Robot.hatch.hatchPush();
+    this.timePassed = System.currentTimeMillis() - time;
+    if(timePassed < 3){
+      Robot.hatch.hatchPush();
+    }
+    else if(timePassed < 6){
+      Robot.hatch.hatchIn();
+    }
   }
 
+  // SHOULD LOGGER RECORD timePassed
   @Override
   protected boolean isFinished() {
     logger.info("finished");
-    return false;
+    if(timePassed == 6){
+      return true;
+    } else{
+      return false;
+    }
   }
 
   @Override
   protected void end() {
     logger.info("end");
-    // TODO: anything we need to worry about for the end state?
   }
 
+  // WHAT IF I WANT TO CHANGE THIS SO THAT IT JUST GOES TO WHATEVER IT'S INTERRUPTED BY 
   @Override
   protected void interrupted() {
-    debug("interrupted");
+    logger.warning("interrupted");
     end();
-  }
-
-  private void debug(String s) {
-    if (DEBUG) {
-      System.out.println("HatchIn command: " + s);
-    }
   }
 }

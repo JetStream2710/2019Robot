@@ -11,6 +11,11 @@ public class Arm extends Subsystem {
   public static final double VERTICAL_MIN = Double.MIN_VALUE;
   public static final double SWIVEL_MAX = Double.MAX_VALUE;
   public static final double SWIVEL_MIN = Double.MIN_VALUE;
+  public static final double CARGO_DOWN = 0;
+  public static final double CARGO_UP = 0;
+  public static final double HATCH_DOWN = 0;
+  public static final double HATCH_UP = 0;
+  public static final double SPEED = 0.5;
 
   private Logger logger = new Logger(Arm.class.getName());
   private JetstreamTalon verticalTalon;
@@ -22,6 +27,24 @@ public class Arm extends Subsystem {
 
     verticalTalon = new JetstreamTalon(RobotMap.ARM_VERTICAL_TALON, VERTICAL_MIN, VERTICAL_MAX);
     swivelTalon = new JetstreamTalon(RobotMap.ARM_SWIVEL_TALON, SWIVEL_MIN, SWIVEL_MAX);
+  }
+
+  // CAN WE TALK ABOUT GOING TO PRESET VALUES AND HOW TO CODE 
+  // LIKE WHETHER THE IT SHOULD BE OUTLINED DURING COMMAND OR IN FUNCTION??
+  public void armCargoUp(){
+
+  }
+
+  public void armCargoDown(){
+
+  }
+
+  public void armHatchUp(){
+
+  }
+
+  public void armHatchDown(){
+    
   }
 
   public void moveVerticalArm(double speed) {

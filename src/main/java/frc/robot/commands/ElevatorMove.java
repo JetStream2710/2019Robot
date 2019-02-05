@@ -3,52 +3,46 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
+import frc.robot.util.Logger;
 
-// TODO: move to preset points
 public class ElevatorMove extends Command {
 
-  public static final boolean DEBUG = false;
+  private Logger logger = new Logger(ElevatorMove.class.getName());
 
   public ElevatorMove() {
-    debug("constructor");
+    logger.detail("constructor");
     requires(Robot.elevator);
   }
 
   @Override
   protected void initialize() {
+    logger.detail("initailize");
   }
 
+  // I MOVED THE LOGGER TO THE BOTTOM TO GET MOVESPEED VALUE 
   @Override
   protected void execute() {
-    if (Robot.isAuto) {
-      return;
-    }
-    double moveSpeed = Robot.oi.auxstick.getRawAxis(RobotMap.VERTICAL_AXIS);
-    debug("execute movespeed: " + moveSpeed);
+    double moveSpeed = Robot.oi.auxstick.getRawAxis(RobotMap.ELEVATOR_AXIS);
     Robot.elevator.elevatorMove(moveSpeed);
+    logger.info("execute moveSpeed: " + moveSpeed);
   }
 
   @Override
   protected boolean isFinished() {
-    debug("finished");
+    logger.detail("finished");
     return false;
   }
 
   @Override
   protected void end() {
-    debug("end");
-    // TODO: set speed to 0?
+    logger.info("end");
+    Robot.elevator.elevatorVoid();
   }
 
+  // HERE WOULD IT BE POSSIBLE TO ALWAYS LET THIS GO -- THIS IS MEANT TO BE OVERRIDE FUNCTION
   @Override
   protected void interrupted() {
-    debug("interrupted");
+    logger.warning("interrupted");
     end();
-  }
-
-  private void debug(String s) {
-    if (DEBUG) {
-      System.out.println("ElevatorMove command: " + s);
-    }
   }
 }

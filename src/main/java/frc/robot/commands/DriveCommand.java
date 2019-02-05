@@ -3,52 +3,49 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
+import frc.robot.util.Logger;
 
 public class DriveCommand extends Command {
 
-  public static final boolean DEBUG = false;
+  private Logger logger = new Logger(DriveCommand.class.getName());
 
   public DriveCommand() {
-    debug("constructor");
+    logger.detail("constructor");
     requires(Robot.drivetrain);
   }
 
   @Override
   protected void initialize() {
+    logger.detail("initialize");
   }
 
   @Override
   protected void execute() {
+    logger.info("execute");
     if (Robot.isAuto) {
       return;
     }
     double moveSpeed = Robot.oi.drivestick.getRawAxis(RobotMap.DRIVER_MOVE_AXIS);
     double rotateSpeed = Robot.oi.drivestick.getRawAxis(RobotMap.DRIVER_ROTATE_AXIS);
-    debug("execute moveSpeed: " + moveSpeed + " rotateSpeed: " + rotateSpeed);
+    logger.detail("execute moveSpeed: " + moveSpeed + " rotateSpeed: " + rotateSpeed);
     Robot.drivetrain.arcadeDrive(moveSpeed, rotateSpeed);
   }
 
   @Override
   protected boolean isFinished() {
-    debug("finished");
+    logger.info("finished");
     return false;
   }
 
   @Override
   protected void end() {
-    debug("end");
+    logger.info("end");
     Robot.drivetrain.arcadeDrive(0, 0);
   }
 
   @Override
   protected void interrupted() {
-    debug("interrupted");
+    logger.warning("interrupted");
     end();
-  }
-
-  private void debug(String s) {
-    if (DEBUG) {
-      System.out.println("DriveCommand command: " + s);
-    }
   }
 }

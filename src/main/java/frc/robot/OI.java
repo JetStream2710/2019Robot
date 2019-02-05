@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.commands.CargoIntake;
 import frc.robot.commands.CargoOuttake;
+import frc.robot.commands.HatchPush;
 import frc.robot.commands.SwitchToCargo;
 import frc.robot.commands.SwitchToHatch;
 
@@ -25,12 +26,14 @@ public class OI {
   public OI() {
     d_LB.whileHeld(new CargoIntake());
     d_RB.whileHeld(new CargoOuttake());
-    d_LT.whileHeld(new HatchPush());
+    d_LT.whenPressed(new HatchPush());
 
     a_A.whenPressed(new SwitchToHatch());
     a_Y.whenPressed(new SwitchToCargo());
 
-    // idk how to determine when the POV changes...
+    // idk how to determine when the POV changes...because I don't want someone to push it once
+    // and accidentally, the program logs it at three times...
+    // the commands called are also wrong whoops
     if(POV != 0){
       if(Robot.isHatchMode){
         if(POV == 90){
