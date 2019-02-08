@@ -7,8 +7,8 @@ import frc.robot.util.Logger;
 
 public class Hatch extends Subsystem {
 
-  public static final double MAX = Double.MAX_VALUE;
-  public static final double MIN = Double.MIN_VALUE;
+  public static final int MAX = Integer.MAX_VALUE;
+  public static final int MIN = Integer.MIN_VALUE;
   public static final double SPEED = 0.5;
 
   private Logger logger = new Logger(Hatch.class.getName());
@@ -17,17 +17,17 @@ public class Hatch extends Subsystem {
   public Hatch() {
     super();
     logger.detail("constructor");
-    talon = new JetstreamTalon(RobotMap.HATCH_TALON, MAX, MIN);
+    talon = new JetstreamTalon(RobotMap.HATCH_TALON, null, MAX, MIN);
   }
 
   public void hatchPush() {
     logger.info("hatchPush called");
-    talon.setSpeed(SPEED);
+    talon.set(SPEED);
   }
 
   public void hatchIn(){
     logger.info("hatchIn called");
-    talon.setSpeed(-SPEED);
+    talon.set(-SPEED);
   }
 
   @Override

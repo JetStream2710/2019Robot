@@ -28,7 +28,7 @@ public class Robot extends TimedRobot {
   // is the variable type correct?
   public static int currentHeight;
 
-  private Logger logger = new Logger(Robot.class.getName());
+  private static Logger logger = new Logger(Robot.class.getName());
 
   @Override
   public void robotInit() {
@@ -71,6 +71,7 @@ public class Robot extends TimedRobot {
   public void autonomousPeriodic() {
     logger.detail("autonomousPeriodic");
     Scheduler.getInstance().run();
+    updateSubsystems();
   }
 
   @Override
@@ -83,26 +84,32 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     logger.detail("teleopInit");
     Scheduler.getInstance().run();
+    updateSubsystems();
   }
 
 
+  private void updateSubsystems() {
+    long time = System.currentTimeMillis();
+    //elevator.periodic(time);
+  }
 
-  public boolean isHatchMode() {
+
+  public static boolean isHatchMode() {
     logger.info("isHatchMode " + isHatchMode);
     return isHatchMode;
   }
 
-  public void switchToHatchMode() {
+  public static void switchToHatchMode() {
     logger.info("isHatchMode mode on");
     isHatchMode = true;
   }
 
-  public void switchToCargoMode() {
+  public static void switchToCargoMode() {
     logger.info("isHatchMode mode off");
     isHatchMode = false;
   }
 
-  public boolean isMovingElevatorArm(){
+  public static boolean isMovingElevatorArm(){
     logger.info("isMovingElevatorArm " + isMovingElevatorArm);
     return isMovingElevatorArm;    
   }

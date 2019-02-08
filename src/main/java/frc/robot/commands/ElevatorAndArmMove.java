@@ -7,6 +7,8 @@ import frc.robot.util.Logger;
 
 public class ElevatorAndArmMove extends Command {
 
+  private static long lastPovChange = 0;
+
   private Logger logger = new Logger(ElevatorAndArmMove.class.getName());
 
   public ElevatorAndArmMove() {
@@ -23,9 +25,24 @@ public class ElevatorAndArmMove extends Command {
   // I MOVED THE LOGGER TO THE BOTTOM TO GET MOVESPEED VALUE 
   @Override
   protected void execute() {
+    if (System.currentTimeMillis() - lastPovChange > 1000) {
+      int pov = Robot.oi.auxstick.getPOV();
+      if (pov == 0) {
+        Robot.elevator.setLevel(Robot.elevator.getLevel() + 1);
+        lastPovChange = System.currentTimeMillis();
+      } else if (pov == 180) {
+        Robot.elevator.setLevel(Robot.elevator.getLevel() - 1);
+        lastPovChange = System.currentTimeMillis();
+      }
+    }
     double moveSpeed = Robot.oi.auxstick.getRawAxis(RobotMap.ELEVATOR_AXIS);
-    Robot.elevator.elevatorMove(moveSpeed);
-    logger.info("execute moveSpeed: " + moveSpeed);
+    if (moveSpeed == 0) {
+      Robot.isMovingElevatorArm = false;
+    } else {
+      Robot.isMovingElevatorArm = true;
+      logger.info("execute moveSpeed: " + moveSpeed);
+      Robot.elevator.elevatorMove(moveSpeed);
+    }
   }
 
   @Override
@@ -37,7 +54,7 @@ public class ElevatorAndArmMove extends Command {
   @Override
   protected void end() {
     logger.info("end");
-    Robot.elevator.elevatorVoid();
+    Robot.isMovingElevatorArm = false;
   }
 
   // HERE WOULD IT BE POSSIBLE TO ALWAYS LET THIS GO -- THIS IS MEANT TO BE OVERRIDE FUNCTION

@@ -5,8 +5,6 @@ import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.commands.CargoIntake;
 import frc.robot.commands.CargoOuttake;
-import frc.robot.commands.ElevatorAndArmDown;
-import frc.robot.commands.ElevatorAndArmUp;
 import frc.robot.commands.HatchPush;
 import frc.robot.commands.SwitchToCargo;
 import frc.robot.commands.SwitchToHatch;
@@ -25,7 +23,6 @@ public class OI {
 
   public Button a_A = new JoystickButton(auxstick, RobotMap.SWITCH_TO_HATCH);
   public Button a_Y = new JoystickButton(auxstick, RobotMap.SWITCH_TO_CARGO);
-  public int POV = auxstick.getPOV();
 
   public OI() {
     d_LB.whileHeld(new CargoIntake());
@@ -34,15 +31,5 @@ public class OI {
 
     a_A.whenPressed(new SwitchToHatch());
     a_Y.whenPressed(new SwitchToCargo());
-
-    // forgot how to determine change -- there's a boolean now though
-    if(change){
-      if(POV == 90){
-        new ElevatorAndArmUp();
-      }
-      else if(POV == 180){
-        new ElevatorAndArmDown();
-      }
-    }
   }
 }

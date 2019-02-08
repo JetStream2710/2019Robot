@@ -23,17 +23,17 @@ public class Cargo extends Subsystem {
   // CHECK THESE VALUES
   public void cargoIntake() {
     logger.info("cargoIntake speed: " + SPEED_IN);
-    victor.setSpeed(SPEED_IN);
+    victor.set(SPEED_IN);
   }
 
   public void cargoOuttake() {
     logger.info("cargoOuttake speed: " + SPEED_OUT);
-    victor.setSpeed(SPEED_OUT);
+    victor.set(SPEED_OUT);
   }
 
   public void cargoStop() {
     logger.info("cargoStop");
-    victor.setSpeed(0);
+    victor.set(0);
   }
 
   @Override

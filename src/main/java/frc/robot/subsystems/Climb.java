@@ -1,8 +1,8 @@
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
-import frc.robot.util.JetstreamControllerGroup;
 import frc.robot.util.JetstreamVictor;
 import frc.robot.util.Logger;
 
@@ -13,7 +13,7 @@ public class Climb extends Subsystem {
   private JetstreamVictor frontLeftVictor;
   private JetstreamVictor frontRightVictor;
   private JetstreamVictor backVictor;
-  private JetstreamControllerGroup frontGroup;
+  private SpeedControllerGroup frontGroup;
 
   public Climb() {
     super();

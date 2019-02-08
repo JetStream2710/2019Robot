@@ -3,48 +3,96 @@ package frc.robot.util;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
-public class JetstreamTalon {
+import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.SpeedController;
+
+public class JetstreamTalon implements SpeedController {
+
+  public static final double MAX_VOLTAGE = 12.0;
 
   private Logger logger = new Logger(JetstreamTalon.class.getName());
 
-  WPI_TalonSRX talon;
-  private double min;
-  private double max;
+  private WPI_TalonSRX talon;
+  private Encoder encoder;
+  private int minPosition;
+  private int maxPosition;
 
-  public JetstreamTalon(int port, double min, double max) {
-    logger.detail("constructor");
-    talon = new WPI_TalonSRX(port);
-    this.min = min;
-    this.max = max;
+  public JetstreamTalon(int id, Encoder encoder, int minPosition, int maxPosition) {
+    logger.detail("constructor id: " + id);
+    talon = new WPI_TalonSRX(id);
+    this.encoder = encoder;
+    this.minPosition = minPosition;
+    this.maxPosition = maxPosition;
     talon.setSafetyEnabled(false);
     talon.setNeutralMode(NeutralMode.Brake);
-    talon.setSelectedSensorPosition(0);
-  }
-
-  //CAN'T I MAKE "isCurrentSpeedValid()" AND "isSpeedValid(double speed)" into one method?
-  public boolean isCurrentSpeedValid(){
-    return isSpeedValid(getSpeed());
-  }
-
-  public boolean isSpeedValid(double speed) {
-    double position = talon.getSelectedSensorPosition();
-    logger.info("isSpeedValid speed: " + speed + " position: " + position);
-    return !(position > max && speed > 0) && !(position < min && speed < 0);
-  }
-
-  public void setSpeed(double speed) {
-    logger.info("setSpeed speed: " + speed);
-    if (isSpeedValid(speed)) {
-      talon.set(speed);
+    talon.configVoltageCompSaturation(MAX_VOLTAGE);
+    talon.enableVoltageCompensation(true);
+    if (encoder != null) {
+      encoder.reset();
     }
   }
 
-  public double getSpeed() {
-    double speed = talon.get();
-    return speed;
+  public int getPosition() {
+    return encoder == null ? 0 : encoder.get();
   }
 
-  public int getSensorPosition() {
-    return talon.getSelectedSensorPosition();
+  public boolean isValidSpeed(double speed) {
+    if (encoder != null) {
+      double position = getPosition();
+      if (speed > 0) {
+        return position < maxPosition;
+      }
+      if (speed < 0) {
+        return position > minPosition;
+      }
+    }
+    return true;
+  }
+
+  // SpeedController functions
+
+  @Override
+  public void set(double speed) {
+    if (!isValidSpeed(speed)) {
+      logger.warning(String.format("[%d] INVALID set speed: %f", talon.getDeviceID(), speed));
+      talon.set(0);
+      return;
+    }
+    logger.info(String.format("[%d] set speed: %f", talon.getDeviceID(), speed));
+    talon.set(speed);
+  }
+
+  @Override
+  public double get() {
+    return talon.get();
+  }
+
+  @Override
+  public void setInverted(boolean isInverted) {
+    logger.info(String.format("[%d] setInverted isInverted: %b", talon.getDeviceID(), isInverted));
+    talon.setInverted(isInverted);
+  }
+
+  @Override
+  public boolean getInverted() {
+    return talon.getInverted();
+  }
+
+  @Override
+  public void disable() {
+    logger.info(String.format("[%d] disable", talon.getDeviceID()));
+    talon.disable();
+  }
+
+  @Override
+  public void stopMotor() {
+    logger.info(String.format("[%d] stopMotor", talon.getDeviceID()));
+    talon.stopMotor();
+  }
+
+  @Override
+  public void pidWrite(double output) {
+    logger.info(String.format("[%d] pidWrite output: ", talon.getDeviceID(), output));
+    talon.pidWrite(output);
   }
 }
