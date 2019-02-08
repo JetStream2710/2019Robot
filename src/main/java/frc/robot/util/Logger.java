@@ -31,13 +31,20 @@ public class Logger {
     LOG_LEVELS.put(ArmHatchUp.class.getName(), Level.WARNING);
     LOG_LEVELS.put(CargoIntake.class.getName(), Level.WARNING);
     LOG_LEVELS.put(CargoOuttake.class.getName(), Level.WARNING);
-    LOG_LEVELS.put(ClimbFront.class.getName(), Level.WARNING);
+    LOG_LEVELS.put(ClimbFrontExtend.class.getName(), Level.WARNING);
+    LOG_LEVELS.put(ClimbFrontRetract.class.getName(), Level.WARNING);
     LOG_LEVELS.put(ClimbMech.class.getName(), Level.WARNING);
+    LOG_LEVELS.put(ClimbRearExtend.class.getName(), Level.WARNING);
+    LOG_LEVELS.put(ClimbRearMove.class.getName(), Level.WARNING);
+    LOG_LEVELS.put(ClimbRearRetract.class.getName(), Level.WARNING);
     LOG_LEVELS.put(DriveCommand.class.getName(), Level.WARNING);
-    LOG_LEVELS.put(ElevatorMove.class.getName(), Level.WARNING);
+    LOG_LEVELS.put(ElevatorAndArmMove.class.getName(), Level.WARNING);
+    LOG_LEVELS.put(ElevatorAndArmDown.class.getName(), Level.WARNING);
+    LOG_LEVELS.put(ElevatorAndArmUp.class.getName(), Level.WARNING);
     LOG_LEVELS.put(HatchPush.class.getName(), Level.WARNING);
     LOG_LEVELS.put(SwitchToCargo.class.getName(), Level.WARNING);
     LOG_LEVELS.put(SwitchToHatch.class.getName(), Level.WARNING);
+    LOG_LEVELS.put(VisionFollow.class.getName(), Level.WARNING);
   }
 
   public enum Level {

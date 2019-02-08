@@ -4,13 +4,11 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 import frc.robot.util.Logger;
 
-// TODO: talk to drivers to figure out how this is going to work
-public class ClimbFront extends Command {
+public class ClimbRearMove extends Command {
 
-  private Logger logger = new Logger(ClimbFront.class.getName());
-  private static final double SPEED = 0.5;
+  private Logger logger = new Logger(ClimbRearMove.class.getName());
 
-  public ClimbFront() {
+  public ClimbRearMove() {
     logger.detail("constructor");
     requires(Robot.climb);
   }
@@ -18,17 +16,16 @@ public class ClimbFront extends Command {
   @Override
   protected void initialize() {
     logger.info("initialize");
-    Robot.climb.setFrontMotorSpeed(SPEED);
   }
 
   @Override
   protected void execute() {
-    logger.detail("execute");
+    logger.info("execute");
   }
 
   @Override
   protected boolean isFinished() {
-    logger.info("finished");
+    logger.info("isFinished");
     return false;
   }
 
@@ -40,6 +37,5 @@ public class ClimbFront extends Command {
   @Override
   protected void interrupted() {
     logger.warning("interrupted");
-    end();
   }
 }

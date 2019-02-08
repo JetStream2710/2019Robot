@@ -4,13 +4,13 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 import frc.robot.util.Logger;
 
-public class ElevatorCargoOne extends Command {
+public class ClimbFrontRetract extends Command {
 
-  private Logger logger = new Logger(ElevatorCargoOne.class.getName());
+  private Logger logger = new Logger(ClimbFrontRetract.class.getName());
 
-  public ElevatorCargoOne() {
+  public ClimbFrontRetract() {
     logger.detail("constructor");
-    requires(Robot.elevator);
+    requires(Robot.climb);
   }
 
   @Override

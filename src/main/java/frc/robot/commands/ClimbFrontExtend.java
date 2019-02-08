@@ -4,28 +4,30 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 import frc.robot.util.Logger;
 
-public class ElevatorIncrementDown extends Command {
+public class ClimbFrontExtend extends Command {
 
-  private Logger logger = new Logger(ElevatorIncrementDown.class.getName());
+  private Logger logger = new Logger(ClimbFrontExtend.class.getName());
+  private static final double SPEED = 0.5;
 
-  public ElevatorIncrementDown() {
+  public ClimbFrontExtend() {
     logger.detail("constructor");
-    requires(Robot.elevator);
+    requires(Robot.climb);
   }
 
   @Override
   protected void initialize() {
     logger.info("initialize");
+    Robot.climb.setFrontMotorSpeed(SPEED);
   }
 
   @Override
   protected void execute() {
-    logger.info("execute");
+    logger.detail("execute");
   }
 
   @Override
   protected boolean isFinished() {
-    logger.info("isFinished");
+    logger.info("finished");
     return false;
   }
 
@@ -37,5 +39,6 @@ public class ElevatorIncrementDown extends Command {
   @Override
   protected void interrupted() {
     logger.warning("interrupted");
+    end();
   }
 }

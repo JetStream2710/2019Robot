@@ -24,6 +24,9 @@ public class Robot extends TimedRobot {
   public static AHRS ahrs = new AHRS(SPI.Port.kMXP);
   public static boolean isAuto;
   public static boolean isHatchMode;
+  public static boolean isMovingElevatorArm;
+  // is the variable type correct?
+  public static int currentHeight;
 
   private Logger logger = new Logger(Robot.class.getName());
 
@@ -39,6 +42,7 @@ public class Robot extends TimedRobot {
     climb = new Climb();
 
     isHatchMode = true;
+    isMovingElevatorArm = false;
   }
 
   @Override
@@ -81,6 +85,8 @@ public class Robot extends TimedRobot {
     Scheduler.getInstance().run();
   }
 
+
+
   public boolean isHatchMode() {
     logger.info("isHatchMode " + isHatchMode);
     return isHatchMode;
@@ -94,5 +100,10 @@ public class Robot extends TimedRobot {
   public void switchToCargoMode() {
     logger.info("isHatchMode mode off");
     isHatchMode = false;
+  }
+
+  public boolean isMovingElevatorArm(){
+    logger.info("isMovingElevatorArm " + isMovingElevatorArm);
+    return isMovingElevatorArm;    
   }
 }

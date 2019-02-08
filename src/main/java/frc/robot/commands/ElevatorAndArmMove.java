@@ -5,15 +5,16 @@ import frc.robot.Robot;
 import frc.robot.RobotMap;
 import frc.robot.util.Logger;
 
-public class ElevatorMove extends Command {
+public class ElevatorAndArmMove extends Command {
 
-  private Logger logger = new Logger(ElevatorMove.class.getName());
+  private Logger logger = new Logger(ElevatorAndArmMove.class.getName());
 
-  public ElevatorMove() {
+  public ElevatorAndArmMove() {
     logger.detail("constructor");
     requires(Robot.elevator);
   }
 
+  // do we create another variable like the elevator moving one to always make this key command?
   @Override
   protected void initialize() {
     logger.detail("initailize");

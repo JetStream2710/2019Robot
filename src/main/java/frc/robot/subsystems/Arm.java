@@ -29,8 +29,7 @@ public class Arm extends Subsystem {
     swivelTalon = new JetstreamTalon(RobotMap.ARM_SWIVEL_TALON, SWIVEL_MIN, SWIVEL_MAX);
   }
 
-  // CAN WE TALK ABOUT GOING TO PRESET VALUES AND HOW TO CODE 
-  // LIKE WHETHER THE IT SHOULD BE OUTLINED DURING COMMAND OR IN FUNCTION??
+  // in subsystem
   public void armCargoUp(){
 
   }

@@ -5,11 +5,15 @@ import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.commands.CargoIntake;
 import frc.robot.commands.CargoOuttake;
+import frc.robot.commands.ElevatorAndArmDown;
+import frc.robot.commands.ElevatorAndArmUp;
 import frc.robot.commands.HatchPush;
 import frc.robot.commands.SwitchToCargo;
 import frc.robot.commands.SwitchToHatch;
 
 public class OI {
+  private boolean change = false;
+
   // controllers defined
   public Joystick drivestick = new Joystick(RobotMap.JOYSTICK_DRIVER);
   public Joystick auxstick = new Joystick(RobotMap.JOYSTICK_AUX);
@@ -31,25 +35,14 @@ public class OI {
     a_A.whenPressed(new SwitchToHatch());
     a_Y.whenPressed(new SwitchToCargo());
 
-    // idk how to determine when the POV changes...because I don't want someone to push it once
-    // and accidentally, the program logs it at three times...
-    // the commands called are also wrong whoops
-    if(POV != 0){
-      if(Robot.isHatchMode){
-        if(POV == 90){
-          new HatchElevatorUp();
-        }
-        else if(POV == 180){
-          new HatchElevatorDown();
-        }
-       } else{
-         if(POV == 90){
-           new CargoElevatorUp();
-         }
-         else if(POV == 180){
-           new CargoElevatorDown();
-         }
-       }
-     }
+    // forgot how to determine change -- there's a boolean now though
+    if(change){
+      if(POV == 90){
+        new ElevatorAndArmUp();
+      }
+      else if(POV == 180){
+        new ElevatorAndArmDown();
+      }
+    }
   }
 }

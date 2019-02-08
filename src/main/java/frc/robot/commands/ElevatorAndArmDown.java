@@ -4,11 +4,11 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 import frc.robot.util.Logger;
 
-public class ElevatorHatchOne extends Command {
- 
-  private Logger logger = new Logger(ElevatorHatchOne.class.getName());
+public class ElevatorAndArmDown extends Command {
 
-  public ElevatorHatchOne() {
+  private Logger logger = new Logger(ElevatorAndArmDown.class.getName());
+
+  public ElevatorAndArmDown() {
     logger.detail("constructor");
     requires(Robot.elevator);
   }
@@ -16,6 +16,11 @@ public class ElevatorHatchOne extends Command {
   @Override
   protected void initialize() {
     logger.info("initialize");
+    if(Robot.isMovingElevatorArm){
+      end();
+    } else{
+      Robot.isMovingElevatorArm = true;
+    }
   }
 
   @Override
@@ -32,6 +37,7 @@ public class ElevatorHatchOne extends Command {
   @Override
   protected void end() {
     logger.info("end");
+    Robot.isMovingElevatorArm = false;
   }
 
   @Override
