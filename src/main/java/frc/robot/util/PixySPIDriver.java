@@ -11,7 +11,7 @@ public class PixySPIDriver {
     pixy = new SPI(port);
     pixy.setMSBFirst();
     pixy.setChipSelectActiveLow();
-    pixy.setClockRate(1000);
+    pixy.setClockRate(2000000);
     pixy.setSampleDataOnTrailingEdge();
     pixy.setClockActiveLow();
   }

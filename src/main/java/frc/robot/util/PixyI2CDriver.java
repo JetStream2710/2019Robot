@@ -31,4 +31,14 @@ public class PixyI2CDriver {
     logger.info("lineTracking receive: " + PixyMessage.bytesToString(data));
     return new PixyLine(data);
   }
+
+  public PixyBlock[] objectTracking() {
+    logger.info("objectTracking send: " + PixyMessage.bytesToString(PixyMessage.OBJECT_TRACKING));
+    //byte[] data = new byte[17];
+    byte[] data = new byte[34];
+    pixy.transaction(PixyMessage.OBJECT_TRACKING, PixyMessage.OBJECT_TRACKING.length, data, data.length);
+    logger.info("objectTracking receive: " + PixyMessage.bytesToString(data));
+    // FIX THIS LINE
+    return new PixyBlock[] {new PixyBlock(data), new PixyBlock(data)};
+  }
 }
