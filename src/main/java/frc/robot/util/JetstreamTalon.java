@@ -33,7 +33,8 @@ public class JetstreamTalon implements SpeedController {
   }
 
   public int getPosition() {
-    return encoder == null ? 0 : encoder.get();
+//    return encoder == null ? 0 : encoder.get();
+    return talon.getSelectedSensorPosition();
   }
 
   public boolean isValidSpeed(double speed) {
