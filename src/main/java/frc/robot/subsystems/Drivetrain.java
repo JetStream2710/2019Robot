@@ -1,8 +1,6 @@
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -25,18 +23,22 @@ public class Drivetrain extends Subsystem {
   private SpeedControllerGroup leftGroup;
   private SpeedControllerGroup rightGroup;
 
+  private Encoder leftEncoder;
+  private Encoder rightEncoder;
+
   private DifferentialDrive differentialDrive = null;
 
   public Drivetrain() {
     super();
     logger.detail("constructor");
 
-    frontLeftTalon = new JetstreamTalon(RobotMap.DRIVETRAIN_LEFT_MASTER, Integer.MAX_VALUE, Integer.MIN_VALUE);
-    frontRightTalon = newTalon(RobotMap.DRIVETRAIN_FRONT_RIGHT_TALON);
-    rearLeftTalon = newTalon(RobotMap.DRIVETRAIN_REAR_LEFT_TALON);
-    rearRightTalon = newTalon(RobotMap.DRIVETRAIN_REAR_RIGHT_TALON);
-    leftGroup = new SpeedControllerGroup(frontLeftTalon, rearLeftTalon);
-    rightGroup = new SpeedControllerGroup(frontRightTalon, rearRightTalon);
+    leftEncoder = new Encoder(RobotMap.DRIVETRAIN_LEFT_ENCODER_A, RobotMap.DRIVETRAIN_LEFT_ENCODER_B);
+    leftTalon = new JetstreamTalon(RobotMap.DRIVETRAIN_LEFT_TALON, leftEncoder, Integer.MIN_VALUE, Integer.MAX_VALUE);
+    leftVictor = new JetstreamVictor(RobotMap.DRIVETRAIN_LEFT_VICTOR);
+    rightTalon = new JetstreamTalon(RobotMap.DRIVETRAIN_RIGHT_TALON, rightEncoder, Integer.MIN_VALUE, Integer.MAX_VALUE);
+    rightVictor = new JetstreamVictor(RobotMap.DRIVETRAIN_RIGHT_VICTOR);
+    leftGroup = new SpeedControllerGroup(leftTalon, leftVictor);
+    rightGroup = new SpeedControllerGroup(rightTalon, rightVictor);
     differentialDrive = new DifferentialDrive(leftGroup, rightGroup);
   }
 
@@ -59,13 +61,5 @@ public class Drivetrain extends Subsystem {
   @Override
   public void initDefaultCommand() {
     setDefaultCommand(new DriveCommand());
-  }
-
-  private WPI_TalonSRX newTalon(int port) {
-    WPI_TalonSRX talon = new WPI_TalonSRX(port);
-    talon.setSafetyEnabled(false);
-    talon.setNeutralMode(NeutralMode.Brake);
-    talon.setSelectedSensorPosition(0);
-    return talon;
   }
 }

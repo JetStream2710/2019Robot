@@ -14,6 +14,7 @@ public class RobotMap {
   public static final int SWITCH_TO_HATCH = 0;
   public static final int SWITCH_TO_CARGO = 0;
   public static final int ELEVATOR_AXIS = 1;
+  public static final int ARM_AXIS = 2;
   public static final int ELEVATOR_CARGO_ONE = 0;
   public static final int ELEVATOR_CARGO_TWO = 0;
   public static final int ELEVATOR_CARGO_THREE = 0;
@@ -23,10 +24,15 @@ public class RobotMap {
 
   // drivetrain
   // master = talon    slave = victor
-  public static final int DRIVETRAIN_LEFT_MASTER = 0;
-  public static final int DRIVETRAIN_LEFT_SLAVE = 1;
-  public static final int DRIVETRAIN_RIGHT_MASTER = 15;
-  public static final int DRIVETRAIN_RIGHT_SLAVE = 14;
+  public static final int DRIVETRAIN_LEFT_TALON = 0;
+  public static final int DRIVETRAIN_LEFT_VICTOR = 1;
+  public static final int DRIVETRAIN_RIGHT_TALON = 15;
+  public static final int DRIVETRAIN_RIGHT_VICTOR = 14;
+
+  public static final int DRIVETRAIN_LEFT_ENCODER_A = 0;
+  public static final int DRIVETRAIN_LEFT_ENCODER_B = 0;
+  public static final int DRIVETRAIN_RIGHT_ENCODER_A = 0;
+  public static final int DRIVETRAIN_RIGHT_ENCODER_B = 0;
 
   // elevator
   // master = talon     slave = victor

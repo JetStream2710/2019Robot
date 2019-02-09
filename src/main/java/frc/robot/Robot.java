@@ -22,6 +22,7 @@ public class Robot extends TimedRobot {
   public static Climb climb;
 
   public static AHRS ahrs = new AHRS(SPI.Port.kMXP);
+
   public static boolean isAuto;
   public static boolean isHatchMode;
   public static boolean isMovingElevatorArm;
@@ -90,12 +91,11 @@ public class Robot extends TimedRobot {
 
   private void updateSubsystems() {
     long time = System.currentTimeMillis();
-    //elevator.periodic(time);
+    elevator.periodic(time);
   }
 
 
   public static boolean isHatchMode() {
-    logger.info("isHatchMode " + isHatchMode);
     return isHatchMode;
   }
 
@@ -110,7 +110,6 @@ public class Robot extends TimedRobot {
   }
 
   public static boolean isMovingElevatorArm(){
-    logger.info("isMovingElevatorArm " + isMovingElevatorArm);
     return isMovingElevatorArm;    
   }
 }

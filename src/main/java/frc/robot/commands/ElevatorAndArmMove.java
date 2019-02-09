@@ -14,6 +14,7 @@ public class ElevatorAndArmMove extends Command {
   public ElevatorAndArmMove() {
     logger.detail("constructor");
     requires(Robot.elevator);
+    requires(Robot.arm);
   }
 
   // do we create another variable like the elevator moving one to always make this key command?
@@ -25,6 +26,7 @@ public class ElevatorAndArmMove extends Command {
   // I MOVED THE LOGGER TO THE BOTTOM TO GET MOVESPEED VALUE 
   @Override
   protected void execute() {
+    // Joypad Control
     if (System.currentTimeMillis() - lastPovChange > 1000) {
       int pov = Robot.oi.auxstick.getPOV();
       if (pov == 0) {
@@ -35,13 +37,27 @@ public class ElevatorAndArmMove extends Command {
         lastPovChange = System.currentTimeMillis();
       }
     }
-    double moveSpeed = Robot.oi.auxstick.getRawAxis(RobotMap.ELEVATOR_AXIS);
-    if (moveSpeed == 0) {
+    // Elevator Joystick
+    // TODO: FIX THIS
+//    double elevatorSpeed = Robot.oi.auxstick.getRawAxis(RobotMap.ELEVATOR_AXIS);
+    double elevatorSpeed = Robot.oi.drivestick.getRawAxis(RobotMap.ELEVATOR_AXIS);
+    if (elevatorSpeed == 0) {
       Robot.isMovingElevatorArm = false;
     } else {
       Robot.isMovingElevatorArm = true;
-      logger.info("execute moveSpeed: " + moveSpeed);
-      Robot.elevator.elevatorMove(moveSpeed);
+      logger.info("execute elevatorSpeed: " + elevatorSpeed);
+      Robot.elevator.elevatorMove(elevatorSpeed);
+    }
+    // Arm Joystick
+    // TODO: FIX THIS
+//    double armSpeed = Robot.oi.auxstick.getRawAxis(RobotMap.ELEVATOR_AXIS);
+    double armSpeed = Robot.oi.drivestick.getRawAxis(RobotMap.ARM_AXIS);
+    if (armSpeed == 0) {
+      Robot.isMovingElevatorArm = false;
+    } else {
+      Robot.isMovingElevatorArm = true;
+      logger.info("execute armSpeed: " + armSpeed);
+      Robot.arm.moveTogether(armSpeed);
     }
   }
 

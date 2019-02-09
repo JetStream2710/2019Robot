@@ -10,29 +10,27 @@ public class Climb extends Subsystem {
 
   private Logger logger = new Logger(Climb.class.getName());
 
-  private JetstreamVictor frontLeftVictor;
-  private JetstreamVictor frontRightVictor;
+  private JetstreamVictor frontVictor;
   private JetstreamVictor backVictor;
-  private SpeedControllerGroup frontGroup;
+  private JetstreamVictor moveVictor;
 
   public Climb() {
     super();
     logger.detail("constructor");
 
-    frontLeftVictor = new JetstreamVictor(RobotMap.CLIMB_FRONT_LEFT_VICTOR);
-    frontRightVictor = new JetstreamVictor(RobotMap.CLIMB_FRONT_RIGHT_VICTOR);
+    frontVictor = new JetstreamVictor(RobotMap.CLIMB_FRONT_VICTOR);
     backVictor = new JetstreamVictor(RobotMap.CLIMB_BACK_VICTOR);
-    frontGroup = new JetstreamControllerGroup(frontLeftVictor, frontRightVictor);
+    moveVictor = new JetstreamVictor(RobotMap.CLIMB_MOVE_VICTOR);
   }
 
   public void setFrontMotorSpeed(double speed) {
     logger.info("setFrontMotorSpeed speed: " + speed);
-    frontGroup.setSpeed(speed);
+    frontVictor.set(speed);
   }
 
   public void setBackMotorSpeed(double speed) {
     logger.info("setBackMotorSpeed speed : " + speed);
-    backVictor.setSpeed(speed);
+    backVictor.set(speed);
   }
 
   @Override

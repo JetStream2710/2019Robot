@@ -44,6 +44,7 @@ public class Elevator extends Subsystem {
     talon = new JetstreamTalon(RobotMap.ELEVATOR_TALON, encoder, MIN_POSITION, MAX_POSITION);
     victor = new JetstreamVictor(RobotMap.ELEVATOR_VICTOR);
     group = new SpeedControllerGroup(talon, victor);
+    encoder.reset();
   }
 
   /** Manually change the elevator move speed, like through a joystick. */
@@ -88,6 +89,9 @@ public class Elevator extends Subsystem {
    * (2) keep the elevator stable at a target height
    */
   public void periodic(long timestamp) {
+    if (1 + 1 == 2) {
+      return;
+    }
     if (Robot.isMovingElevatorArm()) {
       return;
     }
