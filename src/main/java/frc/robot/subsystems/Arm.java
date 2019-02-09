@@ -23,6 +23,7 @@ public class Arm extends Subsystem {
   private JetstreamTalon swivelTalon;
   private Encoder verticalEncoder;
   private Encoder swivelEncoder;
+  private double currentPosition;
 
   public Arm() {
     super();
@@ -32,19 +33,28 @@ public class Arm extends Subsystem {
     swivelEncoder = new Encoder(RobotMap.ARM_SWIVEL_ENCODER_A, RobotMap.ARM_SWIVEL_ENCODER_B);
     verticalTalon = new JetstreamTalon(RobotMap.ARM_VERTICAL_TALON, verticalEncoder, VERTICAL_MIN, VERTICAL_MAX);
     swivelTalon = new JetstreamTalon(RobotMap.ARM_SWIVEL_TALON, swivelEncoder, SWIVEL_MIN, SWIVEL_MAX);
+    currentPosition = verticalEncoder.getDistance();
   }
 
   // in subsystem
   public void armCargoUp(){
-
+    logger.info("armCargoUp called");
+    while(currentPosition < VERTICAL_MAX){
+      this.currentPosition = verticalEncoder.getDistance();
+      verticalTalon.set(SPEED);
+    }
   }
 
   public void armCargoDown(){
-
+    logger.info("armCargoDown called");
+    while(currentPosition < VERTICAL_MIN){
+      this.currentPosition = verticalEncoder.getDistance();
+      verticalTalon.set(-SPEED);
+    }
   }
 
   public void armHatchUp(){
-
+    logger.info()
   }
 
   public void armHatchDown(){

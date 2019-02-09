@@ -8,6 +8,8 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import frc.robot.RobotMap;
 import frc.robot.commands.DriveCommand;
+import frc.robot.util.JetstreamTalon;
+import frc.robot.util.JetstreamVictor;
 import frc.robot.util.Logger;
 
 // TODO: add speed limits
@@ -15,10 +17,10 @@ public class Drivetrain extends Subsystem {
 
   private Logger logger = new Logger(Drivetrain.class.getName());
 
-  private WPI_TalonSRX frontLeftTalon;
-  private WPI_TalonSRX frontRightTalon;
-  private WPI_TalonSRX rearLeftTalon;
-  private WPI_TalonSRX rearRightTalon;
+  private JetstreamTalon leftTalon;
+  private JetstreamVictor leftVictor;
+  private JetstreamTalon rightTalon;
+  private JetstreamVictor rightVictor;
 
   private SpeedControllerGroup leftGroup;
   private SpeedControllerGroup rightGroup;
@@ -29,7 +31,7 @@ public class Drivetrain extends Subsystem {
     super();
     logger.detail("constructor");
 
-    frontLeftTalon = newTalon(RobotMap.DRIVETRAIN_FRONT_LEFT_TALON);
+    frontLeftTalon = new JetstreamTalon(RobotMap.DRIVETRAIN_LEFT_MASTER, Integer.MAX_VALUE, Integer.MIN_VALUE);
     frontRightTalon = newTalon(RobotMap.DRIVETRAIN_FRONT_RIGHT_TALON);
     rearLeftTalon = newTalon(RobotMap.DRIVETRAIN_REAR_LEFT_TALON);
     rearRightTalon = newTalon(RobotMap.DRIVETRAIN_REAR_RIGHT_TALON);
