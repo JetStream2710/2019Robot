@@ -89,14 +89,10 @@ public class Logger {
 
   private void log(String name, Level level, String s) {
     if (LOG_LEVELS.get(name).value() >= level.value()) {
-      StringBuilder sb = new StringBuilder();
-      sb.append(level);
-      sb.append(" ");
-      sb.append(name);
-      sb.append(": ");
-      SmartDashboard.putString(sb.toString(), s);
-      sb.append(s);
-      System.out.println(sb.toString());
+      System.out.println(String.format("%s %s: %s", level.toString(), name, s));
+    }
+    if (Level.WARNING.value() >= level.value()) {
+      SmartDashboard.putString(level.toString(), String.format("%s: %s", name, s));
     }
   }
 }
