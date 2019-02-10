@@ -28,8 +28,7 @@ public class ElevatorAndArmMove extends Command {
   protected void execute() {
     // Joypad Control
     if (System.currentTimeMillis() - lastPovChange > 1000) {
-//      int pov = Robot.oi.auxstick.getPOV();
-      int pov = Robot.oi.drivestick.getPOV();
+      int pov = Robot.oi.auxstick.getPOV();
       if (pov == 0) {
         Robot.elevator.setLevel(Robot.elevator.getLevel() + 1);
         lastPovChange = System.currentTimeMillis();
@@ -42,7 +41,7 @@ public class ElevatorAndArmMove extends Command {
     // TODO: FIX THIS
 //    double elevatorSpeed = Robot.oi.auxstick.getRawAxis(RobotMap.ELEVATOR_AXIS);
     double elevatorSpeed = Robot.oi.drivestick.getRawAxis(RobotMap.ELEVATOR_AXIS);
-    if (elevatorSpeed < 0.01 && elevatorSpeed > -0.01) {
+    if (elevatorSpeed == 0) {
       Robot.isMovingElevatorArm = false;
     } else {
       Robot.isMovingElevatorArm = true;
@@ -53,14 +52,12 @@ public class ElevatorAndArmMove extends Command {
     // TODO: FIX THIS
 //    double armSpeed = Robot.oi.auxstick.getRawAxis(RobotMap.ELEVATOR_AXIS);
     double armSpeed = Robot.oi.drivestick.getRawAxis(RobotMap.ARM_AXIS);
-//    if (armSpeed < 0.01 && armSpeed > -0.01) {
     if (armSpeed == 0) {
-        Robot.isMovingElevatorArm = false;
+      Robot.isMovingElevatorArm = false;
     } else {
       Robot.isMovingElevatorArm = true;
       logger.info("execute armSpeed: " + armSpeed);
-//      Robot.arm.moveTogether(armSpeed);
-      Robot.arm.moveVerticalArm(armSpeed);
+      Robot.arm.moveTogether(armSpeed);
     }
   }
 

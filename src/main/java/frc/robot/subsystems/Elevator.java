@@ -125,7 +125,6 @@ public class Elevator extends Subsystem {
 
   @Override
   public void initDefaultCommand() {
-    logger.detail("initDefaultCommand");
     setDefaultCommand(new ElevatorAndArmMove());
   }
 }

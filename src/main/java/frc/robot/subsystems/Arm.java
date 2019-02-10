@@ -52,7 +52,7 @@ public class Arm extends Subsystem {
   }
 
   public void moveVerticalArm(double speed) {
-    logger.info("moveVerticalArm speed: " + speed + " arm-pos: " + verticalTalon.getPosition());
+    logger.info("moveVerticalArm speed: " + speed);
     verticalTalon.set(speed);
   }
 
@@ -64,11 +64,11 @@ public class Arm extends Subsystem {
   // MAKE SURE TO TEST THIS BECAUSE IT MIGHT BE BACKWARDS
   public void moveTogether(double speed) {
     if (verticalTalon.isValidSpeed(speed) && swivelTalon.isValidSpeed(-speed)) {
-      logger.info("moveTogether speed: " + speed + " arm-pos: " + verticalTalon.getPosition());
+      logger.info("moveTogether speed: " + speed);
       verticalTalon.set(speed);
       swivelTalon.set(-speed);
     } else {
-      logger.warning("moveTogether stopped + arm-pos: " + verticalTalon.getPosition());
+      logger.warning("moveTogether stopped");
       verticalTalon.set(0);
       swivelTalon.set(0);
     }

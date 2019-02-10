@@ -34,13 +34,13 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     logger.detail("robotInit");
+    oi = new OI();
     drivetrain = new Drivetrain();
     elevator = new Elevator();
     arm = new Arm();
     cargo = new Cargo();
     hatch = new Hatch();
     climb = new Climb();
-    oi = new OI();
 
     isHatchMode = true;
     isMovingElevatorArm = false;
