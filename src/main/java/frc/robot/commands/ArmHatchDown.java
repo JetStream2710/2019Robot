@@ -21,6 +21,8 @@ public class ArmHatchDown extends Command {
   @Override
   protected void execute() {
     logger.info("execute");
+    Robot.arm.moveVerticalArm(Robot.arm.VERTICAL_MAX_OUTPUT);
+    Robot.arm.moveSwivelArm(-Robot.arm.SWIVEL_MAX_OUTPUT);
   }
 
   @Override

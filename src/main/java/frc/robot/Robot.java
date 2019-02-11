@@ -25,7 +25,8 @@ public class Robot extends TimedRobot {
 
   public static boolean isAuto;
   public static boolean isHatchMode;
-  public static boolean isMovingElevatorArm;
+  public static boolean isMovingElevator;
+  public static boolean isMovingArm;
   // is the variable type correct?
   public static int currentHeight;
 
@@ -43,7 +44,8 @@ public class Robot extends TimedRobot {
     oi = new OI();
 
     isHatchMode = true;
-    isMovingElevatorArm = false;
+    isMovingElevator = false;
+    isMovingArm = false;
   }
 
   @Override
@@ -91,6 +93,7 @@ public class Robot extends TimedRobot {
 
   private void updateSubsystems() {
     long time = System.currentTimeMillis();
+    arm.periodic(time);
     elevator.periodic(time);
   }
 
@@ -107,9 +110,5 @@ public class Robot extends TimedRobot {
   public static void switchToCargoMode() {
     logger.info("isHatchMode mode off");
     isHatchMode = false;
-  }
-
-  public static boolean isMovingElevatorArm(){
-    return isMovingElevatorArm;    
   }
 }

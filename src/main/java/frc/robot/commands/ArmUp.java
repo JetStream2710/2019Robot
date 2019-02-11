@@ -4,14 +4,15 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 import frc.robot.util.Logger;
 
-public class ArmHatchUp extends Command {
+public class ArmUp extends Command {
 
-  private Logger logger = new Logger(ArmHatchUp.class.getName());
+  private Logger logger = new Logger(ArmUp.class.getName());
 
-  public ArmHatchUp() {
+  public ArmUp() {
     logger.detail("constructor");
     requires(Robot.arm);
   }
+
 
   @Override
   protected void initialize() {
@@ -21,12 +22,17 @@ public class ArmHatchUp extends Command {
   @Override
   protected void execute() {
     logger.info("execute");
+    Robot.arm.moveVerticalArm(Robot.arm.VERTICAL_MAX_OUTPUT);
   }
 
   @Override
   protected boolean isFinished() {
     logger.info("isFinished");
-    return false;
+    if(Robot.arm.getVerticalPosition() < Robot.arm.VERTICAL_MAX){
+      return false;
+    } else{
+      return true;
+    }
   }
 
   @Override

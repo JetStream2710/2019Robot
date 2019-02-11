@@ -17,7 +17,7 @@ public class Logger {
     LOG_LEVELS.put(OI.class.getName(), Level.INFO);
 
     // Subsystems
-    LOG_LEVELS.put(Arm.class.getName(), Level.DETAIL);
+    LOG_LEVELS.put(Arm.class.getName(), Level.WARNING);
     LOG_LEVELS.put(Cargo.class.getName(), Level.INFO);
     LOG_LEVELS.put(Climb.class.getName(), Level.INFO);
     LOG_LEVELS.put(Drivetrain.class.getName(), Level.WARNING);
@@ -26,9 +26,8 @@ public class Logger {
 
     // Commands
     LOG_LEVELS.put(ArmCargoDown.class.getName(), Level.WARNING);
-    LOG_LEVELS.put(ArmCargoUp.class.getName(), Level.WARNING);
+    LOG_LEVELS.put(ArmUp.class.getName(), Level.WARNING);
     LOG_LEVELS.put(ArmHatchDown.class.getName(), Level.WARNING);
-    LOG_LEVELS.put(ArmHatchUp.class.getName(), Level.WARNING);
     LOG_LEVELS.put(CargoIntake.class.getName(), Level.WARNING);
     LOG_LEVELS.put(CargoOuttake.class.getName(), Level.WARNING);
     LOG_LEVELS.put(ClimbFrontExtend.class.getName(), Level.WARNING);
@@ -39,9 +38,7 @@ public class Logger {
     LOG_LEVELS.put(ClimbRearRetract.class.getName(), Level.WARNING);
     LOG_LEVELS.put(DriveCommand.class.getName(), Level.WARNING);
     LOG_LEVELS.put(ElevatorAndArmMove.class.getName(), Level.INFO);
-    LOG_LEVELS.put(ElevatorAndArmDown.class.getName(), Level.WARNING);
-    LOG_LEVELS.put(ElevatorAndArmUp.class.getName(), Level.WARNING);
-    LOG_LEVELS.put(HatchPush.class.getName(), Level.WARNING);
+    LOG_LEVELS.put(HatchPush.class.getName(), Level.INFO);
     LOG_LEVELS.put(SwitchToCargo.class.getName(), Level.WARNING);
     LOG_LEVELS.put(SwitchToHatch.class.getName(), Level.WARNING);
     LOG_LEVELS.put(VisionFollow.class.getName(), Level.WARNING);
@@ -93,14 +90,10 @@ public class Logger {
 
   private void log(String name, Level level, String s) {
     if (LOG_LEVELS.get(name).value() >= level.value()) {
-      StringBuilder sb = new StringBuilder();
-      sb.append(level);
-      sb.append(" ");
-      sb.append(name);
-      sb.append(": ");
-      SmartDashboard.putString(sb.toString(), s);
-      sb.append(s);
-      System.out.println(sb.toString());
+      System.out.println(String.format("%s %s: %s", level.toString(), name, s));
+    }
+    if (Level.WARNING.value() >= level.value()) {
+      SmartDashboard.putString(level.toString(), String.format("%s: %s", name, s));
     }
   }
 }

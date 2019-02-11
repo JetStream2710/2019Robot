@@ -16,19 +16,32 @@ public class JetstreamTalon implements SpeedController {
   private Encoder encoder;
   private int minPosition;
   private int maxPosition;
+  private double maxSpeed;
+  private double minSpeed;
+  private boolean inverted;
 
   public JetstreamTalon(int id, Encoder encoder, int minPosition, int maxPosition) {
+    this(id, encoder, minPosition, maxPosition, 1, false);
+  }
+
+  public JetstreamTalon(int id, Encoder encoder, int minPosition, int maxPosition, double maxSpeed, boolean inverted) {
     logger.detail("constructor id: " + id);
     talon = new WPI_TalonSRX(id);
     this.encoder = encoder;
     this.minPosition = minPosition;
     this.maxPosition = maxPosition;
+    this.maxSpeed = maxSpeed;
+    this.minSpeed = -maxSpeed;
+    this.inverted = inverted;
     talon.setSafetyEnabled(false);
     talon.setNeutralMode(NeutralMode.Brake);
     talon.configVoltageCompSaturation(MAX_VOLTAGE);
     talon.enableVoltageCompensation(true);
     if (encoder != null) {
       encoder.reset();
+    } else {
+      talon.setSelectedSensorPosition(0);
+      System.out.println("TEMP: id=" + id + " position:" + talon.getSelectedSensorPosition());
     }
   }
 
@@ -38,8 +51,15 @@ public class JetstreamTalon implements SpeedController {
   }
 
   public boolean isValidSpeed(double speed) {
-    if (encoder != null) {
-      double position = getPosition();
+    double position = getPosition();
+    if (inverted) {
+      if (speed > 0) {
+        return position > minPosition;
+      }
+      if (speed < 0) {
+        return position < maxPosition;
+      }
+    } else {
       if (speed > 0) {
         return position < maxPosition;
       }
@@ -54,10 +74,19 @@ public class JetstreamTalon implements SpeedController {
 
   @Override
   public void set(double speed) {
+    if (inverted) {
+      speed *= -1;
+    }
     if (!isValidSpeed(speed)) {
       logger.warning(String.format("[%d] INVALID set speed: %f", talon.getDeviceID(), speed));
       talon.set(0);
       return;
+    }
+    if (speed > maxSpeed) {
+      speed = maxSpeed;
+    }
+    if (speed < minSpeed) {
+      speed = minSpeed;
     }
     logger.info(String.format("[%d] set speed: %f", talon.getDeviceID(), speed));
     talon.set(speed);
@@ -65,7 +94,7 @@ public class JetstreamTalon implements SpeedController {
 
   @Override
   public double get() {
-    return talon.get();
+    return inverted ? -talon.get() : talon.get();
   }
 
   @Override

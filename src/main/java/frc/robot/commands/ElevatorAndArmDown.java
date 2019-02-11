@@ -16,10 +16,10 @@ public class ElevatorAndArmDown extends Command {
   @Override
   protected void initialize() {
     logger.info("initialize");
-    if(Robot.isMovingElevatorArm){
+    if(Robot.isMovingElevator){
       end();
     } else{
-      Robot.isMovingElevatorArm = true;
+      Robot.isMovingElevator = true;
     }
   }
 
@@ -37,7 +37,7 @@ public class ElevatorAndArmDown extends Command {
   @Override
   protected void end() {
     logger.info("end");
-    Robot.isMovingElevatorArm = false;
+    Robot.isMovingElevator = false;
   }
 
   @Override

@@ -36,8 +36,8 @@ public class RobotMap {
 
   // elevator
   // master = talon     slave = victor
-  public static final int ELEVATOR_TALON = 0;
-  public static final int ELEVATOR_VICTOR = 0;
+  public static final int ELEVATOR_TALON = 2;
+  public static final int ELEVATOR_VICTOR = 3;
   public static final int ELEVATOR_ENCODER_A = 0;
   public static final int ELEVATOR_ENCODER_B = 1;
 
@@ -45,7 +45,7 @@ public class RobotMap {
   public static final int CARGO_VICTOR = 11;
 
   // hatch
-  public static final int HATCH_TALON = 10;
+  public static final int HATCH_VICTOR = 10;
 
   // arm
   public static final int ARM_VERTICAL_TALON = 13;

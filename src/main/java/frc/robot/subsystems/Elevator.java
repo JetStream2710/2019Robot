@@ -40,8 +40,7 @@ public class Elevator extends Subsystem {
   public Elevator() {
     super();
     logger.detail("constructor");
-    encoder = new Encoder(RobotMap.ELEVATOR_ENCODER_A, RobotMap.ELEVATOR_ENCODER_B);
-    talon = new JetstreamTalon(RobotMap.ELEVATOR_TALON, encoder, MIN_POSITION, MAX_POSITION);
+    talon = new JetstreamTalon(RobotMap.ELEVATOR_TALON, encoder, MIN_POSITION, MAX_POSITION, 0.2, true);
     victor = new JetstreamVictor(RobotMap.ELEVATOR_VICTOR);
     group = new SpeedControllerGroup(talon, victor);
     encoder.reset();
@@ -49,7 +48,7 @@ public class Elevator extends Subsystem {
 
   /** Manually change the elevator move speed, like through a joystick. */
   public void elevatorMove(double speed) {
-    logger.info("elevatorMove speed: " + speed);
+    logger.info("elevatorMove speed: " + speed + " position: " + talon.getPosition());
     group.set(speed);
   }
 
@@ -92,7 +91,7 @@ public class Elevator extends Subsystem {
     if (1 + 1 == 2) {
       return;
     }
-    if (Robot.isMovingElevatorArm()) {
+    if (Robot.isMovingElevator) {
       return;
     }
     int currentPosition = encoder.get();

@@ -17,13 +17,11 @@ public class ElevatorAndArmMove extends Command {
     requires(Robot.arm);
   }
 
-  // do we create another variable like the elevator moving one to always make this key command?
   @Override
   protected void initialize() {
     logger.detail("initailize");
   }
 
-  // I MOVED THE LOGGER TO THE BOTTOM TO GET MOVESPEED VALUE 
   @Override
   protected void execute() {
     // Joypad Control
@@ -32,9 +30,11 @@ public class ElevatorAndArmMove extends Command {
       int pov = Robot.oi.drivestick.getPOV();
       if (pov == 0) {
         Robot.elevator.setLevel(Robot.elevator.getLevel() + 1);
+        logger.info("execute pov: 0");
         lastPovChange = System.currentTimeMillis();
       } else if (pov == 180) {
         Robot.elevator.setLevel(Robot.elevator.getLevel() - 1);
+        logger.info("execute pov: 180");
         lastPovChange = System.currentTimeMillis();
       }
     }
@@ -42,10 +42,11 @@ public class ElevatorAndArmMove extends Command {
     // TODO: FIX THIS
 //    double elevatorSpeed = Robot.oi.auxstick.getRawAxis(RobotMap.ELEVATOR_AXIS);
     double elevatorSpeed = Robot.oi.drivestick.getRawAxis(RobotMap.ELEVATOR_AXIS);
-    if (elevatorSpeed < 0.01 && elevatorSpeed > -0.01) {
-      Robot.isMovingElevatorArm = false;
+    if (elevatorSpeed < 0.08 && elevatorSpeed > -0.08) {
+      Robot.isMovingElevator = false;
+      Robot.elevator.elevatorMove(0);
     } else {
-      Robot.isMovingElevatorArm = true;
+      Robot.isMovingElevator = true;
       logger.info("execute elevatorSpeed: " + elevatorSpeed);
       Robot.elevator.elevatorMove(elevatorSpeed);
     }
@@ -53,14 +54,19 @@ public class ElevatorAndArmMove extends Command {
     // TODO: FIX THIS
 //    double armSpeed = Robot.oi.auxstick.getRawAxis(RobotMap.ELEVATOR_AXIS);
     double armSpeed = Robot.oi.drivestick.getRawAxis(RobotMap.ARM_AXIS);
-//    if (armSpeed < 0.01 && armSpeed > -0.01) {
-    if (armSpeed == 0) {
-        Robot.isMovingElevatorArm = false;
+    if (armSpeed < 0.08 && armSpeed > -0.08) {
+      if (Robot.isMovingArm) {
+        logger.info("execute stop arm");
+        Robot.arm.stopMovingVerticalArm();
+        Robot.arm.stopMovingSwivelArm();
+        // Shouldn't need to reset the speed since position is going to overwrite this.
+      }
+      Robot.isMovingArm = false;
     } else {
-      Robot.isMovingElevatorArm = true;
+      Robot.isMovingArm = true;
       logger.info("execute armSpeed: " + armSpeed);
 //      Robot.arm.moveTogether(armSpeed);
-      Robot.arm.moveVerticalArm(armSpeed);
+      Robot.arm.moveSwivelArm(armSpeed);
     }
   }
 
@@ -72,8 +78,9 @@ public class ElevatorAndArmMove extends Command {
 
   @Override
   protected void end() {
-    logger.info("end");
-    Robot.isMovingElevatorArm = false;
+    logger.warning("end");
+    Robot.isMovingElevator = false;
+    Robot.isMovingArm = false;
   }
 
   // HERE WOULD IT BE POSSIBLE TO ALWAYS LET THIS GO -- THIS IS MEANT TO BE OVERRIDE FUNCTION
