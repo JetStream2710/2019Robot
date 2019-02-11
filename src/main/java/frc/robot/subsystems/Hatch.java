@@ -1,33 +1,33 @@
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
-import frc.robot.util.JetstreamVictor;
 import frc.robot.util.Logger;
 
 public class Hatch extends Subsystem {
 
-  public static final int MAX = Integer.MAX_VALUE;
-  public static final int MIN = Integer.MIN_VALUE;
-  public static final double SPEED = 0.5;
-
   private Logger logger = new Logger(Hatch.class.getName());
-  private JetstreamVictor victor;
+  private Solenoid solenoidOn;
+  private Solenoid solenoidOff;
 
   public Hatch() {
     super();
     logger.detail("constructor");
-    victor = new JetstreamVictor(RobotMap.HATCH_VICTOR);
+    solenoidOn = new Solenoid(RobotMap.PCM_NODE, RobotMap.HATCH_SOLENOID_ON);
+    solenoidOff = new Solenoid(RobotMap.PCM_NODE, RobotMap.HATCH_SOLENOID_OFF);
   }
 
   public void hatchPush() {
     logger.info("hatchPush called");
-    victor.set(SPEED);
+    solenoidOn.set(true);
+    solenoidOff.set(false);
   }
 
   public void hatchIn(){
     logger.info("hatchIn called");
-    victor.set(-SPEED);
+    solenoidOn.set(false);
+    solenoidOff.set(true);
   }
 
   @Override

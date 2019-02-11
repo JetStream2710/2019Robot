@@ -188,7 +188,6 @@ public class Arm extends Subsystem {
     lastPosition = currentPosition;
   }
 
-  //would t be better to just make the commands here and just
   public int getVerticalPosition(){
     return verticalTalon.getPosition();
   }

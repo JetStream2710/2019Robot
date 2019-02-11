@@ -13,12 +13,13 @@ public class ArmUp extends Command {
     requires(Robot.arm);
   }
 
-
   @Override
   protected void initialize() {
     logger.info("initialize");
   }
 
+  // there's a complaint... would it be better to create a function inside the arm subsystem first
+  // and then call it in the arm subsystem?
   @Override
   protected void execute() {
     logger.info("execute");

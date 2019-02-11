@@ -14,6 +14,8 @@ public class HatchPush extends Command {
     requires(Robot.hatch);
   }
 
+  //just making it push in and out right after one another (calling commands wise), won't really do the job right?
+  //for now the program waits one second before pushing the pneumatics back in but that can be checked
   @Override
   protected void initialize() {
     logger.info("initialize");
@@ -29,7 +31,6 @@ public class HatchPush extends Command {
     logger.info("execute");
   }
 
-  // SHOULD LOGGER RECORD timePassed
   @Override
   protected boolean isFinished() {
     logger.info("finished");
@@ -47,7 +48,6 @@ public class HatchPush extends Command {
     Robot.hatch.hatchIn();
   }
 
-  // WHAT IF I WANT TO CHANGE THIS SO THAT IT JUST GOES TO WHATEVER IT'S INTERRUPTED BY 
   @Override
   protected void interrupted() {
     logger.warning("interrupted");

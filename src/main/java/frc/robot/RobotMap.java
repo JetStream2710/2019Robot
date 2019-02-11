@@ -44,9 +44,6 @@ public class RobotMap {
   // cargo
   public static final int CARGO_VICTOR = 11;
 
-  // hatch
-  public static final int HATCH_VICTOR = 10;
-
   // arm
   public static final int ARM_VERTICAL_TALON = 13;
   public static final int ARM_SWIVEL_TALON = 12;
@@ -59,4 +56,9 @@ public class RobotMap {
   public static final int CLIMB_FRONT_VICTOR = 9;
   public static final int CLIMB_BACK_VICTOR = 4;
   public static final int CLIMB_MOVE_VICTOR = 5;
+
+  // pneumatics
+  public static final int PCM_NODE = 0;
+  public static final int HATCH_SOLENOID_ON = 0;
+  public static final int HATCH_SOLENOID_OFF = 1;
 }

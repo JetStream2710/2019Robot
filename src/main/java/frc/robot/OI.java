@@ -10,8 +10,6 @@ import frc.robot.commands.SwitchToCargo;
 import frc.robot.commands.SwitchToHatch;
 
 public class OI {
-  private boolean change = false;
-
   // controllers defined
   public Joystick drivestick = new Joystick(RobotMap.JOYSTICK_DRIVER);
   public Joystick auxstick = new Joystick(RobotMap.JOYSTICK_AUX);
