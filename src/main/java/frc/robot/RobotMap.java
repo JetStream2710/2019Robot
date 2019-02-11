@@ -10,11 +10,11 @@ public class RobotMap {
   public static final int HATCH_CONTROL = 7;
 
   // figure out feeder station stuff -- waiting on the stuff FEEDER STATION
-  public static final int JOYSTICK_AUX = 2;
+  public static final int JOYSTICK_AUX = 1;
   public static final int SWITCH_TO_HATCH = 0;
   public static final int SWITCH_TO_CARGO = 0;
   public static final int ELEVATOR_AXIS = 1;
-  public static final int ARM_AXIS = 3;
+  public static final int ARM_AXIS = 2;
   public static final int ELEVATOR_CARGO_ONE = 0;
   public static final int ELEVATOR_CARGO_TWO = 0;
   public static final int ELEVATOR_CARGO_THREE = 0;
@@ -29,10 +29,10 @@ public class RobotMap {
   public static final int DRIVETRAIN_RIGHT_TALON = 15;
   public static final int DRIVETRAIN_RIGHT_VICTOR = 14;
 
-  public static final int DRIVETRAIN_LEFT_ENCODER_A = 10;
-  public static final int DRIVETRAIN_LEFT_ENCODER_B = 9;
-  public static final int DRIVETRAIN_RIGHT_ENCODER_A = 8;
-  public static final int DRIVETRAIN_RIGHT_ENCODER_B = 7;
+  public static final int DRIVETRAIN_LEFT_ENCODER_A = 0;
+  public static final int DRIVETRAIN_LEFT_ENCODER_B = 0;
+  public static final int DRIVETRAIN_RIGHT_ENCODER_A = 0;
+  public static final int DRIVETRAIN_RIGHT_ENCODER_B = 0;
 
   // elevator
   // master = talon     slave = victor
@@ -50,10 +50,10 @@ public class RobotMap {
   // arm
   public static final int ARM_VERTICAL_TALON = 13;
   public static final int ARM_SWIVEL_TALON = 12;
-  public static final int ARM_VERTICAL_ENCODER_A = 2;
-  public static final int ARM_VERTICAL_ENCODER_B = 3;
-  public static final int ARM_SWIVEL_ENCODER_A = 4;
-  public static final int ARM_SWIVEL_ENCODER_B = 5;
+  public static final int ARM_VERTICAL_ENCODER_A = 0;
+  public static final int ARM_VERTICAL_ENCODER_B = 1;
+  public static final int ARM_SWIVEL_ENCODER_A = 0;
+  public static final int ARM_SWIVEL_ENCODER_B = 1;
 
   // climb
   public static final int CLIMB_FRONT_VICTOR = 9;

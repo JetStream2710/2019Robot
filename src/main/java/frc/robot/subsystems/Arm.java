@@ -80,7 +80,7 @@ public class Arm extends Subsystem {
   // MAKE SURE TO TEST THIS BECAUSE IT MIGHT BE BACKWARDS
   public void moveTogether(double speed) {
     if (verticalTalon.isValidSpeed(speed) && swivelTalon.isValidSpeed(-speed)) {
-      logger.info("moveTogether speed: " + speed + " arm-pos: " + verticalTalon.getPosition());
+      logger.info("moveTogether speed: " + speed);
       verticalTalon.set(speed);
       swivelTalon.set(-speed);
     } 
