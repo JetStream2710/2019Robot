@@ -5,11 +5,11 @@ import frc.robot.Robot;
 import frc.robot.subsystems.Arm;
 import frc.robot.util.Logger;
 
-public class ArmHatchDown extends Command {
+public class ArmSwivelHatch extends Command {
 
-  private Logger logger = new Logger(ArmHatchDown.class.getName());
+  private Logger logger = new Logger(ArmSwivelHatch.class.getName());
 
-  public ArmHatchDown() {
+  public ArmSwivelHatch() {
     logger.detail("constructor");
     requires(Robot.arm);
   }
@@ -22,13 +22,13 @@ public class ArmHatchDown extends Command {
   @Override
   protected void execute() {
     logger.info("execute");
-    Robot.arm.moveVerticalArm(Arm.VERTICAL_MAX_OUTPUT);
+    Robot.arm.moveSwivelArm(Arm.SWIVEL_MAX_OUTPUT);
   }
 
   @Override
   protected boolean isFinished() {
     logger.info("isFinished");
-    if(Robot.arm.getVerticalPosition() >= Arm.VERTICAL_MAX){
+    if(Robot.arm.getVerticalPosition() >= Arm.SWIVEL_MAX){
       return true;
     } else{
       return false;
