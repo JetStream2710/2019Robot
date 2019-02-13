@@ -16,12 +16,11 @@ public class DriveCommand extends Command {
 
   @Override
   protected void initialize() {
-    logger.detail("initialize");
+    logger.info("initialize");
   }
 
   @Override
   protected void execute() {
-    logger.info("execute");
     if (Robot.isAuto) {
       return;
     }
@@ -33,7 +32,7 @@ public class DriveCommand extends Command {
 
   @Override
   protected boolean isFinished() {
-    logger.info("finished");
+    logger.detail("finished");
     return false;
   }
 

@@ -10,6 +10,7 @@ public class CargoOuttake extends Command {
 
   public CargoOuttake() {
     logger.detail("constructor");
+    requires(Robot.cargo);
   }
 
   @Override
@@ -25,7 +26,7 @@ public class CargoOuttake extends Command {
 
   @Override
   protected boolean isFinished() {
-    logger.info("finished");
+    logger.detail("finished");
     return false;
   }
 
@@ -37,7 +38,7 @@ public class CargoOuttake extends Command {
 
   @Override
   protected void interrupted() {
-    logger.warning("interrupted");
+    logger.info("interrupted");
     end();
   }
 }

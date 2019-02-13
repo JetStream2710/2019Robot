@@ -20,12 +20,12 @@ public class ClimbRearExtend extends Command {
 
   @Override
   protected void execute() {
-    logger.info("execute");
+    logger.detail("execute");
   }
 
   @Override
   protected boolean isFinished() {
-    logger.info("isFinished");
+    logger.detail("isFinished");
     return false;
   }
 

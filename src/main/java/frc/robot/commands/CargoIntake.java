@@ -16,18 +16,17 @@ public class CargoIntake extends Command {
   @Override
   protected void initialize() {
     logger.info("initialize");
+    Robot.cargo.cargoIntake();
   }
 
   @Override
   protected void execute() {
     logger.detail("execute");
-    Robot.cargo.cargoIntake();
-
   }
 
   @Override
   protected boolean isFinished() {
-    logger.info("finished");
+    logger.detail("finished");
     return false;
   }
 
@@ -39,7 +38,7 @@ public class CargoIntake extends Command {
 
   @Override
   protected void interrupted() {
-    logger.warning("interrupted");
+    logger.info("interrupted");
     end();
   }
 }

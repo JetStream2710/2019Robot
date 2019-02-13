@@ -27,7 +27,7 @@ public class ClimbFrontExtend extends Command {
 
   @Override
   protected boolean isFinished() {
-    logger.info("finished");
+    logger.detail("finished");
     return false;
   }
 

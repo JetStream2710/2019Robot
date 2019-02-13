@@ -13,14 +13,14 @@ public class Elevator extends Subsystem {
 
   public static final int ELEVATOR_MIN = 0;
   public static final int ELEVATOR_MAX = 100;
+  public static final double ELEVATOR_MIN_OUTPUT = -0.;
   public static final double ELEVATOR_MAX_OUTPUT = 0.3;
 
   private static final int FAST_MOVEMENT_THRESHOLD = 1024 / 2;
   private static final int SLOW_MOVEMENT_THRESHOLD = 1024 / 5;
   private static final int FINE_MOVEMENT_THRESHOLD = 1024 / 50;
   private static final double FINE_INCREMENT = 0.001;
-  private static final double STOP_SPEED = 0.18;
-  private static final double ENCODER_TO_RADIANS = Math.PI / 7000;
+  private static final double STOP_SPEED = 0;
 
   private static final double MAX_VELOCITY = (1024.0 / 4) / 1000; // 1/4 revolution per second, in millis
   // CHECK
@@ -41,8 +41,8 @@ public class Elevator extends Subsystem {
     super();
     logger.detail("constructor");
 
-    talon = new JetstreamTalon("Elevator Talon", RobotMap.ELEVATOR_TALON, true, ELEVATOR_MIN, ELEVATOR_MAX, ELEVATOR_MAX_OUTPUT, false);
-    victor = new JetstreamVictor(RobotMap.ELEVATOR_VICTOR);
+    talon = new JetstreamTalon("Elevator Talon", RobotMap.ELEVATOR_TALON, ELEVATOR_MIN, ELEVATOR_MAX, ELEVATOR_MIN_OUTPUT, ELEVATOR_MAX_OUTPUT, false);
+    victor = new JetstreamVictor("Elevator Victor", RobotMap.ELEVATOR_VICTOR, ELEVATOR_MIN_OUTPUT, ELEVATOR_MAX_OUTPUT);
     group = new SpeedControllerGroup(talon, victor);
   }
 

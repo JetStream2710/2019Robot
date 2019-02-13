@@ -25,6 +25,7 @@ public class ElevatorAndArmMove extends Command {
 
   @Override
   protected void execute() {
+    logger.detail("execute");
     // Joypad Control
     if (System.currentTimeMillis() - lastPovChange > POV_TIME_BUFFER) {
       int pov = Robot.oi.drivestick.getPOV();
@@ -41,7 +42,7 @@ public class ElevatorAndArmMove extends Command {
       }
     }
     // Elevator Joystick
-    // TODO: FIX THIS
+    // TODO: FIX THIS AFTER TESTING -- change back to auxstick
 //    double elevatorSpeed = Robot.oi.auxstick.getRawAxis(RobotMap.ELEVATOR_AXIS);
     double elevatorSpeed = Robot.oi.drivestick.getRawAxis(RobotMap.ELEVATOR_AXIS);
     if (elevatorSpeed < 0.08 && elevatorSpeed > -0.08) {
@@ -56,16 +57,14 @@ public class ElevatorAndArmMove extends Command {
       Robot.elevator.elevatorMove(elevatorSpeed);
     }
     // Arm Joystick
-    // TODO: FIX THIS
+    // TODO: FIX THIS AFTER TESTING -- change this back to auxstick
 //    double armSpeed = Robot.oi.auxstick.getRawAxis(RobotMap.ELEVATOR_AXIS);
     double armSpeed = Robot.oi.drivestick.getRawAxis(RobotMap.ARM_AXIS);
-    // On the joystick, down is positive, up is negative, fix that below
     if (armSpeed < 0.08 && armSpeed > -0.08) {
       if (Robot.isMovingArm) {
         logger.info("execute stop arm");
         Robot.arm.stopMovingVerticalArm();
         Robot.arm.stopMovingSwivelArm();
-        // Shouldn't need to reset the speed since position is going to overwrite this.
       }
       Robot.isMovingArm = false;
     } else {
@@ -73,7 +72,7 @@ public class ElevatorAndArmMove extends Command {
       logger.info("execute armSpeed: " + armSpeed);
 //      Robot.arm.moveTogether(armSpeed);
 //      Robot.arm.moveSwivelArm(armSpeed);
-Robot.arm.moveVerticalArm(armSpeed);
+      Robot.arm.moveVerticalArm(armSpeed);
     }
   }
 
@@ -90,7 +89,6 @@ Robot.arm.moveVerticalArm(armSpeed);
     Robot.isMovingArm = false;
   }
 
-  // HERE WOULD IT BE POSSIBLE TO ALWAYS LET THIS GO -- THIS IS MEANT TO BE OVERRIDE FUNCTION
   @Override
   protected void interrupted() {
     logger.warning("interrupted");

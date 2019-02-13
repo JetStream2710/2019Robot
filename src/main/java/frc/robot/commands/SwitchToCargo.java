@@ -16,7 +16,7 @@ public class SwitchToCargo extends Command {
   @Override
   protected void initialize() {
     logger.info("initialize");
-    //    Robot.arm.switchToCargo();
+    Robot.switchToCargoMode();
   }
 
   @Override
@@ -26,7 +26,7 @@ public class SwitchToCargo extends Command {
 
   @Override
   protected boolean isFinished() {
-    logger.info("finished");
+    logger.detail("finished");
     return true;
   }
 

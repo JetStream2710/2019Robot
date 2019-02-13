@@ -16,7 +16,7 @@ public class SwitchToHatch extends Command {
   @Override
   protected void initialize() {
     logger.info("initialize");
-    //    Robot.arm.switchToHatch();
+    Robot.switchToHatchMode();
   }
 
   @Override
@@ -26,7 +26,7 @@ public class SwitchToHatch extends Command {
 
   @Override
   protected boolean isFinished() {
-    logger.info("finished");
+    logger.detail("finished");
     return true;
   }
 

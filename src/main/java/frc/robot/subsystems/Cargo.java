@@ -17,7 +17,7 @@ public class Cargo extends Subsystem {
     super();
     logger.detail("constructor");
 
-    victor = new JetstreamVictor(RobotMap.CARGO_VICTOR);
+    victor = new JetstreamVictor("Cargo Victor", RobotMap.CARGO_VICTOR, SPEED_IN, SPEED_OUT);
   }
 
   // CHECK THESE VALUES

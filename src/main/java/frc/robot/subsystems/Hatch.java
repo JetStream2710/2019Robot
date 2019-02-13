@@ -18,7 +18,7 @@ public class Hatch extends Subsystem {
     solenoidOff = new Solenoid(RobotMap.PCM_NODE, RobotMap.HATCH_SOLENOID_OFF);
   }
 
-  public void hatchPush() {
+  public void hatchOut() {
     logger.info("hatchPush called");
     solenoidOn.set(true);
     solenoidOff.set(false);
@@ -31,5 +31,6 @@ public class Hatch extends Subsystem {
   }
 
   @Override
-  public void initDefaultCommand() {}
+  public void initDefaultCommand() {
+  }
 }

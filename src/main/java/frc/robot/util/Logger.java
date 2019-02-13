@@ -24,6 +24,12 @@ public class Logger {
     LOG_LEVELS.put(Elevator.class.getName(), Level.INFO);
     LOG_LEVELS.put(Hatch.class.getName(), Level.INFO);
 
+    // Autonomous Commands
+    LOG_LEVELS.put(AutoCargo3.class.getName(), Level.WARNING);
+    LOG_LEVELS.put(AutoCargo4.class.getName(), Level.WARNING);
+    LOG_LEVELS.put(AutoCargo5.class.getName(), Level.WARNING);
+    LOG_LEVELS.put(AutoRightRocket.class.getName(), Level.WARNING);
+    
     // Commands
     LOG_LEVELS.put(CargoIntake.class.getName(), Level.WARNING);
     LOG_LEVELS.put(CargoOuttake.class.getName(), Level.WARNING);
@@ -34,12 +40,15 @@ public class Logger {
     LOG_LEVELS.put(ClimbRearMove.class.getName(), Level.WARNING);
     LOG_LEVELS.put(ClimbRearRetract.class.getName(), Level.WARNING);
     LOG_LEVELS.put(DriveCommand.class.getName(), Level.WARNING);
+    LOG_LEVELS.put(DriveDistance.class.getName(), Level.WARNING);
     LOG_LEVELS.put(ElevatorAndArmMove.class.getName(), Level.INFO);
     LOG_LEVELS.put(HatchPush.class.getName(), Level.INFO);
     LOG_LEVELS.put(SwitchToCargo.class.getName(), Level.WARNING);
     LOG_LEVELS.put(SwitchToHatch.class.getName(), Level.WARNING);
+    LOG_LEVELS.put(TurnDegrees.class.getName(), Level.WARNING);
     LOG_LEVELS.put(VisionFollow.class.getName(), Level.WARNING);
 
+    // Utilities
     LOG_LEVELS.put(JetstreamTalon.class.getName(), Level.WARNING);
     LOG_LEVELS.put(JetstreamVictor.class.getName(), Level.WARNING);
   }

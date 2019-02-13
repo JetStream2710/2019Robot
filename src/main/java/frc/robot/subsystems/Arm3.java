@@ -13,7 +13,9 @@ public class Arm3 extends Subsystem {
   public static final int SWIVEL_MAX = 3500;
   public static final int SWIVEL_MIN = -3500;
 
+  public static final double VERTICAL_MIN_OUTPUT = -0.1;
   public static final double VERTICAL_MAX_OUTPUT = 0.3;
+  public static final double SWIVEL_MIN_OUTPUT = -0.2;
   public static final double SWIVEL_MAX_OUTPUT = 0.2;
   public static final double OUTPUT_INCREMENT = 0.01;
   public static final int DECELERATION_DISTANCE = 1024 / 2; // half a revolution
@@ -42,8 +44,8 @@ public class Arm3 extends Subsystem {
     super();
     logger.detail("constructor");
 
-    verticalTalon = new JetstreamTalon("Arm Vertical Talon", RobotMap.ARM_VERTICAL_TALON, true, VERTICAL_MIN, VERTICAL_MAX, VERTICAL_MAX_OUTPUT, true);
-    swivelTalon = new JetstreamTalon("Arm Swivel Talon", RobotMap.ARM_SWIVEL_TALON, true, SWIVEL_MIN, SWIVEL_MAX, SWIVEL_MAX_OUTPUT, false);
+    verticalTalon = new JetstreamTalon("Arm Vertical Talon", RobotMap.ARM_VERTICAL_TALON, VERTICAL_MIN, VERTICAL_MAX, VERTICAL_MIN_OUTPUT, VERTICAL_MAX_OUTPUT, true);
+    swivelTalon = new JetstreamTalon("Arm Swivel Talon", RobotMap.ARM_SWIVEL_TALON, SWIVEL_MIN, SWIVEL_MAX, SWIVEL_MIN_OUTPUT, SWIVEL_MAX_OUTPUT, false);
   }
 
   public void moveVerticalArm(double speed) {

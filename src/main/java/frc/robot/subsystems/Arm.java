@@ -11,10 +11,12 @@ public class Arm extends Subsystem {
 
   public static final int VERTICAL_MAX = 0;
   public static final int VERTICAL_MIN = -3000;
+  public static final double VERTICAL_MIN_OUTPUT = -0.1;
   public static final double VERTICAL_MAX_OUTPUT = 0.3;
 
   public static final int SWIVEL_MAX = 3500;
   public static final int SWIVEL_MIN = -3500;
+  public static final double SWIVEL_MIN_OUTPUT = -0.2;
   public static final double SWIVEL_MAX_OUTPUT = 0.2;
 
   private static final int FAST_MOVEMENT_THRESHOLD = 1024 / 2;
@@ -46,8 +48,8 @@ public class Arm extends Subsystem {
     super();
     logger.detail("constructor");
 
-    verticalTalon = new JetstreamTalon("Arm Talon", RobotMap.ARM_VERTICAL_TALON, true, VERTICAL_MIN, VERTICAL_MAX, VERTICAL_MAX_OUTPUT, true);
-    swivelTalon = new JetstreamTalon("Swivel Talon", RobotMap.ARM_SWIVEL_TALON, true, SWIVEL_MIN, SWIVEL_MAX, SWIVEL_MAX_OUTPUT, true);
+    verticalTalon = new JetstreamTalon("Arm Talon", RobotMap.ARM_VERTICAL_TALON, VERTICAL_MIN, VERTICAL_MAX, VERTICAL_MIN_OUTPUT, VERTICAL_MAX_OUTPUT, true);
+    swivelTalon = new JetstreamTalon("Swivel Talon", RobotMap.ARM_SWIVEL_TALON, SWIVEL_MIN, SWIVEL_MAX, SWIVEL_MIN_OUTPUT, SWIVEL_MAX_OUTPUT, true);
 
     lastTimestamp = System.currentTimeMillis();
     lastVerticalPosition = verticalTalon.getPosition();
@@ -204,5 +206,6 @@ public class Arm extends Subsystem {
 
   @Override
   public void initDefaultCommand() {
+    // Do nothing, the Elevator subsystem already initializes the ElevatorAndArmMove class.
   }
 }

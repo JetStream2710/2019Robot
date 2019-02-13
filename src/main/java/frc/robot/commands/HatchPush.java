@@ -6,6 +6,8 @@ import frc.robot.util.Logger;
 
 public class HatchPush extends Command {
 
+  public static final long HATCH_DELAY_TIME_MILLIS = 2000;
+
   private Logger logger = new Logger(HatchPush.class.getName());
   private long time;
 
@@ -14,32 +16,22 @@ public class HatchPush extends Command {
     requires(Robot.hatch);
   }
 
-  //just making it push in and out right after one another (calling commands wise), won't really do the job right?
-  //for now the program waits one second before pushing the pneumatics back in but that can be checked
   @Override
   protected void initialize() {
-    logger.info("initialize");
-    time = System.currentTimeMillis();
-    logger.detail("time: " + time);
-    Robot.hatch.hatchPush();
-    }
+    time = System.currentTimeMillis() + HATCH_DELAY_TIME_MILLIS;
+    logger.info("initialize delay: " + HATCH_DELAY_TIME_MILLIS);
+    Robot.hatch.hatchOut();
+  }
 
-  // SHOULD LOGGER RECORD timePassed
-  // NEEDS TO BE CHECKED -- just want to retract motor all the way
   @Override
   protected void execute() {
-    logger.info("execute");
+    logger.detail("execute");
   }
 
   @Override
   protected boolean isFinished() {
-    logger.info("finished");
-    long timePassed = System.currentTimeMillis() - time;
-    if(timePassed > 2000){
-      return true;
-    } else{
-      return false;
-    }
+    logger.detail("finished");
+    return System.currentTimeMillis() > time;
   }
 
   @Override
