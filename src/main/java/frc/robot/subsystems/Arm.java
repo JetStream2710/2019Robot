@@ -5,21 +5,26 @@ import frc.robot.Robot;
 import frc.robot.RobotMap;
 import frc.robot.util.JetstreamTalon;
 import frc.robot.util.Logger;
+import frc.robot.util.Logger.Level;
 
 public class Arm extends Subsystem {
 
-  public static final int VERTICAL_MAX = 3000;
-  public static final int VERTICAL_MIN = 0;
+  public static final int VERTICAL_MAX = 0;
+  public static final int VERTICAL_MIN = -3000;
+  public static final double VERTICAL_MAX_OUTPUT = 0.3;
+
   public static final int SWIVEL_MAX = 3500;
   public static final int SWIVEL_MIN = -3500;
-
-  public static final double VERTICAL_MAX_OUTPUT = 0.3;
   public static final double SWIVEL_MAX_OUTPUT = 0.2;
-  public static final double OUTPUT_INCREMENT = 0.01;
-  public static final int DECELERATION_DISTANCE = 1024 / 2; // half a revolution
-  private static final double MAX_VELOCITY = 1024.0 / 1000; // one encoder revolution per second
-  private static final int DISTANCE_BUFFER = 4;
-  private static final double VELOCITY_BUFFER = 4.0 / 20;   // encoder positions per 20 millis
+
+  private static final int FAST_MOVEMENT_THRESHOLD = 1024 / 2;
+  private static final int SLOW_MOVEMENT_THRESHOLD = 1024 / 5;
+  private static final int FINE_MOVEMENT_THRESHOLD = 1024 / 50;
+  private static final double FINE_INCREMENT = 0.001;
+  private static final double STOP_SPEED = 0.18;
+  private static final double ENCODER_TO_RADIANS = Math.PI / 7000;
+
+  private static final double MAX_VELOCITY = (1024.0 / 4) / 1000; // 1/4 revolution per second, in millis
 
   // CHECK
   public static final int[] VERTICAL_HATCH_POSITIONS = new int[] {0, 0, 0, 0};
@@ -36,39 +41,33 @@ public class Arm extends Subsystem {
   private Integer targetSwivelPosition;
   private long lastTimestamp;
   private int lastVerticalPosition;
-  private int lastSwivelPosition;
 
   public Arm() {
     super();
     logger.detail("constructor");
 
-    verticalTalon = new JetstreamTalon(RobotMap.ARM_VERTICAL_TALON, null, VERTICAL_MIN, VERTICAL_MAX, VERTICAL_MAX_OUTPUT, true);
-    swivelTalon = new JetstreamTalon(RobotMap.ARM_SWIVEL_TALON, null, SWIVEL_MIN, SWIVEL_MAX, SWIVEL_MAX_OUTPUT, true);
+    verticalTalon = new JetstreamTalon("Arm Talon", RobotMap.ARM_VERTICAL_TALON, true, VERTICAL_MIN, VERTICAL_MAX, VERTICAL_MAX_OUTPUT, true);
+    swivelTalon = new JetstreamTalon("Swivel Talon", RobotMap.ARM_SWIVEL_TALON, true, SWIVEL_MIN, SWIVEL_MAX, SWIVEL_MAX_OUTPUT, true);
 
-    targetVerticalPosition = 1000;
+    lastTimestamp = System.currentTimeMillis();
+    lastVerticalPosition = verticalTalon.getPosition();
   }
 
   public void moveVerticalArm(double speed) {
-    if (Math.abs(speed) < 0.08) {
-      return;
-    }
     targetVerticalPosition = null;
     logger.info("moveVerticalArm speed: " + speed + " arm-pos: " + verticalTalon.getPosition());
     verticalTalon.set(speed);
   }
 
   public void stopMovingVerticalArm(){
+    logger.info("stopMovingVerticalArm");
     verticalTalon.set(0);
-//    logger.info("stopMovingVerticalArm");
+    // Try to stay at the current position
 //    targetVerticalPosition = verticalTalon.getPosition();
   }
 
   public void moveSwivelArm(double speed) {
-    if (Math.abs(speed) < 0.08) {
-      return;
-    }
-    targetSwivelPosition = null;
-    logger.info("moveSwivelArm speed: " + speed + " swivel-pos" + swivelTalon.getPosition());
+    logger.info("moveSwivelArm speed: " + speed + " swivel-pos: " + swivelTalon.getPosition());
     swivelTalon.set(speed);
   }
 
@@ -110,86 +109,97 @@ public class Arm extends Subsystem {
     return currentLevel;
   }
 
-  public void resetEncoders() {
-    logger.info("resetEncoder");
-   }
-
-  // reminder to check first that
-  // - higher position = higher encoder value
-  // - positive speed on motor = move upward
-  /**
-   * This function is called during periodic loops to
-   * (1) move the elevator to a target height and
-   * (2) keep the elevator stable at a target height
-   */
   public void periodic(long timestamp) {
+    verticalTalon.sendTelemetry();
+    swivelTalon.sendTelemetry();
     if (Robot.isMovingArm) {
       return;
     }
-
-    if(targetVerticalPosition != null) {
-      periodic(timestamp, verticalTalon, targetVerticalPosition, lastVerticalPosition);
+    if (targetVerticalPosition != null) {
+      periodicVertical(timestamp);
     }
-//  if(targetSwivelPoisition != null)  periodic(timestamp, swivelTalon, targetSwivelPosition, lastSwivelPosition);
+    Logger.Level temp = Logger.LOG_LEVELS.get(this.getClass().getName());
+    Logger.LOG_LEVELS.put(this.getClass().getName(), Level.WARNING);
+    if (targetSwivelPosition != null) {
+      periodicSwivel(timestamp);
+    }
+    Logger.LOG_LEVELS.put(this.getClass().getName(), temp);
   }
 
-  public void periodic(long timestamp, JetstreamTalon talon, int targetPosition, int lastPosition) {
-    int currentPosition = talon.getPosition();
-    if (currentPosition > targetPosition + DISTANCE_BUFFER ||
-        currentPosition < targetPosition - DISTANCE_BUFFER) {
-      // negative position means we are below the target, positive position means we are above the target
-      int position = currentPosition - targetPosition;
-      // if we are far away, move as fast as we can to the target
-      if (Math.abs(position) > DECELERATION_DISTANCE) {
-        double speed = position > 0 ? -VERTICAL_MAX_OUTPUT : VERTICAL_MAX_OUTPUT;
-        logger.info(String.format("periodic fast move to: %d from: %d relative-position: %d  speed: %f", targetPosition, currentPosition, position, speed));
-        talon.set(speed);
-      } else if (Math.abs(position) < 20) {
-        double speed = position / -102.4;
-        logger.info(String.format("periodic still to: %d from: %d relative-position: %d  speed: %f", targetPosition, currentPosition, position, speed));
-        talon.set(speed);
-    } else if (Math.abs(position) < 200) {
-          double speed = talon.get();
-          if (position > 0) {
-            speed = speed - 0.0008;
-          } else{
-            speed = speed + 0.0008;
-          } 
-          logger.info(String.format("fine tune to: %d from: %d relative-position: %d  speed: %f", targetPosition, currentPosition, position, speed));
-          talon.set(speed);
-      } else {
-        // proportional speed calculation
-        if (position + DISTANCE_BUFFER < 0) {
-          double speed = .9 * position / -1024.0;
-          logger.info(String.format("periodic slow up to: %d from: %d relative-position: %d  speed: %f", targetPosition, currentPosition, position, speed));
-          talon.set(speed);
-        } else if (position - DISTANCE_BUFFER > 0) {
-          double speed = 0.2 * position / 1024.0;
-          logger.info(String.format("periodic slow down to: %d from: %d relative-position: %d  speed: %f", targetPosition, currentPosition, position, speed));
-          talon.set(speed);
-        }
-        /*
-        double velocity = (double)(position - lastPosition) / (timestamp - lastTimestamp);
-        double targetVelocity = MAX_VELOCITY * (position / DECELERATION_DISTANCE);
-        if (velocity + VELOCITY_BUFFER < targetVelocity) {
-          logger.info(String.format("periodic slow increment from: %d to: %d relative-position: %d velocity: %f target-velocity: %f speed: %f", currentPosition, targetPosition, position, velocity, targetVelocity, talon.get() + OUTPUT_INCREMENT));
-          talon.set(talon.get() + OUTPUT_INCREMENT);
-        } else if (velocity - VELOCITY_BUFFER > targetVelocity) {
-          logger.info(String.format("periodic slow decrement from: %d to: %d relative-position: %d velocity: %f target-velocity: %f speed: %f", currentPosition, targetPosition, position, velocity, targetVelocity, talon.get() - OUTPUT_INCREMENT));
-          talon.set(talon.get() - OUTPUT_INCREMENT);
-        } else {
-          logger.info(String.format("periodic slow no-move from: %d to: %d relative-position: %d velocity: %f target-velocity: %f speed: %f", currentPosition, targetPosition, position, velocity, targetVelocity, talon.get()));
-          talon.set(talon.get());
-        }
-        */
-      }
+  private void periodicVertical(long timestamp) {
+    int verticalPosition = verticalTalon.getPosition();
+    int relativePosition = verticalPosition - targetVerticalPosition;
+    int relativeDistance = Math.abs(relativePosition);
+    if (relativeDistance < FINE_MOVEMENT_THRESHOLD) {
+      autoMoveStop(verticalTalon);
+    } else if (relativeDistance < SLOW_MOVEMENT_THRESHOLD) {
+      autoMoveFine(verticalPosition, targetVerticalPosition, relativePosition, verticalTalon, VERTICAL_MAX_OUTPUT);
+    } else if (relativeDistance < FAST_MOVEMENT_THRESHOLD) {
+      autoMoveSlow(verticalPosition, targetVerticalPosition, relativePosition, verticalTalon, VERTICAL_MAX_OUTPUT);
+//      autoMoveVelocity(timestamp);
+    } else {
+      autoMoveFast(verticalPosition, targetVerticalPosition, relativePosition, verticalTalon, VERTICAL_MAX_OUTPUT);
     }
+    lastVerticalPosition = verticalPosition;
     lastTimestamp = timestamp;
-    lastPosition = currentPosition;
   }
 
-  public int getVerticalPosition(){
-    return verticalTalon.getPosition();
+  private void periodicSwivel(long timestamp) {
+    int swivelPosition = swivelTalon.getPosition();
+    int relativePosition = swivelPosition - targetSwivelPosition;
+    int relativeDistance = Math.abs(relativePosition);
+    if (relativeDistance < FINE_MOVEMENT_THRESHOLD) {
+      logger.detail("swivelMoveStop");
+      swivelTalon.set(0);
+    } else if (relativeDistance < FAST_MOVEMENT_THRESHOLD) {
+      autoMoveSlow(swivelPosition, targetSwivelPosition, relativePosition, swivelTalon, SWIVEL_MAX_OUTPUT);
+    } else {
+      autoMoveFast(swivelPosition, targetSwivelPosition, relativePosition, swivelTalon, SWIVEL_MAX_OUTPUT);
+    }
+  }
+
+  private void autoMoveFast(int currentPosition, int targetPosition, int relativePosition, JetstreamTalon talon, double maxOutput) {
+    double speed = relativePosition > 0 ? maxOutput : -maxOutput;
+    logger.detail(String.format("autoMoveFast speed: %.4f current-position: %d target-position: %d relative-position: %d",
+        speed, currentPosition, targetPosition, relativePosition));
+    talon.set(speed);
+  }
+
+  private void autoMoveSlow(int currentPosition, int targetPosition, int relativePosition, JetstreamTalon talon, double maxOutput) {
+    double ratio = relativePosition / (relativePosition > 0 ? FAST_MOVEMENT_THRESHOLD : -FAST_MOVEMENT_THRESHOLD);
+    double speed = VERTICAL_MAX_OUTPUT * ratio;
+    logger.detail(String.format("autoMoveSlow speed: %.4f ratio: %.4f current-position: %d target-position: %d relative-position: %d",
+        speed, ratio, currentPosition, targetPosition, relativePosition));
+    talon.set(speed);
+  }
+
+  private void autoMoveFine(int currentPosition, int targetPosition, int relativePosition, JetstreamTalon talon, double maxOutput) {
+    double increment = relativePosition > 0 ? FINE_INCREMENT : -FINE_INCREMENT;
+    double speed = verticalTalon.get() + increment;
+    logger.detail(String.format("autoMoveFine speed: %.4f increment: %.4f current-position: %d target-position: %d relative-position: %d",
+        speed, increment, currentPosition, targetPosition, relativePosition));
+    talon.set(speed);
+  }
+
+  private void autoMoveStop(JetstreamTalon talon) {
+    double angleInRadians = ENCODER_TO_RADIANS * talon.getPosition();
+    double speed = STOP_SPEED * Math.cos(angleInRadians);
+    logger.detail(String.format("autoMoveStop speed: %.4f angle %.4f", speed, Math.toDegrees(angleInRadians)));
+    talon.set(speed);
+  }
+
+  private void autoMoveVelocity(long timestamp) {
+    long timeDelta = timestamp - lastTimestamp;
+    int position = verticalTalon.getPosition();
+    int relativePosition = position - targetVerticalPosition;
+    double velocity = (double)(position - lastVerticalPosition) / timeDelta;
+    double ratio = relativePosition / (relativePosition > 0 ? FAST_MOVEMENT_THRESHOLD : -FAST_MOVEMENT_THRESHOLD);
+    double velocityRatio = Math.sqrt(ratio);
+    double targetVelocity = MAX_VELOCITY * velocityRatio;
+    double speed = targetVelocity * timeDelta;
+    logger.detail(String.format("autoMoveVelocity speed: %.4f target-velocity: %.4f velocity-ratio: %.4f ratio: %.4f current-velocity: %.4f relative-position: %d currentPosition: %d time-delta: %d",
+      speed, targetVelocity, velocityRatio, ratio, velocity, relativePosition, position, timeDelta));
+    verticalTalon.set(speed);
   }
 
   @Override

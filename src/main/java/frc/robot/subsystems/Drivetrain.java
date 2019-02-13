@@ -1,6 +1,5 @@
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -23,19 +22,15 @@ public class Drivetrain extends Subsystem {
   private SpeedControllerGroup leftGroup;
   private SpeedControllerGroup rightGroup;
 
-  private Encoder leftEncoder;
-  private Encoder rightEncoder;
-
   private DifferentialDrive differentialDrive = null;
 
   public Drivetrain() {
     super();
     logger.detail("constructor");
 
-    leftEncoder = new Encoder(RobotMap.DRIVETRAIN_LEFT_ENCODER_A, RobotMap.DRIVETRAIN_LEFT_ENCODER_B);
-    leftTalon = new JetstreamTalon(RobotMap.DRIVETRAIN_LEFT_TALON, leftEncoder, Integer.MIN_VALUE, Integer.MAX_VALUE);
+    leftTalon = new JetstreamTalon("Drivetrain Left Talon", RobotMap.DRIVETRAIN_LEFT_TALON, true, Integer.MIN_VALUE, Integer.MAX_VALUE, 1, false);
     leftVictor = new JetstreamVictor(RobotMap.DRIVETRAIN_LEFT_VICTOR);
-    rightTalon = new JetstreamTalon(RobotMap.DRIVETRAIN_RIGHT_TALON, rightEncoder, Integer.MIN_VALUE, Integer.MAX_VALUE);
+    rightTalon = new JetstreamTalon("Drivetrain Right Talon", RobotMap.DRIVETRAIN_RIGHT_TALON, true, Integer.MIN_VALUE, Integer.MAX_VALUE, 1, false);
     rightVictor = new JetstreamVictor(RobotMap.DRIVETRAIN_RIGHT_VICTOR);
     leftGroup = new SpeedControllerGroup(leftTalon, leftVictor);
     rightGroup = new SpeedControllerGroup(rightTalon, rightVictor);

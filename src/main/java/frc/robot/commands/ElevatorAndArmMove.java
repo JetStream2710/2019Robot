@@ -8,6 +8,7 @@ import frc.robot.util.Logger;
 public class ElevatorAndArmMove extends Command {
 
   private static long lastPovChange = 0;
+  private static final long POV_TIME_BUFFER = 1000;
 
   private Logger logger = new Logger(ElevatorAndArmMove.class.getName());
 
@@ -25,14 +26,16 @@ public class ElevatorAndArmMove extends Command {
   @Override
   protected void execute() {
     // Joypad Control
-    if (System.currentTimeMillis() - lastPovChange > 1000) {
-      int pov = Robot.oi.auxstick.getPOV();
+    if (System.currentTimeMillis() - lastPovChange > POV_TIME_BUFFER) {
+      int pov = Robot.oi.drivestick.getPOV();
       if (pov == 0) {
         Robot.elevator.setLevel(Robot.elevator.getLevel() + 1);
+        Robot.arm.setLevel(Robot.arm.getLevel() + 1);
         logger.info("execute pov: 0");
         lastPovChange = System.currentTimeMillis();
       } else if (pov == 180) {
         Robot.elevator.setLevel(Robot.elevator.getLevel() - 1);
+        Robot.arm.setLevel(Robot.arm.getLevel() - 1);
         logger.info("execute pov: 180");
         lastPovChange = System.currentTimeMillis();
       }
@@ -42,8 +45,11 @@ public class ElevatorAndArmMove extends Command {
 //    double elevatorSpeed = Robot.oi.auxstick.getRawAxis(RobotMap.ELEVATOR_AXIS);
     double elevatorSpeed = Robot.oi.drivestick.getRawAxis(RobotMap.ELEVATOR_AXIS);
     if (elevatorSpeed < 0.08 && elevatorSpeed > -0.08) {
+      if (Robot.isMovingElevator){
+        logger.info("execute stop elevator");
+        Robot.elevator.elevatorMove(0);
+      }
       Robot.isMovingElevator = false;
-      Robot.elevator.elevatorMove(0);
     } else {
       Robot.isMovingElevator = true;
       logger.info("execute elevatorSpeed: " + elevatorSpeed);
@@ -53,6 +59,7 @@ public class ElevatorAndArmMove extends Command {
     // TODO: FIX THIS
 //    double armSpeed = Robot.oi.auxstick.getRawAxis(RobotMap.ELEVATOR_AXIS);
     double armSpeed = Robot.oi.drivestick.getRawAxis(RobotMap.ARM_AXIS);
+    // On the joystick, down is positive, up is negative, fix that below
     if (armSpeed < 0.08 && armSpeed > -0.08) {
       if (Robot.isMovingArm) {
         logger.info("execute stop arm");
@@ -65,7 +72,8 @@ public class ElevatorAndArmMove extends Command {
       Robot.isMovingArm = true;
       logger.info("execute armSpeed: " + armSpeed);
 //      Robot.arm.moveTogether(armSpeed);
-      Robot.arm.moveSwivelArm(armSpeed);
+//      Robot.arm.moveSwivelArm(armSpeed);
+Robot.arm.moveVerticalArm(armSpeed);
     }
   }
 

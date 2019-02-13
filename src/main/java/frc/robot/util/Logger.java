@@ -17,17 +17,14 @@ public class Logger {
     LOG_LEVELS.put(OI.class.getName(), Level.INFO);
 
     // Subsystems
-    LOG_LEVELS.put(Arm.class.getName(), Level.WARNING);
+    LOG_LEVELS.put(Arm.class.getName(), Level.INFO);
     LOG_LEVELS.put(Cargo.class.getName(), Level.INFO);
     LOG_LEVELS.put(Climb.class.getName(), Level.INFO);
-    LOG_LEVELS.put(Drivetrain.class.getName(), Level.INFO);
+    LOG_LEVELS.put(Drivetrain.class.getName(), Level.WARNING);
     LOG_LEVELS.put(Elevator.class.getName(), Level.INFO);
     LOG_LEVELS.put(Hatch.class.getName(), Level.INFO);
 
     // Commands
-    LOG_LEVELS.put(ArmCargoDown.class.getName(), Level.WARNING);
-    LOG_LEVELS.put(ArmUp.class.getName(), Level.WARNING);
-    LOG_LEVELS.put(ArmHatchDown.class.getName(), Level.WARNING);
     LOG_LEVELS.put(CargoIntake.class.getName(), Level.WARNING);
     LOG_LEVELS.put(CargoOuttake.class.getName(), Level.WARNING);
     LOG_LEVELS.put(ClimbFrontExtend.class.getName(), Level.WARNING);
@@ -42,6 +39,9 @@ public class Logger {
     LOG_LEVELS.put(SwitchToCargo.class.getName(), Level.WARNING);
     LOG_LEVELS.put(SwitchToHatch.class.getName(), Level.WARNING);
     LOG_LEVELS.put(VisionFollow.class.getName(), Level.WARNING);
+
+    LOG_LEVELS.put(JetstreamTalon.class.getName(), Level.WARNING);
+    LOG_LEVELS.put(JetstreamVictor.class.getName(), Level.WARNING);
   }
 
   public enum Level {

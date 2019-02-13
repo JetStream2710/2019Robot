@@ -20,26 +20,19 @@ public class JetstreamTalon implements SpeedController {
   private int maxPosition;
   private double maxSpeed;
   private double minSpeed;
-  private boolean inverted;
+  private boolean invertPosition;
   private Faults faults;
 
-  public JetstreamTalon(int id, Object hasEncoder, int minPosition, int maxPosition) {
-    this(Integer.toString(id), id, hasEncoder != null, minPosition, maxPosition, 1, false);
-  }
-
-  public JetstreamTalon(int id, Object hasEncoder, int minPosition, int maxPosition, double maxSpeed, boolean inverted) {
-    this(Integer.toString(id), id, hasEncoder != null, minPosition, maxPosition, maxSpeed, inverted);
-  }
-
-  public JetstreamTalon(String name, int id, boolean hasEncoder, int minPosition, int maxPosition, double maxSpeed, boolean inverted) {
-    logger.detail(String.format("constructor: %s [%d]", name, id));
+  public JetstreamTalon(String name, int id, boolean hasEncoder, int minPosition, int maxPosition, double maxSpeed, boolean invertPosition) {
+    logger.info(String.format("constructor: %s [%d]", name, id));
     talon = new WPI_TalonSRX(id);
+    this.name = name;
     this.hasEncoder = hasEncoder;
     this.minPosition = minPosition;
     this.maxPosition = maxPosition;
     this.maxSpeed = maxSpeed;
     this.minSpeed = -maxSpeed;
-    this.inverted = inverted;
+    this.invertPosition = invertPosition;
     talon.setSafetyEnabled(false);
     talon.setNeutralMode(NeutralMode.Brake);
     talon.configVoltageCompSaturation(MAX_VOLTAGE);
@@ -51,46 +44,40 @@ public class JetstreamTalon implements SpeedController {
   }
 
   public int getPosition() {
-    return talon.getSelectedSensorPosition();
+    return invertPosition ? -talon.getSelectedSensorPosition() : talon.getSelectedSensorPosition();
   }
 
   public double getVelocity() {
-    return talon.getSelectedSensorVelocity();
+    return invertPosition ? -talon.getSelectedSensorVelocity() : talon.getSelectedSensorVelocity();
   }
 
   public boolean isValidSpeed(double speed) {
     double position = getPosition();
-    if (inverted) {
-      if (speed > 0) {
-        return position > minPosition;
-      }
-      if (speed < 0) {
-        return position < maxPosition;
-      }
-    } else {
-      if (speed > 0) {
-        return position < maxPosition;
-      }
-      if (speed < 0) {
-        return position > minPosition;
-      }
+    if (speed > 0) {
+      return position < maxPosition;
+    }
+    if (speed < 0) {
+      return position > minPosition;
     }
     return true;
   }
 
   public void sendTelemetry() {
+    if (name == null) {
+      return;
+    }
     SmartDashboard.putNumber(String.format("%s [%d] output:", name, talon.getDeviceID()), talon.getMotorOutputPercent());
     SmartDashboard.putNumber(String.format("%s [%d] bus voltage:", name, talon.getDeviceID()), talon.getBusVoltage());
     SmartDashboard.putNumber(String.format("%s [%d] motor voltage:", name, talon.getDeviceID()), talon.getMotorOutputVoltage());
     SmartDashboard.putNumber(String.format("%s [%d] temperature:", name, talon.getDeviceID()), talon.getTemperature());
     SmartDashboard.putNumber(String.format("%s [%d] firmware version:", name, talon.getDeviceID()), talon.getFirmwareVersion());
-    talon.getFaults(faults);
-    SmartDashboard.putBoolean(String.format("%s [%d] hardware failure:", name, talon.getDeviceID()), faults.HardwareFailure);
-    SmartDashboard.putBoolean(String.format("%s [%d] under voltage:", name, talon.getDeviceID()), faults.UnderVoltage);
+//    talon.getFaults(faults);
+//    SmartDashboard.putBoolean(String.format("%s [%d] hardware failure:", name, talon.getDeviceID()), faults.HardwareFailure);
+//    SmartDashboard.putBoolean(String.format("%s [%d] under voltage:", name, talon.getDeviceID()), faults.UnderVoltage);
     if (hasEncoder) {
       SmartDashboard.putNumber(String.format("%s [%d] position:", name, talon.getDeviceID()), getPosition());
       SmartDashboard.putNumber(String.format("%s [%d] velocity:", name, talon.getDeviceID()), getVelocity());
-      SmartDashboard.putBoolean(String.format("%s [%d] sensor out of phase:", name, talon.getDeviceID()), faults.SensorOutOfPhase);
+//      SmartDashboard.putBoolean(String.format("%s [%d] sensor out of phase:", name, talon.getDeviceID()), faults.SensorOutOfPhase);
     }
   }
 
@@ -98,9 +85,6 @@ public class JetstreamTalon implements SpeedController {
 
   @Override
   public void set(double speed) {
-    if (inverted) {
-      speed *= -1;
-    }
     if (!isValidSpeed(speed)) {
       logger.warning(String.format("[%d] INVALID set speed: %f", talon.getDeviceID(), speed));
       talon.set(0);
@@ -118,7 +102,7 @@ public class JetstreamTalon implements SpeedController {
 
   @Override
   public double get() {
-    return inverted ? -talon.get() : talon.get();
+    return talon.get();
   }
 
   @Override

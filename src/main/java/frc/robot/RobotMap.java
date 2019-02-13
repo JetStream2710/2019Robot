@@ -11,10 +11,10 @@ public class RobotMap {
 
   // figure out feeder station stuff -- waiting on the stuff FEEDER STATION
   public static final int JOYSTICK_AUX = 1;
-  public static final int SWITCH_TO_HATCH = 0;
-  public static final int SWITCH_TO_CARGO = 0;
+  public static final int SWITCH_TO_HATCH = 1;
+  public static final int SWITCH_TO_CARGO = 2;
   public static final int ELEVATOR_AXIS = 1;
-  public static final int ARM_AXIS = 2;
+  public static final int ARM_AXIS = 3;
   public static final int ELEVATOR_CARGO_ONE = 0;
   public static final int ELEVATOR_CARGO_TWO = 0;
   public static final int ELEVATOR_CARGO_THREE = 0;
