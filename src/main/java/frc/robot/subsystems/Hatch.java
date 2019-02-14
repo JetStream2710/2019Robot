@@ -19,7 +19,7 @@ public class Hatch extends Subsystem {
   }
 
   public void hatchOut() {
-    logger.info("hatchPush called");
+    logger.info("hatchOut called");
     solenoidOn.set(true);
     solenoidOff.set(false);
   }

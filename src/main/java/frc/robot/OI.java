@@ -15,6 +15,9 @@ public class OI {
   public Joystick auxstick = new Joystick(RobotMap.JOYSTICK_AUX);
 
   // buttons defined
+  // x = 1, a = 2, b = 3, y = 4
+  // lb (left top trigger) = 5, rb (right top trigger) = 6
+  // lt (left bottom trigger) = 7, rt (right bottom trigger) = 8
   public Button d_LB = new JoystickButton(drivestick, RobotMap.CARGO_INTAKE);
   public Button d_RB = new JoystickButton(drivestick, RobotMap.CARGO_OUTTAKE);
   public Button d_LT = new JoystickButton(drivestick, RobotMap.HATCH_CONTROL);

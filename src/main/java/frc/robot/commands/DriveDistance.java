@@ -6,18 +6,24 @@ import frc.robot.util.Logger;
 
 public class DriveDistance extends Command {
 
+  public static final int ENCODER_UNITS_PER_REVOLUTION = 1024;
+  public static final double WHEEL_DIAMETER_INCHES = 6;
+  public static final double WHEEL_CIRCUMFERENCE_INCHES = WHEEL_DIAMETER_INCHES * Math.PI;
+  public static final double ENCODER_UNITS_PER_INCH = ENCODER_UNITS_PER_REVOLUTION / WHEEL_CIRCUMFERENCE_INCHES;
+
   private Logger logger = new Logger(DriveDistance.class.getName());
 
-  private int targetPosition;
-  private int distance;
+  private double targetPosition;
+  private double distance;
 
   private double maxSpeed;
   private double minSpeed;
 
-  public DriveDistance(int distance, double maxSpeed) {
+  // Enter distance in inches
+  public DriveDistance(int distanceInInches, double maxSpeed) {
     logger.detail("constructor " + toString());
     requires(Robot.drivetrain);
-    this.distance = distance;
+    this.distance = distanceInInches * ENCODER_UNITS_PER_INCH;
     this.maxSpeed = maxSpeed;
   }
 
@@ -35,7 +41,7 @@ public class DriveDistance extends Command {
 
   @Override
   protected void execute() {
-    int errorDistance = targetPosition - getPosition();
+    double errorDistance = targetPosition - getPosition();
     double speed = errorDistance / 1000;
     if (speed > maxSpeed) {
       speed = maxSpeed;

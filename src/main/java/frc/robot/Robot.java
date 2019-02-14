@@ -93,8 +93,8 @@ public class Robot extends TimedRobot {
 
   private void updateSubsystems() {
     long time = System.currentTimeMillis();
-    arm.periodic(time);
-    elevator.periodic(time);
+//    arm.periodic(time);
+//    elevator.periodic(time);
   }
 
 
