@@ -28,7 +28,7 @@ public class ElevatorAndArmMove extends Command {
     logger.detail("execute");
     // Joypad Control
     if (System.currentTimeMillis() - lastPovChange > POV_TIME_BUFFER) {
-      int pov = Robot.oi.drivestick.getPOV();
+      int pov = Robot.oi.auxstick.getPOV();
       if (pov == 0) {
         Robot.elevator.setLevel(Robot.elevator.getLevel() + 1);
         Robot.arm.setLevel(Robot.arm.getLevel() + 1);
