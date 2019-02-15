@@ -24,6 +24,7 @@ public class Elevator extends Subsystem {
   private static final double STOP_SPEED = 0;
 
   private static final double MAX_VELOCITY = (1024.0 / 4) / 1000; // 1/4 revolution per second, in millis
+  
   // CHECK
   public static final int[] HATCH_POSITIONS = new int[] {300, 400, 700, 1000};
   public static final int[] CARGO_POSITIONS = new int[] {300, 500, 800, 1100};
@@ -45,6 +46,17 @@ public class Elevator extends Subsystem {
     talon = new JetstreamTalon("Elevator Talon", RobotMap.ELEVATOR_TALON, ELEVATOR_MIN, ELEVATOR_MAX, ELEVATOR_MIN_OUTPUT, ELEVATOR_MAX_OUTPUT, false);
     victor = new JetstreamVictor("Elevator Victor", RobotMap.ELEVATOR_VICTOR, ELEVATOR_MIN_OUTPUT, ELEVATOR_MAX_OUTPUT);
     group = new SpeedControllerGroup(talon, victor);
+
+    lastTimestamp = System.currentTimeMillis();
+    lastElevatorPosition = talon.getPosition();
+  }
+
+  public int getPosition() {
+    return talon.getPosition();
+  }
+
+  public void setPosition(int position) {
+    targetElevatorPosition = position;
   }
 
   /** Manually change the elevator move speed, like through a joystick. */
@@ -88,32 +100,36 @@ public class Elevator extends Subsystem {
     }
 
     int elevatorPosition = talon.getPosition();
-    int relativePosition = elevatorPosition - targetElevatorPosition;
+    int relativePosition = targetElevatorPosition - elevatorPosition;
     int relativeDistance = Math.abs(relativePosition);
     if (relativeDistance < FINE_MOVEMENT_THRESHOLD) {
       autoMoveStop();
     } else if (relativeDistance < SLOW_MOVEMENT_THRESHOLD) {
       autoMoveFine(elevatorPosition, targetElevatorPosition, relativePosition, ELEVATOR_MAX_OUTPUT);
     } else if (relativeDistance < FAST_MOVEMENT_THRESHOLD) {
-      autoMoveSlow(elevatorPosition, targetElevatorPosition, relativePosition, ELEVATOR_MAX_OUTPUT);
+      autoMoveSlow(elevatorPosition, targetElevatorPosition, relativePosition, ELEVATOR_MIN_OUTPUT, ELEVATOR_MAX_OUTPUT);
 //      autoMoveVelocity(timestamp);
     } else {
-      autoMoveFast(elevatorPosition, targetElevatorPosition, relativePosition, ELEVATOR_MAX_OUTPUT);
+      autoMoveFast(elevatorPosition, targetElevatorPosition, relativePosition, ELEVATOR_MIN_OUTPUT, ELEVATOR_MAX_OUTPUT);
     }
     lastElevatorPosition = elevatorPosition;
     lastTimestamp = timestamp;
   }
 
-  private void autoMoveFast(int currentPosition, int targetPosition, int relativePosition, double maxOutput) {
-    double speed = relativePosition > 0 ? maxOutput : -maxOutput;
+  private void autoMoveFast(int currentPosition, int targetPosition, int relativePosition, double minOutput, double maxOutput) {
+    double speed = relativePosition > 0 ? maxOutput : minOutput;
     logger.detail(String.format("autoMoveFast speed: %.4f current-position: %d target-position: %d relative-position: %d",
         speed, currentPosition, targetPosition, relativePosition));
     group.set(speed);
   }
 
-  private void autoMoveSlow(int currentPosition, int targetPosition, int relativePosition, double maxOutput) {
-    double ratio = relativePosition / (relativePosition > 0 ? FAST_MOVEMENT_THRESHOLD : -FAST_MOVEMENT_THRESHOLD);
-    double speed = ELEVATOR_MAX_OUTPUT * ratio;
+  private void autoMoveSlow(int currentPosition, int targetPosition, int relativePosition, double minOutput, double maxOutput) {
+    double ratio = Math.abs(relativePosition / FAST_MOVEMENT_THRESHOLD);
+    double speed = relativePosition < 0 ? minOutput * ratio : maxOutput * ratio;
+    // If we're moving up (in the negative direction), apply a min speed to prevent stalling.
+    if (speed < 0 && speed > -0.2) {
+      speed = -0.2;
+    }
     logger.detail(String.format("autoMoveSlow speed: %.4f ratio: %.4f current-position: %d target-position: %d relative-position: %d",
         speed, ratio, currentPosition, targetPosition, relativePosition));
     group.set(speed);

@@ -1,11 +1,10 @@
 package frc.robot.util;
 
-import edu.wpi.first.wpilibj.SPI;
-
 public class PixyVision {
   private static final long POLL_FREQUENCY_MILLIS = 1 + (1000 / 60);
 
   private Logger logger = new Logger(PixyVision.class.getName());
+
   private PixyLine latestLine;
   private PixyBlock leftBlock;
   private PixyBlock rightBlock;
@@ -18,7 +17,9 @@ public class PixyVision {
   private boolean isRunning;
   private PixyVisionThread thread;
 
+
   public PixyVision(boolean trackLines, boolean trackObjects) {
+    logger.detail("constructor");
     this.trackLines = trackLines;
     this.trackObjects = trackObjects;
   }
@@ -40,7 +41,7 @@ public class PixyVision {
   }
 
   public void turnOffLamp() {
-    turnOffLamp = true;
+    turnOffLamp = false;
   }
 
   public synchronized void start() {
@@ -60,33 +61,34 @@ public class PixyVision {
   }
 
   class PixyVisionThread extends Thread {
-    // private PixyI2CDriver driver = new PixyI2CDriver();
-    private PixySPIDriver lineDriver = new PixySPIDriver(SPI.Port.kOnboardCS0);
-    private PixySPIDriver blockDriver = new PixySPIDriver(SPI.Port.kOnboardCS1);
-
+    private PixyI2CDriver driver = new PixyI2CDriver(0x54);
+    private PixyI2CDriver driver2 = new PixyI2CDriver(0x53);
+    
     @Override
     public void run() {
-      logger.info("starting thread");
+      logger.info("running thread");
       while (isRunning) {
         if (turnOnLamp) {
-          lineDriver.turnOnLamp();
-          blockDriver.turnOnLamp();
+          logger.info("turning on lamp");
+          driver.turnOnLamp();
+          driver2.turnOnLamp();
           turnOnLamp = false;
         }
         if (turnOffLamp) {
-          lineDriver.turnOffLamp();
-          blockDriver.turnOffLamp();
+          logger.info("turning off lamp");
+          driver.turnOffLamp();
+          driver2.turnOffLamp();
           turnOffLamp = false;
         }
         if (trackLines) {
-          PixyLine line = lineDriver.lineTracking();
+          PixyLine line = driver.lineTracking();
           if (line != null && isValid(line)) {
-            logger.detail("found line: " + line);
+            logger.info("found line: " + line);
             latestLine = line;
           }
         }
         if (trackObjects) {
-          PixyBlock[] blocks = blockDriver.objectTracking();
+          PixyBlock[] blocks = driver2.objectTracking();
           if (blocks != null && isValid(blocks)) {
             if (blocks[0].getCenterX() < blocks[1].getCenterX()) {
               leftBlock = blocks[0];
@@ -95,28 +97,28 @@ public class PixyVision {
               leftBlock = blocks[1];
               rightBlock = blocks[0];
             }
-            logger.detail("found objects left: " + leftBlock + " right: " + rightBlock);
+            logger.info("found objects left: " + leftBlock + " right: " + rightBlock);
           }
         }
 
         try {
           Thread.sleep(POLL_FREQUENCY_MILLIS);
         } catch (InterruptedException e) {
-          logger.info("interrupted thread");
+          logger.warning("interrupted thread");
         }
       }
-      logger.info("stopping thread");
     }
   }
 
   private boolean isValid(PixyLine line) {
-    return line.getLowerX() != line.getUpperX() ||
-        line.getLowerY() != line.getUpperY();
+    if (line.getLowerX() == line.getUpperX() && 
+        line.getLowerY() == line.getUpperY()) {
+      return false;
+    }
+    return true;
   }
 
   private boolean isValid(PixyBlock[] blocks) {
-    return blocks.length == 2 &&
-        blocks[0].getSignature() != 0 &&
-        blocks[1].getSignature() != 0;
+    return blocks.length == 2 && blocks[0].getSignature() != 0 && blocks[1].getSignature() != 0;
   }
 }

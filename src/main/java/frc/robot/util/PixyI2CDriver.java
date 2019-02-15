@@ -6,8 +6,8 @@ public class PixyI2CDriver {
   private Logger logger = new Logger(PixyI2CDriver.class.getName());
   private I2C pixy;
 
-  public PixyI2CDriver() {
-    pixy = new I2C(I2C.Port.kOnboard, 0x54);
+  public PixyI2CDriver(int port) {
+    pixy = new I2C(I2C.Port.kOnboard, port);
   }
 
   public void turnOnLamp() {

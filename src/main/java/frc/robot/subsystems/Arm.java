@@ -13,7 +13,7 @@ public class Arm extends Subsystem {
   public static final int VERTICAL_MAX = 0;
   public static final int VERTICAL_MIN = -3000;
   public static final double VERTICAL_MIN_OUTPUT = -0.3;
-  public static final double VERTICAL_MAX_OUTPUT = 0.3;
+  public static final double VERTICAL_MAX_OUTPUT = 0.1;
 
   public static final int SWIVEL_MAX = 3500;
   public static final int SWIVEL_MIN = -3500;
@@ -56,9 +56,17 @@ public class Arm extends Subsystem {
     lastVerticalPosition = verticalTalon.getPosition();
   }
 
+  public int getVerticalArmPosition() {
+    return verticalTalon.getPosition();
+  }
+
+  public void setVerticalPosition(int position) {
+    targetVerticalPosition = position;
+  }
+
   public void moveVerticalArm(double speed) {
     targetVerticalPosition = null;
-    logger.info("moveVerticalArm speed: " + speed + " arm-pos: " + verticalTalon.getPosition());
+    logger.info("moveVerticalArm speed: " + speed + " arm-position: " + verticalTalon.getPosition());
     verticalTalon.set(speed + getCompensation());
   }
 
@@ -69,8 +77,16 @@ public class Arm extends Subsystem {
 //    targetVerticalPosition = verticalTalon.getPosition();
   }
 
+  public int getSwivelPosition() {
+    return swivelTalon.getPosition();
+  }
+
+  public void setSwivelPosition(int position) {
+    targetSwivelPosition = position;
+  }
+
   public void moveSwivelArm(double speed) {
-    logger.info("moveSwivelArm speed: " + speed + " swivel-pos: " + swivelTalon.getPosition());
+    logger.info("moveSwivelArm speed: " + speed + " swivel-positions: " + swivelTalon.getPosition());
     swivelTalon.set(speed);
   }
 
@@ -145,10 +161,10 @@ public class Arm extends Subsystem {
     } else if (relativeDistance < SLOW_MOVEMENT_THRESHOLD) {
       autoMoveFine(verticalPosition, targetVerticalPosition, relativePosition, verticalTalon, VERTICAL_MAX_OUTPUT);
     } else if (relativeDistance < FAST_MOVEMENT_THRESHOLD) {
-      autoMoveSlow(verticalPosition, targetVerticalPosition, relativePosition, verticalTalon, VERTICAL_MAX_OUTPUT);
+      autoMoveSlow(verticalPosition, targetVerticalPosition, relativePosition, verticalTalon, VERTICAL_MIN_OUTPUT, VERTICAL_MAX_OUTPUT);
 //      autoMoveVelocity(timestamp);
     } else {
-      autoMoveFast(verticalPosition, targetVerticalPosition, relativePosition, verticalTalon, VERTICAL_MAX_OUTPUT);
+      autoMoveFast(verticalPosition, targetVerticalPosition, relativePosition, verticalTalon, VERTICAL_MIN_OUTPUT, VERTICAL_MAX_OUTPUT);
     }
     lastVerticalPosition = verticalPosition;
     lastTimestamp = timestamp;
@@ -162,23 +178,26 @@ public class Arm extends Subsystem {
       logger.detail("swivelMoveStop");
       swivelTalon.set(0);
     } else if (relativeDistance < FAST_MOVEMENT_THRESHOLD) {
-      autoMoveSlow(swivelPosition, targetSwivelPosition, relativePosition, swivelTalon, SWIVEL_MAX_OUTPUT);
+      autoMoveSlow(swivelPosition, targetSwivelPosition, relativePosition, swivelTalon, SWIVEL_MIN_OUTPUT, SWIVEL_MAX_OUTPUT);
     } else {
-      autoMoveFast(swivelPosition, targetSwivelPosition, relativePosition, swivelTalon, SWIVEL_MAX_OUTPUT);
+      autoMoveFast(swivelPosition, targetSwivelPosition, relativePosition, swivelTalon, SWIVEL_MIN_OUTPUT, SWIVEL_MAX_OUTPUT);
     }
   }
 
-  private void autoMoveFast(int currentPosition, int targetPosition, int relativePosition, JetstreamTalon talon, double maxOutput) {
-    double speed = relativePosition > 0 ? maxOutput : -maxOutput;
+  private void autoMoveFast(int currentPosition, int targetPosition, int relativePosition, JetstreamTalon talon, double minOutput, double maxOutput) {
+    double speed = relativePosition > 0 ? maxOutput : minOutput;
     logger.detail(String.format("autoMoveFast speed: %.4f current-position: %d target-position: %d relative-position: %d",
         speed, currentPosition, targetPosition, relativePosition));
     talon.set(speed);
   }
 
-  private void autoMoveSlow(int currentPosition, int targetPosition, int relativePosition, JetstreamTalon talon, double maxOutput) {
-    double ratio = (double) relativePosition / (relativePosition > 0 ? -FAST_MOVEMENT_THRESHOLD : FAST_MOVEMENT_THRESHOLD);
-    double speed = VERTICAL_MAX_OUTPUT * ratio;
-    speed = speed < 0 ? (speed > -0.2 ? -0.2 : speed) : (speed < 0.05 ? 0.05 : speed);
+  private void autoMoveSlow(int currentPosition, int targetPosition, int relativePosition, JetstreamTalon talon, double minOutput, double maxOutput) {
+    double ratio = Math.abs((double) relativePosition / FAST_MOVEMENT_THRESHOLD);
+    double speed = relativePosition < 0 ? minOutput * ratio : maxOutput * ratio;
+    // If we're moving up (in the negative direction), apply a min speed to prevent stalling.
+    if (speed < 0 && speed > -0.2) {
+      speed = -0.2;
+    }
     logger.detail(String.format("autoMoveSlow speed: %.4f ratio: %.4f current-position: %d target-position: %d relative-position: %d",
         speed, ratio, currentPosition, targetPosition, relativePosition));
     talon.set(speed);

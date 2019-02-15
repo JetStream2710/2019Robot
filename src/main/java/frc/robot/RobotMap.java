@@ -1,23 +1,7 @@
 package frc.robot;
 
 public class RobotMap {
-  // joystick
-  public static final int JOYSTICK_DRIVER = 0;
-  public static final int DRIVER_MOVE_AXIS = 1;
-  public static final int DRIVER_ROTATE_AXIS = 2;
-  public static final int CARGO_INTAKE = 5;
-  public static final int CARGO_OUTTAKE = 6;
-  public static final int HATCH_CONTROL = 7;
-
-  // figure out feeder station stuff -- waiting on the stuff FEEDER STATION
-  public static final int JOYSTICK_AUX = 1;
-  public static final int SWITCH_TO_HATCH = 2;
-  public static final int SWITCH_TO_CARGO = 4;
-  public static final int ELEVATOR_AXIS = 1;
-  public static final int ARM_AXIS = 3;
-
   // drivetrain
-  // master = talon    slave = victor
   public static final int DRIVETRAIN_LEFT_TALON = 16;
   public static final int DRIVETRAIN_LEFT_VICTOR = 1;
   public static final int DRIVETRAIN_RIGHT_TALON = 15;

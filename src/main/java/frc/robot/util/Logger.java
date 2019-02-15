@@ -47,10 +47,14 @@ public class Logger {
     LOG_LEVELS.put(SwitchToHatch.class.getName(), Level.WARNING);
     LOG_LEVELS.put(TurnDegrees.class.getName(), Level.WARNING);
     LOG_LEVELS.put(VisionFollow.class.getName(), Level.WARNING);
+    LOG_LEVELS.put(WeaponsDown.class.getName(), Level.WARNING);
+    LOG_LEVELS.put(WeaponsUp.class.getName(), Level.WARNING);
 
     // Utilities
     LOG_LEVELS.put(JetstreamTalon.class.getName(), Level.WARNING);
     LOG_LEVELS.put(JetstreamVictor.class.getName(), Level.WARNING);
+    LOG_LEVELS.put(PixyI2CDriver.class.getName(), Level.WARNING);
+    LOG_LEVELS.put(PixyVision.class.getName(), Level.WARNING);
   }
 
   public enum Level {

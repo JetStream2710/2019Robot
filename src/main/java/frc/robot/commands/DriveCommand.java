@@ -1,8 +1,8 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.OI;
 import frc.robot.Robot;
-import frc.robot.RobotMap;
 import frc.robot.util.Logger;
 
 public class DriveCommand extends Command {
@@ -24,8 +24,8 @@ public class DriveCommand extends Command {
     if (Robot.isAuto) {
       return;
     }
-    double moveSpeed = Robot.oi.drivestick.getRawAxis(RobotMap.DRIVER_MOVE_AXIS);
-    double rotateSpeed = Robot.oi.drivestick.getRawAxis(RobotMap.DRIVER_ROTATE_AXIS);
+    double moveSpeed = Robot.oi.drivestick.getRawAxis(OI.DRIVER_MOVE_AXIS);
+    double rotateSpeed = Robot.oi.drivestick.getRawAxis(OI.DRIVER_ROTATE_AXIS);
     logger.detail("execute moveSpeed: " + moveSpeed + " rotateSpeed: " + rotateSpeed);
     Robot.drivetrain.arcadeDrive(moveSpeed, rotateSpeed);
   }

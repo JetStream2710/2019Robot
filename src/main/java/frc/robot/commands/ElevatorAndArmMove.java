@@ -1,8 +1,8 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.OI;
 import frc.robot.Robot;
-import frc.robot.RobotMap;
 import frc.robot.util.Logger;
 
 public class ElevatorAndArmMove extends Command {
@@ -26,7 +26,20 @@ public class ElevatorAndArmMove extends Command {
   @Override
   protected void execute() {
     logger.detail("execute");
-    // Joypad Control
+    // Aux Joypad Control
+    int dPov = Robot.oi.auxstick.getPOV();
+    if (dPov == 0) {
+      int position = Robot.arm.getSwivelPosition();
+      int target = position + 250;
+      logger.info(String.format("execute swivel: target: %d current %d", target, position));
+      Robot.arm.setSwivelPosition(target);
+    } else if (dPov == 180) {
+      int position = Robot.arm.getSwivelPosition();
+      int target = position - 250;
+      logger.info(String.format("execute swivel: target: %d current %d", target, position));
+      Robot.arm.setSwivelPosition(target);
+    }
+    /*
     if (System.currentTimeMillis() - lastPovChange > POV_TIME_BUFFER) {
       int pov = Robot.oi.auxstick.getPOV();
       if (pov == 0) {
@@ -41,9 +54,9 @@ public class ElevatorAndArmMove extends Command {
         lastPovChange = System.currentTimeMillis();
       }
     }
+    */
     // Elevator Joystick
-    // TODO: FIX THIS AFTER TESTING -- change back to auxstick
-    double elevatorSpeed = Robot.oi.auxstick.getRawAxis(RobotMap.ELEVATOR_AXIS);
+    double elevatorSpeed = Robot.oi.auxstick.getRawAxis(OI.ELEVATOR_AXIS);
     if (elevatorSpeed < 0.08 && elevatorSpeed > -0.08) {
       if (Robot.isMovingElevator){
         logger.info("execute stop elevator");
@@ -56,8 +69,15 @@ public class ElevatorAndArmMove extends Command {
       Robot.elevator.elevatorMove(elevatorSpeed);
     }
     // Arm Joystick
-    // TODO: FIX THIS AFTER TESTING -- change this back to auxstick
-    double armSpeed = Robot.oi.auxstick.getRawAxis(RobotMap.ARM_AXIS);
+    double armSpeed = Robot.oi.auxstick.getRawAxis(OI.ARM_AXIS);
+    if (armSpeed > 0.08 || armSpeed < -0.08) {
+      int position = Robot.arm.getVerticalArmPosition();
+      int target = position + (int) (armSpeed * 600);
+      logger.info(String.format("execute arm: target: %d current %d", target, position));
+      Robot.arm.setVerticalPosition(target);
+    }
+/*
+    // Raw arm movement via joystick
     if (armSpeed < 0.08 && armSpeed > -0.08) {
       if (Robot.isMovingArm) {
         logger.info("execute stop arm");
@@ -72,6 +92,7 @@ public class ElevatorAndArmMove extends Command {
 //      Robot.arm.moveSwivelArm(armSpeed);
       Robot.arm.moveVerticalArm(armSpeed);
     }
+*/
   }
 
   @Override
