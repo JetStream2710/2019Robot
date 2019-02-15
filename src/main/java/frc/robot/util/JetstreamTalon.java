@@ -4,7 +4,6 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.SpeedController;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class JetstreamTalon implements SpeedController {
 
@@ -57,13 +56,13 @@ public class JetstreamTalon implements SpeedController {
   }
 
   public void sendTelemetry() {
-    SmartDashboard.putNumber(String.format("%s [%d] output:", name, talon.getDeviceID()), talon.getMotorOutputPercent());
-    SmartDashboard.putNumber(String.format("%s [%d] bus voltage:", name, talon.getDeviceID()), talon.getBusVoltage());
-    SmartDashboard.putNumber(String.format("%s [%d] motor voltage:", name, talon.getDeviceID()), talon.getMotorOutputVoltage());
-    SmartDashboard.putNumber(String.format("%s [%d] temperature:", name, talon.getDeviceID()), talon.getTemperature());
-    SmartDashboard.putNumber(String.format("%s [%d] firmware version:", name, talon.getDeviceID()), talon.getFirmwareVersion());
-    SmartDashboard.putNumber(String.format("%s [%d] position:", name, talon.getDeviceID()), getPosition());
-    SmartDashboard.putNumber(String.format("%s [%d] velocity:", name, talon.getDeviceID()), getVelocity());
+    SmartDash.put(String.format("%s [%d] output:", name, talon.getDeviceID()), talon.getMotorOutputPercent());
+    SmartDash.put(String.format("%s [%d] bus voltage:", name, talon.getDeviceID()), talon.getBusVoltage());
+    SmartDash.put(String.format("%s [%d] motor voltage:", name, talon.getDeviceID()), talon.getMotorOutputVoltage());
+    SmartDash.put(String.format("%s [%d] temperature:", name, talon.getDeviceID()), talon.getTemperature());
+    SmartDash.put(String.format("%s [%d] firmware version:", name, talon.getDeviceID()), talon.getFirmwareVersion());
+    SmartDash.put(String.format("%s [%d] position:", name, talon.getDeviceID()), getPosition());
+    SmartDash.put(String.format("%s [%d] velocity:", name, talon.getDeviceID()), getVelocity());
   }
 
   // SpeedController functions

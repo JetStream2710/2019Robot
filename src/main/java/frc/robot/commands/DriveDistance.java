@@ -73,7 +73,7 @@ public class DriveDistance extends Command {
 
   @Override
   public String toString() {
-      return String.format("current-position: %f target-position: %f distance: %f min: %f max: %f",
+      return String.format("current-position: %d target-position: %f distance: %f min: %f max: %f",
           getPosition(), targetPosition, distance, minSpeed, maxSpeed);
   }
 }

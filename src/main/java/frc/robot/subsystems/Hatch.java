@@ -20,14 +20,14 @@ public class Hatch extends Subsystem {
 
   public void hatchOut() {
     logger.info("hatchOut called");
-    solenoidOn.set(true);
-    solenoidOff.set(false);
+    solenoidOn.set(false);
+    solenoidOff.set(true);
   }
 
   public void hatchIn(){
     logger.info("hatchIn called");
-    solenoidOn.set(false);
-    solenoidOff.set(true);
+    solenoidOn.set(true);
+    solenoidOff.set(false);
   }
 
   @Override

@@ -36,7 +36,7 @@ public class Drivetrain extends Subsystem {
     leftVictor = new JetstreamVictor("Drivetrain Left Victor", RobotMap.DRIVETRAIN_LEFT_VICTOR, MIN_OUTPUT, MAX_OUTPUT);
     rightTalon = new JetstreamTalon("Drivetrain Right Talon", RobotMap.DRIVETRAIN_RIGHT_TALON, MIN_POSITION, MAX_POSITION, MIN_OUTPUT, MAX_OUTPUT, false);
     rightVictor = new JetstreamVictor("Drivetrain Right Victor", RobotMap.DRIVETRAIN_RIGHT_VICTOR, MIN_OUTPUT, MAX_OUTPUT);
-    leftGroup = new SpeedControllerGroup(leftTalon, leftVictor);
+    leftGroup = new SpeedControllerGroup(/*leftTalon),*/ leftVictor);
     rightGroup = new SpeedControllerGroup(rightTalon, rightVictor);
     differentialDrive = new DifferentialDrive(leftGroup, rightGroup);
   }
@@ -58,11 +58,13 @@ public class Drivetrain extends Subsystem {
   }
 
   public int getLeftPosition() {
-    return leftTalon.getPosition();
+    return 0;
+//    return leftTalon.getPosition();
   }
 
   public int getRightPosition() {
-    return rightTalon.getPosition();
+    return 0;
+//    return rightTalon.getPosition();
   }
 
   @Override

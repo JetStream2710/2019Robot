@@ -27,11 +27,11 @@ public class JetstreamVictor implements SpeedController {
   }
 
   public void sendTelemetry() {
-    SmartDashboard.putNumber(String.format("%s [%d] output:", name, victor.getDeviceID()), victor.getMotorOutputPercent());
-    SmartDashboard.putNumber(String.format("%s [%d] bus voltage:", name, victor.getDeviceID()), victor.getBusVoltage());
-    SmartDashboard.putNumber(String.format("%s [%d] motor voltage:", name, victor.getDeviceID()), victor.getMotorOutputVoltage());
-    SmartDashboard.putNumber(String.format("%s [%d] temperature:", name, victor.getDeviceID()), victor.getTemperature());
-    SmartDashboard.putNumber(String.format("%s [%d] firmware version:", name, victor.getDeviceID()), victor.getFirmwareVersion());
+    SmartDash.put(String.format("%s [%d] output:", name, victor.getDeviceID()), victor.getMotorOutputPercent());
+    SmartDash.put(String.format("%s [%d] bus voltage:", name, victor.getDeviceID()), victor.getBusVoltage());
+    SmartDash.put(String.format("%s [%d] motor voltage:", name, victor.getDeviceID()), victor.getMotorOutputVoltage());
+    SmartDash.put(String.format("%s [%d] temperature:", name, victor.getDeviceID()), victor.getTemperature());
+    SmartDash.put(String.format("%s [%d] firmware version:", name, victor.getDeviceID()), victor.getFirmwareVersion());
   }
 
   // SpeedController functions

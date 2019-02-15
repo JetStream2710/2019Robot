@@ -8,12 +8,13 @@ import frc.robot.commands.ElevatorAndArmMove;
 import frc.robot.util.JetstreamTalon;
 import frc.robot.util.JetstreamVictor;
 import frc.robot.util.Logger;
+import frc.robot.util.SmartDash;
 
 public class Elevator extends Subsystem {
 
-  public static final int ELEVATOR_MIN = 0;
-  public static final int ELEVATOR_MAX = 100;
-  public static final double ELEVATOR_MIN_OUTPUT = -0.;
+  public static final int ELEVATOR_MIN = Integer.MIN_VALUE;
+  public static final int ELEVATOR_MAX = Integer.MAX_VALUE;
+  public static final double ELEVATOR_MIN_OUTPUT = -0.3;
   public static final double ELEVATOR_MAX_OUTPUT = 0.3;
 
   private static final int FAST_MOVEMENT_THRESHOLD = 1024 / 2;
@@ -81,6 +82,7 @@ public class Elevator extends Subsystem {
 
   public void periodic(long timestamp) {
     talon.sendTelemetry();
+    SmartDash.put("Elevator Level", currentLevel);
     if (Robot.isMovingElevator || targetElevatorPosition == null) {
       return;
     }
@@ -146,6 +148,6 @@ public class Elevator extends Subsystem {
 
   @Override
   public void initDefaultCommand() {
-//    setDefaultCommand(new ElevatorAndArmMove());
+    setDefaultCommand(new ElevatorAndArmMove());
   }
 }

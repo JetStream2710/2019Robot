@@ -43,8 +43,7 @@ public class ElevatorAndArmMove extends Command {
     }
     // Elevator Joystick
     // TODO: FIX THIS AFTER TESTING -- change back to auxstick
-//    double elevatorSpeed = Robot.oi.auxstick.getRawAxis(RobotMap.ELEVATOR_AXIS);
-    double elevatorSpeed = Robot.oi.drivestick.getRawAxis(RobotMap.ELEVATOR_AXIS);
+    double elevatorSpeed = Robot.oi.auxstick.getRawAxis(RobotMap.ELEVATOR_AXIS);
     if (elevatorSpeed < 0.08 && elevatorSpeed > -0.08) {
       if (Robot.isMovingElevator){
         logger.info("execute stop elevator");
@@ -58,8 +57,7 @@ public class ElevatorAndArmMove extends Command {
     }
     // Arm Joystick
     // TODO: FIX THIS AFTER TESTING -- change this back to auxstick
-//    double armSpeed = Robot.oi.auxstick.getRawAxis(RobotMap.ELEVATOR_AXIS);
-    double armSpeed = Robot.oi.drivestick.getRawAxis(RobotMap.ARM_AXIS);
+    double armSpeed = Robot.oi.auxstick.getRawAxis(RobotMap.ARM_AXIS);
     if (armSpeed < 0.08 && armSpeed > -0.08) {
       if (Robot.isMovingArm) {
         logger.info("execute stop arm");

@@ -3,7 +3,13 @@ package frc.robot;
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.commands.AutoCargo3;
+import frc.robot.commands.AutoCargo4;
+import frc.robot.commands.AutoCargo5;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Cargo;
 import frc.robot.subsystems.Climb;
@@ -11,6 +17,7 @@ import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Hatch;
 import frc.robot.util.Logger;
+import frc.robot.util.SmartDash;
 
 public class Robot extends TimedRobot {
   public static OI oi;
@@ -20,6 +27,9 @@ public class Robot extends TimedRobot {
   public static Cargo cargo;
   public static Hatch hatch;
   public static Climb climb;
+
+  public static Command autonomousCommand;
+  public static SendableChooser autoChooser;
 
   public static AHRS ahrs = new AHRS(SPI.Port.kMXP);
 
@@ -42,6 +52,11 @@ public class Robot extends TimedRobot {
     hatch = new Hatch();
     climb = new Climb();
     oi = new OI();
+
+    autoChooser = new SendableChooser();
+    autoChooser.addDefault("AutoCargo3", new AutoCargo3());
+    autoChooser.addObject("AutoCargo4", new AutoCargo4());
+    autoChooser.addObject("AutoCargo5", new AutoCargo5());
 
     isHatchMode = true;
     isMovingElevator = false;
@@ -68,6 +83,9 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     logger.detail("autonomousInit");
     isAuto = true;
+
+    autonomousCommand = (Command) autoChooser.getSelected();
+    autonomousCommand.start();
   }
 
   @Override
@@ -93,8 +111,11 @@ public class Robot extends TimedRobot {
 
   private void updateSubsystems() {
     long time = System.currentTimeMillis();
-//    arm.periodic(time);
-//    elevator.periodic(time);
+    SmartDash.put("Robot Mode", isHatchMode?"Hatch":"Cargo");
+    SmartDash.put("Arm Status", isMovingArm?"Moving":"NOT Moving");
+    SmartDash.put("Elevator Status", isMovingElevator?"Moving":"NOT Moving");
+    arm.periodic(time);
+    elevator.periodic(time);
   }
 
 

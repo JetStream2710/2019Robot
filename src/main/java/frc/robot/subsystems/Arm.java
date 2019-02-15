@@ -6,12 +6,13 @@ import frc.robot.RobotMap;
 import frc.robot.util.JetstreamTalon;
 import frc.robot.util.Logger;
 import frc.robot.util.Logger.Level;
+import frc.robot.util.SmartDash;
 
 public class Arm extends Subsystem {
 
   public static final int VERTICAL_MAX = 0;
   public static final int VERTICAL_MIN = -3000;
-  public static final double VERTICAL_MIN_OUTPUT = -0.1;
+  public static final double VERTICAL_MIN_OUTPUT = -0.3;
   public static final double VERTICAL_MAX_OUTPUT = 0.3;
 
   public static final int SWIVEL_MAX = 3500;
@@ -23,7 +24,7 @@ public class Arm extends Subsystem {
   private static final int SLOW_MOVEMENT_THRESHOLD = 1024 / 5;
   private static final int FINE_MOVEMENT_THRESHOLD = 1024 / 50;
   private static final double FINE_INCREMENT = 0.001;
-  private static final double STOP_SPEED = 0.18;
+  private static final double STOP_SPEED = -0.18;
   private static final double ENCODER_TO_RADIANS = Math.PI / 7000;
 
   private static final double MAX_VELOCITY = (1024.0 / 4) / 1000; // 1/4 revolution per second, in millis
@@ -58,7 +59,7 @@ public class Arm extends Subsystem {
   public void moveVerticalArm(double speed) {
     targetVerticalPosition = null;
     logger.info("moveVerticalArm speed: " + speed + " arm-pos: " + verticalTalon.getPosition());
-    verticalTalon.set(speed);
+    verticalTalon.set(speed + getCompensation());
   }
 
   public void stopMovingVerticalArm(){
@@ -78,13 +79,19 @@ public class Arm extends Subsystem {
 //    targetSwivelPosition = swivelTalon.getPosition();
   }
 
-  // MAKE SURE TO TEST THIS BECAUSE IT MIGHT BE BACKWARDS
   public void moveTogether(double speed) {
-    if (verticalTalon.isValidSpeed(speed) && swivelTalon.isValidSpeed(-speed)) {
-      logger.info("moveTogether speed: " + speed);
-      verticalTalon.set(speed);
-      swivelTalon.set(-speed);
-    } 
+    if (!verticalTalon.isValidSpeed(speed) || !swivelTalon.isValidSpeed(-speed)) {
+      logger.warning(String.format("INVALID set speed: %f", speed));
+    }
+    logger.info("moveTogether speed: " + speed + " swivel-pos: " + swivelTalon.getPosition() + " vert-pos: " + verticalTalon.getPosition());
+    verticalTalon.set(speed + getCompensation());
+    swivelTalon.set(speed * .75);
+  }
+
+  public double getCompensation() {
+    double angleInRadians = ENCODER_TO_RADIANS * verticalTalon.getPosition();
+    double speed = STOP_SPEED * Math.cos(angleInRadians);
+    return speed;
   }
 
   /** Set the level of the arm to a number from 0 to 4. */
@@ -114,6 +121,7 @@ public class Arm extends Subsystem {
   public void periodic(long timestamp) {
     verticalTalon.sendTelemetry();
     swivelTalon.sendTelemetry();
+    SmartDash.put("Arm Level", currentLevel);
     if (Robot.isMovingArm) {
       return;
     }
@@ -130,7 +138,7 @@ public class Arm extends Subsystem {
 
   private void periodicVertical(long timestamp) {
     int verticalPosition = verticalTalon.getPosition();
-    int relativePosition = verticalPosition - targetVerticalPosition;
+    int relativePosition = targetVerticalPosition - verticalPosition;
     int relativeDistance = Math.abs(relativePosition);
     if (relativeDistance < FINE_MOVEMENT_THRESHOLD) {
       autoMoveStop(verticalTalon);
@@ -148,7 +156,7 @@ public class Arm extends Subsystem {
 
   private void periodicSwivel(long timestamp) {
     int swivelPosition = swivelTalon.getPosition();
-    int relativePosition = swivelPosition - targetSwivelPosition;
+    int relativePosition = targetSwivelPosition - swivelPosition;
     int relativeDistance = Math.abs(relativePosition);
     if (relativeDistance < FINE_MOVEMENT_THRESHOLD) {
       logger.detail("swivelMoveStop");
@@ -168,8 +176,9 @@ public class Arm extends Subsystem {
   }
 
   private void autoMoveSlow(int currentPosition, int targetPosition, int relativePosition, JetstreamTalon talon, double maxOutput) {
-    double ratio = relativePosition / (relativePosition > 0 ? FAST_MOVEMENT_THRESHOLD : -FAST_MOVEMENT_THRESHOLD);
+    double ratio = (double) relativePosition / (relativePosition > 0 ? -FAST_MOVEMENT_THRESHOLD : FAST_MOVEMENT_THRESHOLD);
     double speed = VERTICAL_MAX_OUTPUT * ratio;
+    speed = speed < 0 ? (speed > -0.2 ? -0.2 : speed) : (speed < 0.05 ? 0.05 : speed);
     logger.detail(String.format("autoMoveSlow speed: %.4f ratio: %.4f current-position: %d target-position: %d relative-position: %d",
         speed, ratio, currentPosition, targetPosition, relativePosition));
     talon.set(speed);
