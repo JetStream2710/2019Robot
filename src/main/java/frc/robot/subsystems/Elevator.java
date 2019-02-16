@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
+
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.Robot;
@@ -31,7 +33,8 @@ public class Elevator extends Subsystem {
 
   private Logger logger = new Logger(Elevator.class.getName());
   private JetstreamTalon talon;
-  private JetstreamVictor victor;
+//  private JetstreamVictor victor;
+  private WPI_VictorSPX victor;
   private SpeedControllerGroup group;
 
   private int currentLevel;
@@ -44,7 +47,8 @@ public class Elevator extends Subsystem {
     logger.detail("constructor");
 
     talon = new JetstreamTalon("Elevator Talon", RobotMap.ELEVATOR_TALON, ELEVATOR_MIN, ELEVATOR_MAX, ELEVATOR_MIN_OUTPUT, ELEVATOR_MAX_OUTPUT, false);
-    victor = new JetstreamVictor("Elevator Victor", RobotMap.ELEVATOR_VICTOR, ELEVATOR_MIN_OUTPUT, ELEVATOR_MAX_OUTPUT);
+//    victor = new JetstreamVictor("Elevator Victor", RobotMap.ELEVATOR_VICTOR, ELEVATOR_MIN_OUTPUT, ELEVATOR_MAX_OUTPUT);
+    victor = new WPI_VictorSPX(RobotMap.ELEVATOR_VICTOR);
     group = new SpeedControllerGroup(talon, victor);
 
     lastTimestamp = System.currentTimeMillis();
@@ -63,7 +67,9 @@ public class Elevator extends Subsystem {
   public void elevatorMove(double speed) {
     logger.info("elevatorMove speed: " + speed + " position: " + talon.getPosition());
     group.set(speed);
-  }
+//    victor.set(speed);
+//    talon.set(speed);
+}
 
   public void elevatorStop() {
     logger.info("elevatorStop");

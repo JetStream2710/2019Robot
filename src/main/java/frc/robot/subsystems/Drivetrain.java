@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
+
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -19,9 +21,11 @@ public class Drivetrain extends Subsystem {
   private Logger logger = new Logger(Drivetrain.class.getName());
 
   private JetstreamTalon leftTalon;
-  private JetstreamVictor leftVictor;
+//  private JetstreamVictor leftVictor;
+  private WPI_VictorSPX leftVictor;
   private JetstreamTalon rightTalon;
-  private JetstreamVictor rightVictor;
+//  private JetstreamVictor rightVictor;
+  private WPI_VictorSPX rightVictor;
 
   private SpeedControllerGroup leftGroup;
   private SpeedControllerGroup rightGroup;
@@ -33,28 +37,43 @@ public class Drivetrain extends Subsystem {
     logger.detail("constructor");
 
     leftTalon = new JetstreamTalon("Drivetrain Left Talon", RobotMap.DRIVETRAIN_LEFT_TALON, MIN_POSITION, MAX_POSITION, MIN_OUTPUT, MAX_OUTPUT, false);
-    leftVictor = new JetstreamVictor("Drivetrain Left Victor", RobotMap.DRIVETRAIN_LEFT_VICTOR, MIN_OUTPUT, MAX_OUTPUT);
+//    leftVictor = new JetstreamVictor("Drivetrain Left Victor", RobotMap.DRIVETRAIN_LEFT_VICTOR, MIN_OUTPUT, MAX_OUTPUT);
+    leftVictor = new WPI_VictorSPX(RobotMap.DRIVETRAIN_LEFT_VICTOR);
     rightTalon = new JetstreamTalon("Drivetrain Right Talon", RobotMap.DRIVETRAIN_RIGHT_TALON, MIN_POSITION, MAX_POSITION, MIN_OUTPUT, MAX_OUTPUT, false);
-    rightVictor = new JetstreamVictor("Drivetrain Right Victor", RobotMap.DRIVETRAIN_RIGHT_VICTOR, MIN_OUTPUT, MAX_OUTPUT);
-    leftGroup = new SpeedControllerGroup(/*leftTalon),*/ leftVictor);
+//    rightVictor = new JetstreamVictor("Drivetrain Right Victor", RobotMap.DRIVETRAIN_RIGHT_VICTOR, MIN_OUTPUT, MAX_OUTPUT);
+    rightVictor = new WPI_VictorSPX(RobotMap.DRIVETRAIN_RIGHT_VICTOR);
+    leftGroup = new SpeedControllerGroup(leftTalon, leftVictor);
     rightGroup = new SpeedControllerGroup(rightTalon, rightVictor);
     differentialDrive = new DifferentialDrive(leftGroup, rightGroup);
-  }
+//    differentialDrive = new DifferentialDrive(leftTalon, rightTalon);
+//    differentialDrive = new DifferentialDrive(leftVictor, rightVictor);
+} 
 
   public void tankDrive(double leftSpeed, double rightSpeed) {
     logger.info("tank drive left: " + leftSpeed + " right: " + rightSpeed);
     leftGroup.set(leftSpeed);
+//    leftTalon.set(leftSpeed);
+//    leftVictor.set(leftSpeed);
     rightGroup.set(rightSpeed);
+//    rightTalon.set(rightSpeed);
+//    rightVictor.set(rightSpeed);
   }
 
   public void arcadeDrive(double moveSpeed, double rotateSpeed) {
     logger.info("arcade drive movespeed: " + moveSpeed + " rotatespeed: " + rotateSpeed);
+    logger.detail("leftGroup: " + leftTalon.get() + " rightGroup: " + rightTalon.get());
     differentialDrive.arcadeDrive(moveSpeed, rotateSpeed);
   }
 
   public void curvatureDrive(double moveSpeed, double rotateSpeed) {
     logger.info("curvature drive movespeed: " + moveSpeed + " rotatespeed: " + rotateSpeed);
     differentialDrive.curvatureDrive(moveSpeed, rotateSpeed, false);
+  }
+
+  //delete later
+  public void moveLeft(double speed){
+    logger.info("speed: " + speed);
+    leftTalon.set(speed);
   }
 
   public int getLeftPosition() {

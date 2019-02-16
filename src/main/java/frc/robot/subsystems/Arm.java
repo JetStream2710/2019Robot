@@ -30,7 +30,7 @@ public class Arm extends Subsystem {
   private static final double MAX_VELOCITY = (1024.0 / 4) / 1000; // 1/4 revolution per second, in millis
 
   // CHECK
-  public static final int[] VERTICAL_HATCH_POSITIONS = new int[] {0, 0, 0, 0};
+  public static final int[] VERTICAL_HATCH_POSITIONS = new int[] {0, 200, 500, 700};
   public static final int[] VERTICAL_CARGO_POSITIONS = new int[] {0, 0, 0, 0};
   public static final int[] SWIVEL_HATCH_POSITIONS = new int[] {0, 0, 0, 0};
   public static final int[] SWIVEL_CARGO_POSITIONS = new int[] {0, 0, 0, 0};
