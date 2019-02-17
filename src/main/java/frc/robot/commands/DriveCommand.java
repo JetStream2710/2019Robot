@@ -27,10 +27,12 @@ public class DriveCommand extends Command {
     double moveSpeed = Robot.oi.drivestick.getRawAxis(OI.DRIVER_MOVE_AXIS);
     double rotateSpeed = Robot.oi.drivestick.getRawAxis(OI.DRIVER_ROTATE_AXIS);
     logger.detail("execute moveSpeed: " + moveSpeed + " rotateSpeed: " + rotateSpeed);
-//    Robot.drivetrain.arcadeDrive(moveSpeed, rotateSpeed);
-    Robot.drivetrain.tankDrive(moveSpeed, rotateSpeed);
-//    Robot.drivetrain.moveLeft(moveSpeed);
-}
+    if (Math.abs(moveSpeed) < 0.1) {
+      Robot.drivetrain.arcadeDrive(moveSpeed, rotateSpeed);
+    } else {
+      Robot.drivetrain.curvatureDrive(moveSpeed, rotateSpeed);
+    }
+  }
 
   @Override
   protected boolean isFinished() {

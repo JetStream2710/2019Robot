@@ -10,7 +10,7 @@ public class SwitchToCargo extends Command {
 
   public SwitchToCargo() {
     logger.detail("constructor");
-    requires(Robot.arm);
+    requires(Robot.climb);
   }
 
   @Override

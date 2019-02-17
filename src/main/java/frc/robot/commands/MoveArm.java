@@ -1,22 +1,25 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.OI;
 import frc.robot.Robot;
 import frc.robot.util.Logger;
 
-public class SwitchToHatch extends Command {
+public class MoveArm extends Command {
 
-  private Logger logger = new Logger(SwitchToHatch.class.getName());
+  private Logger logger = new Logger(MoveArm.class.getName());
 
-  public SwitchToHatch() {
+  private int position;
+  public MoveArm(int position) {
     logger.detail("constructor");
     requires(Robot.climb);
+    this.position = position;
   }
 
   @Override
   protected void initialize() {
-    logger.info("initialize");
-    Robot.switchToHatchMode();
+    logger.detail("initailize");
+    Robot.arm.setVerticalPosition(position);
   }
 
   @Override
@@ -27,12 +30,12 @@ public class SwitchToHatch extends Command {
   @Override
   protected boolean isFinished() {
     logger.detail("finished");
-    return true;
+    return Math.abs(Robot.arm.getVerticalArmPosition() - position) < 20;
   }
 
   @Override
   protected void end() {
-    logger.info("end");
+    logger.warning("end");
   }
 
   @Override

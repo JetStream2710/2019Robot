@@ -36,6 +36,10 @@ public class JetstreamTalon implements SpeedController {
     sendTelemetry();
   }
 
+  public void reset() {
+    talon.setSelectedSensorPosition(0);
+  }
+
   public int getPosition() {
     return invertPosition ? -talon.getSelectedSensorPosition() : talon.getSelectedSensorPosition();
   }
@@ -63,6 +67,10 @@ public class JetstreamTalon implements SpeedController {
     SmartDash.put(String.format("%s [%d] firmware version:", name, talon.getDeviceID()), talon.getFirmwareVersion());
     SmartDash.put(String.format("%s [%d] position:", name, talon.getDeviceID()), getPosition());
     SmartDash.put(String.format("%s [%d] velocity:", name, talon.getDeviceID()), getVelocity());
+  }
+
+  public double getVoltage() {
+    return talon.getMotorOutputVoltage();
   }
 
   // SpeedController functions

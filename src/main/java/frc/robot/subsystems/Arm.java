@@ -10,10 +10,10 @@ import frc.robot.util.SmartDash;
 
 public class Arm extends Subsystem {
 
-  public static final int VERTICAL_MAX = 0;
-  public static final int VERTICAL_MIN = -3000;
-  public static final double VERTICAL_MIN_OUTPUT = -0.3;
-  public static final double VERTICAL_MAX_OUTPUT = 0.1;
+  public static final int VERTICAL_MAX = 3500;
+  public static final int VERTICAL_MIN = 0;
+  public static final double VERTICAL_MIN_OUTPUT = -0.09;
+  public static final double VERTICAL_MAX_OUTPUT = 0.4;
 
   public static final int SWIVEL_MAX = 3500;
   public static final int SWIVEL_MIN = -3500;
@@ -24,16 +24,16 @@ public class Arm extends Subsystem {
   private static final int SLOW_MOVEMENT_THRESHOLD = 1024 / 5;
   private static final int FINE_MOVEMENT_THRESHOLD = 1024 / 50;
   private static final double FINE_INCREMENT = 0.001;
-  private static final double STOP_SPEED = -0.18;
+  private static final double STOP_SPEED = 0.22;
   private static final double ENCODER_TO_RADIANS = Math.PI / 7000;
 
   private static final double MAX_VELOCITY = (1024.0 / 4) / 1000; // 1/4 revolution per second, in millis
 
   // CHECK
-  public static final int[] VERTICAL_HATCH_POSITIONS = new int[] {0, 200, 500, 700};
-  public static final int[] VERTICAL_CARGO_POSITIONS = new int[] {0, 0, 0, 0};
-  public static final int[] SWIVEL_HATCH_POSITIONS = new int[] {0, 0, 0, 0};
-  public static final int[] SWIVEL_CARGO_POSITIONS = new int[] {0, 0, 0, 0};
+  public static final int[] VERTICAL_HATCH_POSITIONS = new int[] {0, -1900, -2050, -2050};
+  public static final int[] VERTICAL_CARGO_POSITIONS = new int[] {0, -2500, -2500, -2500};
+  public static final int[] SWIVEL_HATCH_POSITIONS = new int[] {0, -980, -980, -980};
+  public static final int[] SWIVEL_CARGO_POSITIONS = new int[] {0, -1600, -1600, -1600};
 
   private Logger logger = new Logger(Arm.class.getName());
   private JetstreamTalon verticalTalon;
@@ -49,7 +49,7 @@ public class Arm extends Subsystem {
     super();
     logger.detail("constructor");
 
-    verticalTalon = new JetstreamTalon("Arm Talon", RobotMap.ARM_VERTICAL_TALON, VERTICAL_MIN, VERTICAL_MAX, VERTICAL_MIN_OUTPUT, VERTICAL_MAX_OUTPUT, true);
+    verticalTalon = new JetstreamTalon("Arm Talon", RobotMap.ARM_VERTICAL_TALON, VERTICAL_MIN, VERTICAL_MAX, VERTICAL_MIN_OUTPUT, VERTICAL_MAX_OUTPUT, false);
     swivelTalon = new JetstreamTalon("Swivel Talon", RobotMap.ARM_SWIVEL_TALON, SWIVEL_MIN, SWIVEL_MAX, SWIVEL_MIN_OUTPUT, SWIVEL_MAX_OUTPUT, true);
 
     lastTimestamp = System.currentTimeMillis();
@@ -134,7 +134,37 @@ public class Arm extends Subsystem {
     return currentLevel;
   }
 
+  public void reset() {
+    verticalTalon.reset();
+    swivelTalon.reset();
+  }
+
+  private boolean doNextPeriodic3 = false;
+  public void periodic9(long timestamp) {
+    if (verticalTalon.getPosition() > targetVerticalPosition - 20) {
+      doNextPeriodic3 = true;
+    }
+    if (doNextPeriodic3) {
+      periodic3(timestamp);
+    } else {
+      periodic(timestamp);
+      nextChangeTimestamp = timestamp;
+    }
+  }
+
+  private long nextChangeTimestamp = 0;
+  private double nextSpeed = STOP_SPEED;
+  public void periodic3(long timestamp) {
+    if (System.currentTimeMillis() > nextChangeTimestamp) {
+      nextSpeed += 0.01;
+      nextChangeTimestamp = System.currentTimeMillis() + 1000;
+      verticalTalon.set(nextSpeed);
+    }
+    logger.info("Arm encoder: " + verticalTalon.getPosition() + " speed: " + verticalTalon.get() + " voltage: " + verticalTalon.getVoltage());
+  }
+
   public void periodic(long timestamp) {
+    logger.info("Arm encoder: " + verticalTalon.getPosition() + " swivel: " + swivelTalon.getPosition() + " target: " + targetVerticalPosition);
     verticalTalon.sendTelemetry();
     swivelTalon.sendTelemetry();
     SmartDash.put("Arm Level", currentLevel);
@@ -185,7 +215,7 @@ public class Arm extends Subsystem {
   }
 
   private void autoMoveFast(int currentPosition, int targetPosition, int relativePosition, JetstreamTalon talon, double minOutput, double maxOutput) {
-    double speed = relativePosition > 0 ? maxOutput : minOutput;
+    double speed = relativePosition < 0 ? minOutput : maxOutput;
     logger.detail(String.format("autoMoveFast speed: %.4f current-position: %d target-position: %d relative-position: %d",
         speed, currentPosition, targetPosition, relativePosition));
     talon.set(speed);
@@ -206,6 +236,14 @@ public class Arm extends Subsystem {
   private void autoMoveFine(int currentPosition, int targetPosition, int relativePosition, JetstreamTalon talon, double maxOutput) {
     double increment = relativePosition > 0 ? FINE_INCREMENT : -FINE_INCREMENT;
     double speed = verticalTalon.get() + increment;
+    /*
+    if(speed < 0 && speed > -0.1){
+      speed = -0.1;
+    }
+    else if(speed > 0 && speed < 0.1){
+      speed = 0.1;
+    }
+    */
     logger.detail(String.format("autoMoveFine speed: %.4f increment: %.4f current-position: %d target-position: %d relative-position: %d",
         speed, increment, currentPosition, targetPosition, relativePosition));
     talon.set(speed);
@@ -213,7 +251,7 @@ public class Arm extends Subsystem {
 
   private void autoMoveStop(JetstreamTalon talon) {
     double angleInRadians = ENCODER_TO_RADIANS * talon.getPosition();
-    double speed = STOP_SPEED * Math.cos(angleInRadians);
+    double speed = STOP_SPEED;// * Math.cos(angleInRadians);
     logger.detail(String.format("autoMoveStop speed: %.4f angle %.4f", speed, Math.toDegrees(angleInRadians)));
     talon.set(speed);
   }

@@ -20,15 +20,17 @@ public class RobotMap {
   public static final int CARGO_VICTOR = 11;
 
   // arm
-  public static final int ARM_VERTICAL_TALON = 13;
-  public static final int ARM_SWIVEL_TALON = 12;
+  // label as, but also mislabelled
+  public static final int ARM_VERTICAL_TALON = 12;
+  // label as, but also mislabelled
+  public static final int ARM_SWIVEL_TALON = 13;
   // climb
-  public static final int CLIMB_FRONT_VICTOR = 9;
-  public static final int CLIMB_BACK_VICTOR = 4;
+  public static final int CLIMB_FRONT_VICTOR = 4;
+  public static final int CLIMB_BACK_VICTOR = 9;
   public static final int CLIMB_MOVE_VICTOR = 5;
 
   // pneumatics
   public static final int PCM_NODE = 0;
-  public static final int HATCH_SOLENOID_ON = 0;
-  public static final int HATCH_SOLENOID_OFF = 1;
+  public static final int HATCH_SOLENOID_ON = 2;
+  public static final int HATCH_SOLENOID_OFF = 3;
 }

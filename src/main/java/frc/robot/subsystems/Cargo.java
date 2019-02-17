@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
+
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
 import frc.robot.util.JetstreamVictor;
@@ -11,13 +13,15 @@ public class Cargo extends Subsystem {
   public static final double SPEED_OUT = 0.5;
 
   private Logger logger = new Logger(Cargo.class.getName());
-  private JetstreamVictor victor;
+//  private JetstreamVictor victor;
+  private WPI_VictorSPX victor;
 
   public Cargo() {
     super();
     logger.detail("constructor");
 
-    victor = new JetstreamVictor("Cargo Victor", RobotMap.CARGO_VICTOR, SPEED_IN, SPEED_OUT);
+//    victor = new JetstreamVictor("Cargo Victor", RobotMap.CARGO_VICTOR, SPEED_IN, SPEED_OUT);
+    victor = new WPI_VictorSPX(RobotMap.CARGO_VICTOR);
   }
 
   // CHECK THESE VALUES

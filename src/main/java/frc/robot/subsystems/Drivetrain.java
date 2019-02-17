@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
@@ -20,12 +21,14 @@ public class Drivetrain extends Subsystem {
   public static final double MAX_OUTPUT = 1.0;
   private Logger logger = new Logger(Drivetrain.class.getName());
 
-  private JetstreamTalon leftTalon;
+//  private JetstreamTalon leftTalon;
 //  private JetstreamVictor leftVictor;
   private WPI_VictorSPX leftVictor;
-  private JetstreamTalon rightTalon;
+  private WPI_TalonSRX leftTalon;
+//  private JetstreamTalon rightTalon;
 //  private JetstreamVictor rightVictor;
   private WPI_VictorSPX rightVictor;
+  private WPI_TalonSRX rightTalon;
 
   private SpeedControllerGroup leftGroup;
   private SpeedControllerGroup rightGroup;
@@ -36,12 +39,14 @@ public class Drivetrain extends Subsystem {
     super();
     logger.detail("constructor");
 
-    leftTalon = new JetstreamTalon("Drivetrain Left Talon", RobotMap.DRIVETRAIN_LEFT_TALON, MIN_POSITION, MAX_POSITION, MIN_OUTPUT, MAX_OUTPUT, false);
+//    leftTalon = new JetstreamTalon("Drivetrain Left Talon", RobotMap.DRIVETRAIN_LEFT_TALON, MIN_POSITION, MAX_POSITION, MIN_OUTPUT, MAX_OUTPUT, false);
 //    leftVictor = new JetstreamVictor("Drivetrain Left Victor", RobotMap.DRIVETRAIN_LEFT_VICTOR, MIN_OUTPUT, MAX_OUTPUT);
     leftVictor = new WPI_VictorSPX(RobotMap.DRIVETRAIN_LEFT_VICTOR);
-    rightTalon = new JetstreamTalon("Drivetrain Right Talon", RobotMap.DRIVETRAIN_RIGHT_TALON, MIN_POSITION, MAX_POSITION, MIN_OUTPUT, MAX_OUTPUT, false);
+    leftTalon = new WPI_TalonSRX(RobotMap.DRIVETRAIN_LEFT_TALON);
+//    rightTalon = new JetstreamTalon("Drivetrain Right Talon", RobotMap.DRIVETRAIN_RIGHT_TALON, MIN_POSITION, MAX_POSITION, MIN_OUTPUT, MAX_OUTPUT, false);
 //    rightVictor = new JetstreamVictor("Drivetrain Right Victor", RobotMap.DRIVETRAIN_RIGHT_VICTOR, MIN_OUTPUT, MAX_OUTPUT);
     rightVictor = new WPI_VictorSPX(RobotMap.DRIVETRAIN_RIGHT_VICTOR);
+    rightTalon = new WPI_TalonSRX(RobotMap.DRIVETRAIN_RIGHT_TALON);
     leftGroup = new SpeedControllerGroup(leftTalon, leftVictor);
     rightGroup = new SpeedControllerGroup(rightTalon, rightVictor);
     differentialDrive = new DifferentialDrive(leftGroup, rightGroup);

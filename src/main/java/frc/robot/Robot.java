@@ -1,5 +1,7 @@
 package frc.robot;
 
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -10,6 +12,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.AutoCargo3;
 import frc.robot.commands.AutoCargo4;
 import frc.robot.commands.AutoCargo5;
+import frc.robot.commands.TestAuto;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Cargo;
 import frc.robot.subsystems.Climb;
@@ -84,6 +87,9 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     logger.detail("autonomousInit");
     isAuto = true;
+    // get rid of reset when we want to start with the arm up
+    arm.reset();
+    elevator.reset();
 
     autonomousCommand = autoChooser.getSelected();
     autonomousCommand.start();
@@ -100,6 +106,9 @@ public class Robot extends TimedRobot {
   public void teleopInit() {
     logger.detail("teleopInit");
     isAuto = false;
+    // get rid of reset when we want to start with the arm up
+    arm.reset();
+    elevator.reset();
   }
 
   @Override
@@ -127,10 +136,12 @@ public class Robot extends TimedRobot {
   public static void switchToHatchMode() {
     logger.info("isHatchMode mode on");
     isHatchMode = true;
+    arm.setLevel(arm.getLevel());
   }
 
   public static void switchToCargoMode() {
     logger.info("isHatchMode mode off");
     isHatchMode = false;
+    arm.setLevel(arm.getLevel());
   }
 }

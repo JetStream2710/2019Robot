@@ -4,7 +4,6 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 import edu.wpi.first.wpilibj.SpeedController;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class JetstreamVictor implements SpeedController {
 
@@ -26,6 +25,7 @@ public class JetstreamVictor implements SpeedController {
     victor.enableVoltageCompensation(true);
   }
 
+  /*
   public void sendTelemetry() {
     SmartDash.put(String.format("%s [%d] output:", name, victor.getDeviceID()), victor.getMotorOutputPercent());
     SmartDash.put(String.format("%s [%d] bus voltage:", name, victor.getDeviceID()), victor.getBusVoltage());
@@ -33,6 +33,7 @@ public class JetstreamVictor implements SpeedController {
     SmartDash.put(String.format("%s [%d] temperature:", name, victor.getDeviceID()), victor.getTemperature());
     SmartDash.put(String.format("%s [%d] firmware version:", name, victor.getDeviceID()), victor.getFirmwareVersion());
   }
+  */
 
   // SpeedController functions
 

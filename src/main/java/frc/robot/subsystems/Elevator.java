@@ -14,16 +14,17 @@ import frc.robot.util.SmartDash;
 
 public class Elevator extends Subsystem {
 
-  public static final int ELEVATOR_MIN = Integer.MIN_VALUE;
-  public static final int ELEVATOR_MAX = Integer.MAX_VALUE;
-  public static final double ELEVATOR_MIN_OUTPUT = -0.3;
-  public static final double ELEVATOR_MAX_OUTPUT = 0.3;
+  public static final int ELEVATOR_MIN = -54000;
+  public static final int ELEVATOR_MAX = 0;
+  public static final double ELEVATOR_MIN_OUTPUT = -0.35;
+  public static final double ELEVATOR_MAX_OUTPUT = 0.35;
 
-  private static final int FAST_MOVEMENT_THRESHOLD = 1024 / 2;
-  private static final int SLOW_MOVEMENT_THRESHOLD = 1024 / 5;
-  private static final int FINE_MOVEMENT_THRESHOLD = 1024 / 50;
+  private static final int FAST_MOVEMENT_THRESHOLD = 1024 * 4;
+  private static final int SLOW_MOVEMENT_THRESHOLD = 1024 / 4;
+  private static final int FINE_MOVEMENT_THRESHOLD = 1024 / 25;
   private static final double FINE_INCREMENT = 0.001;
-  private static final double STOP_SPEED = 0;
+  private static final double STOP_SPEED = -0.18;
+  private static final double MIN_UP_SPEED = STOP_SPEED - .02;
 
   private static final double MAX_VELOCITY = (1024.0 / 4) / 1000; // 1/4 revolution per second, in millis
   
@@ -53,6 +54,8 @@ public class Elevator extends Subsystem {
 
     lastTimestamp = System.currentTimeMillis();
     lastElevatorPosition = talon.getPosition();
+
+    targetElevatorPosition = -10000;
   }
 
   public int getPosition() {
@@ -98,6 +101,10 @@ public class Elevator extends Subsystem {
     return currentLevel;
   }
 
+  public void reset() {
+    talon.reset();
+  }
+
   public void periodic(long timestamp) {
     talon.sendTelemetry();
     SmartDash.put("Elevator Level", currentLevel);
@@ -130,13 +137,13 @@ public class Elevator extends Subsystem {
   }
 
   private void autoMoveSlow(int currentPosition, int targetPosition, int relativePosition, double minOutput, double maxOutput) {
-    double ratio = Math.abs(relativePosition / FAST_MOVEMENT_THRESHOLD);
+    double ratio = Math.abs((double) relativePosition / (FAST_MOVEMENT_THRESHOLD + 1000));
     double speed = relativePosition < 0 ? minOutput * ratio : maxOutput * ratio;
     // If we're moving up (in the negative direction), apply a min speed to prevent stalling.
-    if (speed < 0 && speed > -0.2) {
-      speed = -0.2;
+    if (speed < 0 && speed > -.13) {
+      speed = -.15;
     }
-    logger.detail(String.format("autoMoveSlow speed: %.4f ratio: %.4f current-position: %d target-position: %d relative-position: %d",
+    logger.detail(String.format("autoMoveSlow speed: %f ratio: %f current-position: %d target-position: %d relative-position: %d",
         speed, ratio, currentPosition, targetPosition, relativePosition));
     group.set(speed);
   }
@@ -144,13 +151,19 @@ public class Elevator extends Subsystem {
   private void autoMoveFine(int currentPosition, int targetPosition, int relativePosition, double maxOutput) {
     double increment = relativePosition > 0 ? FINE_INCREMENT : -FINE_INCREMENT;
     double speed = talon.get() + increment;
-    logger.detail(String.format("autoMoveFine speed: %.4f increment: %.4f current-position: %d target-position: %d relative-position: %d",
+    if (speed < 0 && speed > MIN_UP_SPEED) {
+      speed = MIN_UP_SPEED;
+    }
+    logger.detail(String.format("autoMoveFine speed: %f increment: %f current-position: %d target-position: %d relative-position: %d",
         speed, increment, currentPosition, targetPosition, relativePosition));
     group.set(speed);
   }
 
   private void autoMoveStop() {
-    logger.detail(String.format("autoMoveStop speed: %.4f angle %.4f", STOP_SPEED));
+    int elevatorPosition = talon.getPosition();
+    int relativePosition = targetElevatorPosition - elevatorPosition;
+    logger.detail(String.format("autoMoveStop speed: %f current-position: %d target-position: %d relative-position: %d",
+     STOP_SPEED, elevatorPosition, targetElevatorPosition, relativePosition));
     group.set(STOP_SPEED);
   }
 
