@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
@@ -15,10 +16,10 @@ import frc.robot.util.Logger;
 // TODO: add speed limits
 public class Drivetrain extends Subsystem {
 
-  public static final int MIN_POSITION = Integer.MIN_VALUE;
-  public static final int MAX_POSITION = Integer.MAX_VALUE;
-  public static final double MIN_OUTPUT = -1.0;
-  public static final double MAX_OUTPUT = 1.0;
+//  public static final int MIN_POSITION = Integer.MIN_VALUE;
+//  public static final int MAX_POSITION = Integer.MAX_VALUE;
+//  public static final double MIN_OUTPUT = -1.0;
+//  public static final double MAX_OUTPUT = 1.0;
   private Logger logger = new Logger(Drivetrain.class.getName());
 
 //  private JetstreamTalon leftTalon;
@@ -41,18 +42,35 @@ public class Drivetrain extends Subsystem {
 
 //    leftTalon = new JetstreamTalon("Drivetrain Left Talon", RobotMap.DRIVETRAIN_LEFT_TALON, MIN_POSITION, MAX_POSITION, MIN_OUTPUT, MAX_OUTPUT, false);
 //    leftVictor = new JetstreamVictor("Drivetrain Left Victor", RobotMap.DRIVETRAIN_LEFT_VICTOR, MIN_OUTPUT, MAX_OUTPUT);
-    leftVictor = new WPI_VictorSPX(RobotMap.DRIVETRAIN_LEFT_VICTOR);
     leftTalon = new WPI_TalonSRX(RobotMap.DRIVETRAIN_LEFT_TALON);
+    leftTalon.setSafetyEnabled(false);
+    leftTalon.setNeutralMode(NeutralMode.Brake);
+    leftTalon.configVoltageCompSaturation(12);
+    leftTalon.enableVoltageCompensation(true);
+    leftVictor = new WPI_VictorSPX(RobotMap.DRIVETRAIN_LEFT_VICTOR);
+    leftVictor.setSafetyEnabled(false);
+    leftVictor.setNeutralMode(NeutralMode.Brake);
+    leftVictor.configVoltageCompSaturation(12);
+    leftVictor.enableVoltageCompensation(true);
 //    rightTalon = new JetstreamTalon("Drivetrain Right Talon", RobotMap.DRIVETRAIN_RIGHT_TALON, MIN_POSITION, MAX_POSITION, MIN_OUTPUT, MAX_OUTPUT, false);
 //    rightVictor = new JetstreamVictor("Drivetrain Right Victor", RobotMap.DRIVETRAIN_RIGHT_VICTOR, MIN_OUTPUT, MAX_OUTPUT);
-    rightVictor = new WPI_VictorSPX(RobotMap.DRIVETRAIN_RIGHT_VICTOR);
     rightTalon = new WPI_TalonSRX(RobotMap.DRIVETRAIN_RIGHT_TALON);
+    rightTalon.setSafetyEnabled(false);
+    rightTalon.setNeutralMode(NeutralMode.Brake);
+    rightTalon.configVoltageCompSaturation(12);
+    rightTalon.enableVoltageCompensation(true);
+    rightVictor = new WPI_VictorSPX(RobotMap.DRIVETRAIN_RIGHT_VICTOR);
+    rightVictor.setSafetyEnabled(false);
+    rightVictor.setNeutralMode(NeutralMode.Brake);
+    rightVictor.configVoltageCompSaturation(12);
+    rightVictor.enableVoltageCompensation(true);
+    
     leftGroup = new SpeedControllerGroup(leftTalon, leftVictor);
     rightGroup = new SpeedControllerGroup(rightTalon, rightVictor);
     differentialDrive = new DifferentialDrive(leftGroup, rightGroup);
 //    differentialDrive = new DifferentialDrive(leftTalon, rightTalon);
 //    differentialDrive = new DifferentialDrive(leftVictor, rightVictor);
-} 
+}
 
   public void tankDrive(double leftSpeed, double rightSpeed) {
     logger.info("tank drive left: " + leftSpeed + " right: " + rightSpeed);
@@ -75,20 +93,12 @@ public class Drivetrain extends Subsystem {
     differentialDrive.curvatureDrive(moveSpeed, rotateSpeed, false);
   }
 
-  //delete later
-  public void moveLeft(double speed){
-    logger.info("speed: " + speed);
-    leftTalon.set(speed);
-  }
-
   public int getLeftPosition() {
-    return 0;
-//    return leftTalon.getPosition();
+    return leftTalon.getSelectedSensorPosition();
   }
 
   public int getRightPosition() {
-    return 0;
-//    return rightTalon.getPosition();
+    return rightTalon.getSelectedSensorPosition();
   }
 
   @Override

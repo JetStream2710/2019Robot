@@ -32,6 +32,7 @@ public class Logger {
     
     // Commands
     LOG_LEVELS.put(MoveArm.class.getName(), Level.INFO);
+    LOG_LEVELS.put(CalibratePosition.class.getName(), Level.INFO);
     LOG_LEVELS.put(CargoIntake.class.getName(), Level.WARNING);
     LOG_LEVELS.put(CargoOuttake.class.getName(), Level.WARNING);
     LOG_LEVELS.put(ClimbFrontExtend.class.getName(), Level.WARNING);

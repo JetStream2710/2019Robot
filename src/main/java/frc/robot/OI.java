@@ -27,6 +27,7 @@ public class OI {
   public static final int SWITCH_TO_CARGO = 3; // aux B
   public static final int WEAPONS_UP = 4;      // aux Y
   public static final int WEAPONS_DOWN = 2;    // aux A
+  public static final int CALIBRATE = 7;       // aux LT
 
   // controllers defined
   public Joystick drivestick = new Joystick(JOYSTICK_DRIVER);
@@ -41,6 +42,7 @@ public class OI {
   public Button switchToCargo = new JoystickButton(auxstick, SWITCH_TO_CARGO);
   public Button weaponsUp = new JoystickButton(auxstick, WEAPONS_UP);
   public Button weaponsDown = new JoystickButton(auxstick, WEAPONS_DOWN);
+  public Button calibrate = new JoystickButton(auxstick, CALIBRATE);
 
   public OI() {
     cargoIntake.whileHeld(new CargoIntake());
@@ -51,5 +53,6 @@ public class OI {
     switchToCargo.whenPressed(new SwitchToCargo());
     weaponsUp.whenPressed(new WeaponsUp());
     weaponsDown.whenPressed(new WeaponsDown());
+    calibrate.whenPressed(new CalibratePosition());
   }
 }

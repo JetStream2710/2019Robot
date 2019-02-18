@@ -56,6 +56,16 @@ public class Arm extends Subsystem {
     lastVerticalPosition = verticalTalon.getPosition();
   }
 
+  public void calibrate() {
+    if (Robot.isHatchMode) {
+      VERTICAL_HATCH_POSITIONS[currentLevel] = getVerticalArmPosition();
+      SWIVEL_HATCH_POSITIONS[currentLevel] = getSwivelPosition();
+    } else {
+      VERTICAL_CARGO_POSITIONS[currentLevel] = getVerticalArmPosition();
+      SWIVEL_CARGO_POSITIONS[currentLevel] = getSwivelPosition();
+    }
+  }
+
   public int getVerticalArmPosition() {
     return verticalTalon.getPosition();
   }
@@ -236,23 +246,17 @@ public class Arm extends Subsystem {
   private void autoMoveFine(int currentPosition, int targetPosition, int relativePosition, JetstreamTalon talon, double maxOutput) {
     double increment = relativePosition > 0 ? FINE_INCREMENT : -FINE_INCREMENT;
     double speed = verticalTalon.get() + increment;
-    /*
-    if(speed < 0 && speed > -0.1){
-      speed = -0.1;
-    }
-    else if(speed > 0 && speed < 0.1){
-      speed = 0.1;
-    }
-    */
     logger.detail(String.format("autoMoveFine speed: %.4f increment: %.4f current-position: %d target-position: %d relative-position: %d",
         speed, increment, currentPosition, targetPosition, relativePosition));
     talon.set(speed);
   }
 
   private void autoMoveStop(JetstreamTalon talon) {
-    double angleInRadians = ENCODER_TO_RADIANS * talon.getPosition();
-    double speed = STOP_SPEED;// * Math.cos(angleInRadians);
-    logger.detail(String.format("autoMoveStop speed: %.4f angle %.4f", speed, Math.toDegrees(angleInRadians)));
+//    double angleInRadians = ENCODER_TO_RADIANS * talon.getPosition();
+//    double speed = STOP_SPEED;// * Math.cos(angleInRadians);
+//    logger.detail(String.format("autoMoveStop speed: %.4f angle %.4f", speed, Math.toDegrees(angleInRadians)));
+    double speed = getStopSpeed();
+    logger.detail(String.format("autoMoveStop speed: %.4f", speed));
     talon.set(speed);
   }
 
@@ -268,6 +272,15 @@ public class Arm extends Subsystem {
     logger.detail(String.format("autoMoveVelocity speed: %.4f target-velocity: %.4f velocity-ratio: %.4f ratio: %.4f current-velocity: %.4f relative-position: %d currentPosition: %d time-delta: %d",
       speed, targetVelocity, velocityRatio, ratio, velocity, relativePosition, position, timeDelta));
     verticalTalon.set(speed);
+  }
+
+   /**
+    * @return calculated stopping speed based on previously determined quantity of vroom graph
+    */
+  public double getStopSpeed() {
+    double position = verticalTalon.getPosition();
+    double speed = (-0.0000456 * position) + 0.35;
+    return (position > 2750) ? 0.21 : speed;
   }
 
   @Override

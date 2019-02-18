@@ -30,12 +30,12 @@ public class ElevatorAndArmMove extends Command {
     int dPov = Robot.oi.auxstick.getPOV();
     if (dPov == 0) {
       int position = Robot.arm.getSwivelPosition();
-      int target = position + 250;
+      int target = position + 300;
       logger.info(String.format("execute swivel: target: %d current %d", target, position));
       Robot.arm.setSwivelPosition(target);
     } else if (dPov == 180) {
       int position = Robot.arm.getSwivelPosition();
-      int target = position - 250;
+      int target = position - 300;
       logger.info(String.format("execute swivel: target: %d current %d", target, position));
       Robot.arm.setSwivelPosition(target);
     }
@@ -69,9 +69,10 @@ public class ElevatorAndArmMove extends Command {
       Robot.elevator.elevatorMove(elevatorSpeed);
     }
     // Arm Joystick
-    double armSpeed = Robot.oi.auxstick.getRawAxis(OI.ARM_AXIS);
+    double armSpeed = -1 * Robot.oi.auxstick.getRawAxis(OI.ARM_AXIS);
     if (armSpeed > 0.08 || armSpeed < -0.08) {
       int position = Robot.arm.getVerticalArmPosition();
+      // TODO: investigate changing this
       int target = position + (int) (armSpeed * 600);
       logger.info(String.format("execute arm: target: %d current %d", target, position));
       Robot.arm.setVerticalPosition(target);

@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -22,6 +23,10 @@ public class Cargo extends Subsystem {
 
 //    victor = new JetstreamVictor("Cargo Victor", RobotMap.CARGO_VICTOR, SPEED_IN, SPEED_OUT);
     victor = new WPI_VictorSPX(RobotMap.CARGO_VICTOR);
+    victor.setSafetyEnabled(false);
+    victor.setNeutralMode(NeutralMode.Brake);
+    victor.configVoltageCompSaturation(12);
+    victor.enableVoltageCompensation(true);
   }
 
   // CHECK THESE VALUES

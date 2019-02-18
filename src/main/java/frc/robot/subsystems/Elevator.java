@@ -16,10 +16,10 @@ public class Elevator extends Subsystem {
 
   public static final int ELEVATOR_MIN = -54000;
   public static final int ELEVATOR_MAX = 0;
-  public static final double ELEVATOR_MIN_OUTPUT = -0.35;
-  public static final double ELEVATOR_MAX_OUTPUT = 0.35;
+  public static final double ELEVATOR_MIN_OUTPUT = -0.4;
+  public static final double ELEVATOR_MAX_OUTPUT = 0.4;
 
-  private static final int FAST_MOVEMENT_THRESHOLD = 1024 * 4;
+  private static final int FAST_MOVEMENT_THRESHOLD = 1024 * 6;
   private static final int SLOW_MOVEMENT_THRESHOLD = 1024 / 4;
   private static final int FINE_MOVEMENT_THRESHOLD = 1024 / 25;
   private static final double FINE_INCREMENT = 0.001;
@@ -55,7 +55,7 @@ public class Elevator extends Subsystem {
     lastTimestamp = System.currentTimeMillis();
     lastElevatorPosition = talon.getPosition();
 
-    targetElevatorPosition = -10000;
+//    targetElevatorPosition = -10000;
   }
 
   public int getPosition() {
@@ -68,7 +68,8 @@ public class Elevator extends Subsystem {
 
   /** Manually change the elevator move speed, like through a joystick. */
   public void elevatorMove(double speed) {
-    logger.info("elevatorMove speed: " + speed + " position: " + talon.getPosition());
+    logger.info("elevatorMove speed: " + speed + " position: " + talon.getPosition() + " talon voltage: " + talon.getVoltage()
+        + " victor voltage: " + victor.getMotorOutputVoltage());
     group.set(speed);
 //    victor.set(speed);
 //    talon.set(speed);
@@ -136,9 +137,12 @@ public class Elevator extends Subsystem {
     group.set(speed);
   }
 
+  private double minSlowSpeed = -0.23;
   private void autoMoveSlow(int currentPosition, int targetPosition, int relativePosition, double minOutput, double maxOutput) {
-    double ratio = Math.abs((double) relativePosition / (FAST_MOVEMENT_THRESHOLD + 1000));
-    double speed = relativePosition < 0 ? minOutput * ratio : maxOutput * ratio;
+    double ratio = Math.abs((double) relativePosition / (FAST_MOVEMENT_THRESHOLD));
+    minOutput = minOutput - minSlowSpeed;
+    minOutput = (minOutput * ratio) + minSlowSpeed;
+    double speed = relativePosition < 0 ? minOutput : maxOutput * ratio;
     // If we're moving up (in the negative direction), apply a min speed to prevent stalling.
     if (speed < 0 && speed > -.13) {
       speed = -.15;
@@ -179,6 +183,14 @@ public class Elevator extends Subsystem {
     logger.detail(String.format("autoMoveVelocity speed: %.4f target-velocity: %.4f velocity-ratio: %.4f ratio: %.4f current-velocity: %.4f relative-position: %d currentPosition: %d time-delta: %d",
       speed, targetVelocity, velocityRatio, ratio, velocity, relativePosition, position, timeDelta));
     group.set(speed);
+  }
+
+  public void calibrate(){
+    if (Robot.isHatchMode) {
+      HATCH_POSITIONS[currentLevel] = getPosition();
+    } else {
+      CARGO_POSITIONS[currentLevel] = getPosition();
+    }
   }
 
   @Override
