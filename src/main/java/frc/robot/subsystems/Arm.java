@@ -13,7 +13,7 @@ public class Arm extends Subsystem {
   public static final int VERTICAL_MAX = 3500;
   public static final int VERTICAL_MIN = 0;
   public static final double VERTICAL_MIN_OUTPUT = -0.09;
-  public static final double VERTICAL_MAX_OUTPUT = 0.4;
+  public static final double VERTICAL_MAX_OUTPUT = 0.6;
 
   public static final int SWIVEL_MAX = 3500;
   public static final int SWIVEL_MIN = -3500;
@@ -35,6 +35,8 @@ public class Arm extends Subsystem {
   public static final int[] SWIVEL_HATCH_POSITIONS = new int[] {0, -980, -980, -980};
   public static final int[] SWIVEL_CARGO_POSITIONS = new int[] {0, -1600, -1600, -1600};
 
+  // floor: swivel -2800
+
   private Logger logger = new Logger(Arm.class.getName());
   private JetstreamTalon verticalTalon;
   private JetstreamTalon swivelTalon;
@@ -54,6 +56,8 @@ public class Arm extends Subsystem {
 
     lastTimestamp = System.currentTimeMillis();
     lastVerticalPosition = verticalTalon.getPosition();
+
+//    targetVerticalPosition = 3000;
   }
 
   public void calibrate() {

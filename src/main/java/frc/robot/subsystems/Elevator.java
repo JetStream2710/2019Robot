@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
@@ -16,10 +17,13 @@ public class Elevator extends Subsystem {
 
   public static final int ELEVATOR_MIN = -54000;
   public static final int ELEVATOR_MAX = 0;
-  public static final double ELEVATOR_MIN_OUTPUT = -0.4;
-  public static final double ELEVATOR_MAX_OUTPUT = 0.4;
+  public static final double ELEVATOR_MIN_OUTPUT = -0.52;
+  public static final double ELEVATOR_MAX_OUTPUT = 0.2;
 
-  private static final int FAST_MOVEMENT_THRESHOLD = 1024 * 6;
+  
+  private static final int FAST_MOVEMENT_THRESHOLD = 1024 * 2;
+  //private static final int FAST_MOVEMENT_THRESHOLD = 1024 * 4; works with -0.45 min output
+  //private static final int FAST_MOVEMENT_THRESHOLD = 1024 * 6; works with -0.45 min output
   private static final int SLOW_MOVEMENT_THRESHOLD = 1024 / 4;
   private static final int FINE_MOVEMENT_THRESHOLD = 1024 / 25;
   private static final double FINE_INCREMENT = 0.001;
@@ -47,15 +51,20 @@ public class Elevator extends Subsystem {
     super();
     logger.detail("constructor");
 
-    talon = new JetstreamTalon("Elevator Talon", RobotMap.ELEVATOR_TALON, ELEVATOR_MIN, ELEVATOR_MAX, ELEVATOR_MIN_OUTPUT, ELEVATOR_MAX_OUTPUT, false);
+    talon = new JetstreamTalon("Elevator Talon", RobotMap.ELEVATOR_TALON, ELEVATOR_MIN, ELEVATOR_MAX, ELEVATOR_MIN_OUTPUT, ELEVATOR_MAX_OUTPUT, true);
 //    victor = new JetstreamVictor("Elevator Victor", RobotMap.ELEVATOR_VICTOR, ELEVATOR_MIN_OUTPUT, ELEVATOR_MAX_OUTPUT);
     victor = new WPI_VictorSPX(RobotMap.ELEVATOR_VICTOR);
+    victor.setInverted(false);
+    victor.setSafetyEnabled(false);
+    victor.setNeutralMode(NeutralMode.Brake);
+    victor.configVoltageCompSaturation(12);
+    victor.enableVoltageCompensation(true);
     group = new SpeedControllerGroup(talon, victor);
 
     lastTimestamp = System.currentTimeMillis();
     lastElevatorPosition = talon.getPosition();
 
-//    targetElevatorPosition = -10000;
+//    targetElevatorPosition = -30000;
   }
 
   public int getPosition() {
@@ -144,8 +153,15 @@ public class Elevator extends Subsystem {
     minOutput = (minOutput * ratio) + minSlowSpeed;
     double speed = relativePosition < 0 ? minOutput : maxOutput * ratio;
     // If we're moving up (in the negative direction), apply a min speed to prevent stalling.
-    if (speed < 0 && speed > -.13) {
-      speed = -.15;
+    if (getPosition() < -23000) {
+      // second stage elevator requires a larger speed limit
+      if (speed < 0 && speed > -.330) {
+        speed = -.330;
+      }
+    } else {
+      if (speed < 0 && speed > -.13) {
+        speed = -.15;
+      }
     }
     logger.detail(String.format("autoMoveSlow speed: %f ratio: %f current-position: %d target-position: %d relative-position: %d",
         speed, ratio, currentPosition, targetPosition, relativePosition));
@@ -155,8 +171,8 @@ public class Elevator extends Subsystem {
   private void autoMoveFine(int currentPosition, int targetPosition, int relativePosition, double maxOutput) {
     double increment = relativePosition > 0 ? FINE_INCREMENT : -FINE_INCREMENT;
     double speed = talon.get() + increment;
-    if (speed < 0 && speed > MIN_UP_SPEED) {
-      speed = MIN_UP_SPEED;
+    if (speed < 0 && speed > -.15) {
+      speed = -.15;
     }
     logger.detail(String.format("autoMoveFine speed: %f increment: %f current-position: %d target-position: %d relative-position: %d",
         speed, increment, currentPosition, targetPosition, relativePosition));

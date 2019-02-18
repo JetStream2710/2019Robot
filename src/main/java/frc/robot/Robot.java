@@ -91,8 +91,11 @@ public class Robot extends TimedRobot {
     arm.reset();
     elevator.reset();
 
-    autonomousCommand = autoChooser.getSelected();
-    autonomousCommand.start();
+    /*autonomousCommand = autoChooser.getSelected();
+    autonomousCommand.start();*/
+
+    TestAuto guccio = new TestAuto();
+    guccio.start();
   }
 
   @Override

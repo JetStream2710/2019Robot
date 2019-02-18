@@ -21,7 +21,7 @@ public class Logger {
     LOG_LEVELS.put(Cargo.class.getName(), Level.WARNING);
     LOG_LEVELS.put(Climb.class.getName(), Level.WARNING);
     LOG_LEVELS.put(Drivetrain.class.getName(), Level.WARNING);
-    LOG_LEVELS.put(Elevator.class.getName(), Level.DETAIL);
+    LOG_LEVELS.put(Elevator.class.getName(), Level.WARNING);
     LOG_LEVELS.put(Hatch.class.getName(), Level.WARNING);
 
     // Autonomous Commands
@@ -32,6 +32,7 @@ public class Logger {
     
     // Commands
     LOG_LEVELS.put(MoveArm.class.getName(), Level.INFO);
+    LOG_LEVELS.put(MoveElevator.class.getName(), Level.INFO);
     LOG_LEVELS.put(CalibratePosition.class.getName(), Level.INFO);
     LOG_LEVELS.put(CargoIntake.class.getName(), Level.WARNING);
     LOG_LEVELS.put(CargoOuttake.class.getName(), Level.WARNING);
