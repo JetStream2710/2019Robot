@@ -12,7 +12,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.AutoCargo3;
 import frc.robot.commands.AutoCargo4;
 import frc.robot.commands.AutoCargo5;
+import frc.robot.commands.DriveWithAdjustment;
 import frc.robot.commands.TestAuto;
+import frc.robot.commands.TurnDegrees;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Cargo;
 import frc.robot.subsystems.Climb;
@@ -93,16 +95,20 @@ public class Robot extends TimedRobot {
 
     /*autonomousCommand = autoChooser.getSelected();
     autonomousCommand.start();*/
-
+    
     TestAuto guccio = new TestAuto();
-    guccio.start();
+    TurnDegrees turn = new TurnDegrees(90, 0.6);
+    //guccio.start();
+    //AutoCargo4 auto = new AutoCargo4();
+    //auto.start();
+    turn.start();
   }
 
   @Override
   public void autonomousPeriodic() {
     logger.detail("autonomousPeriodic");
-    Scheduler.getInstance().run();
-    updateSubsystems();
+    /*Scheduler.getInstance().run();
+    updateSubsystems();*/
   }
 
   @Override
@@ -112,6 +118,8 @@ public class Robot extends TimedRobot {
     // get rid of reset when we want to start with the arm up
     arm.reset();
     elevator.reset();
+
+    DriveWithAdjustment gucci = new DriveWithAdjustment();
   }
 
   @Override

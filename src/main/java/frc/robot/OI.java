@@ -28,6 +28,8 @@ public class OI {
   public static final int WEAPONS_UP = 4;      // aux Y
   public static final int WEAPONS_DOWN = 2;    // aux A
   public static final int CALIBRATE = 7;       // aux LT
+  public static final int HATCH_HOVER = 6;     // aux RB
+  public static final int HATCH_DOWN = 8;      // aux RT
 
   // controllers defined
   public Joystick drivestick = new Joystick(JOYSTICK_DRIVER);
@@ -43,6 +45,8 @@ public class OI {
   public Button weaponsUp = new JoystickButton(auxstick, WEAPONS_UP);
   public Button weaponsDown = new JoystickButton(auxstick, WEAPONS_DOWN);
   public Button calibrate = new JoystickButton(auxstick, CALIBRATE);
+  public Button hatchHover = new JoystickButton(auxstick, HATCH_HOVER);
+  public Button hatchDown = new JoystickButton(auxstick, HATCH_DOWN);
 
   public OI() {
     cargoIntake.whileHeld(new CargoIntake());
@@ -54,5 +58,7 @@ public class OI {
     weaponsUp.whenPressed(new WeaponsUp());
     weaponsDown.whenPressed(new WeaponsDown());
     calibrate.whenPressed(new CalibratePosition());
+    hatchHover.whenPressed(new ArmHatchHover());
+    hatchDown.whileHeld(new ArmHatchDown());
   }
 }

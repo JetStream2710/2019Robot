@@ -31,6 +31,6 @@ public class RobotMap {
 
   // pneumatics
   public static final int PCM_NODE = 0;
-  public static final int HATCH_SOLENOID_ON = 2;
-  public static final int HATCH_SOLENOID_OFF = 3;
+  public static final int HATCH_SOLENOID_ON = 1;
+  public static final int HATCH_SOLENOID_OFF = 0;
 }

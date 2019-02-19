@@ -7,7 +7,7 @@ public class AutoCargo4 extends CommandGroup {
    * Add your docs here.
    */
   public AutoCargo4() {
-    addSequential(new DriveDistance(13300,0.5));
+    addSequential(new DriveForwardSeconds(13300,0.5));
     // Acquire Line
     // Install Hatch
     // Win?

@@ -15,10 +15,15 @@ public class Arm extends Subsystem {
   public static final double VERTICAL_MIN_OUTPUT = -0.09;
   public static final double VERTICAL_MAX_OUTPUT = 0.6;
 
+  public static final int VERTICAL_HATCH_HOVER_POSITION = 500;
+  public static final int VERTICAL_HATCH_DOWN_POSITION = 0;  
+
   public static final int SWIVEL_MAX = 3500;
   public static final int SWIVEL_MIN = -3500;
   public static final double SWIVEL_MIN_OUTPUT = -0.2;
   public static final double SWIVEL_MAX_OUTPUT = 0.2;
+
+  public static final int SWIVEL_HATCH_HOVER_POSITION = -2800;
 
   private static final int FAST_MOVEMENT_THRESHOLD = 1024 / 2;
   private static final int SLOW_MOVEMENT_THRESHOLD = 1024 / 5;
@@ -283,8 +288,8 @@ public class Arm extends Subsystem {
     */
   public double getStopSpeed() {
     double position = verticalTalon.getPosition();
-    double speed = (-0.0000456 * position) + 0.35;
-    return (position > 2750) ? 0.21 : speed;
+    double speed = (-0.0000456 * position) + 0.5;
+    return (position > 2750) ? 0.3 : speed;
   }
 
   @Override

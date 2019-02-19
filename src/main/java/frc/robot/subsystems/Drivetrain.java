@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import frc.robot.RobotMap;
 import frc.robot.commands.DriveCommand;
+import frc.robot.commands.DriveWithAdjustment;
 import frc.robot.util.JetstreamTalon;
 import frc.robot.util.JetstreamVictor;
 import frc.robot.util.Logger;
@@ -89,8 +90,27 @@ public class Drivetrain extends Subsystem {
   }
 
   public void curvatureDrive(double moveSpeed, double rotateSpeed) {
+    if (moveSpeed < 0) {
+      moveSpeed = -1 * moveSpeed * moveSpeed;
+    } else {
+      moveSpeed = moveSpeed * moveSpeed;
+    }
     logger.info("curvature drive movespeed: " + moveSpeed + " rotatespeed: " + rotateSpeed);
     differentialDrive.curvatureDrive(moveSpeed, rotateSpeed, false);
+  }
+
+  public void setBrakeMode() {
+    leftTalon.setNeutralMode(NeutralMode.Brake);
+    leftVictor.setNeutralMode(NeutralMode.Brake);
+    rightTalon.setNeutralMode(NeutralMode.Brake);
+    rightVictor.setNeutralMode(NeutralMode.Brake);
+  }
+
+  public void setCoastMode() {
+    leftTalon.setNeutralMode(NeutralMode.Coast);
+    leftVictor.setNeutralMode(NeutralMode.Coast);
+    rightTalon.setNeutralMode(NeutralMode.Coast);
+    rightVictor.setNeutralMode(NeutralMode.Coast);
   }
 
   public int getLeftPosition() {
@@ -103,6 +123,6 @@ public class Drivetrain extends Subsystem {
 
   @Override
   public void initDefaultCommand() {
-    setDefaultCommand(new DriveCommand());
+    setDefaultCommand(new DriveWithAdjustment());
   }
 }
