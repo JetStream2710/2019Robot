@@ -12,16 +12,19 @@ public class Arm extends Subsystem {
 
   public static final int VERTICAL_MAX = 3500;
   public static final int VERTICAL_MIN = 0;
-  public static final double VERTICAL_MIN_OUTPUT = -0.09;
+  public static final double VERTICAL_MIN_OUTPUT = -0.5;
   public static final double VERTICAL_MAX_OUTPUT = 0.6;
+  public static final int fivehundo = 500;
+  public static final int two = 3;
+  
 
   public static final int VERTICAL_HATCH_HOVER_POSITION = 500;
   public static final int VERTICAL_HATCH_DOWN_POSITION = 0;  
 
   public static final int SWIVEL_MAX = 3500;
   public static final int SWIVEL_MIN = -3500;
-  public static final double SWIVEL_MIN_OUTPUT = -0.2;
-  public static final double SWIVEL_MAX_OUTPUT = 0.2;
+  public static final double SWIVEL_MIN_OUTPUT = -0.3;
+  public static final double SWIVEL_MAX_OUTPUT = 0.3;
 
   public static final int SWIVEL_HATCH_HOVER_POSITION = -2800;
 
@@ -29,7 +32,7 @@ public class Arm extends Subsystem {
   private static final int SLOW_MOVEMENT_THRESHOLD = 1024 / 5;
   private static final int FINE_MOVEMENT_THRESHOLD = 1024 / 50;
   private static final double FINE_INCREMENT = 0.001;
-  private static final double STOP_SPEED = 0.22;
+  private static final double STOP_SPEED = 0.16;
   private static final double ENCODER_TO_RADIANS = Math.PI / 7000;
 
   private static final double MAX_VELOCITY = (1024.0 / 4) / 1000; // 1/4 revolution per second, in millis
@@ -47,7 +50,11 @@ public class Arm extends Subsystem {
   private JetstreamTalon swivelTalon;
 
   private int currentLevel;
+
   private Integer targetVerticalPosition;
+  //public static final int fivehundo = 500;
+  //targetVerticalPosition = fivehundo;
+
   private Integer targetSwivelPosition;
   private long lastTimestamp;
   private int lastVerticalPosition;
@@ -62,7 +69,7 @@ public class Arm extends Subsystem {
     lastTimestamp = System.currentTimeMillis();
     lastVerticalPosition = verticalTalon.getPosition();
 
-//    targetVerticalPosition = 3000;
+    //targetVerticalPosition = 1500;
   }
 
   public void calibrate() {
@@ -129,6 +136,15 @@ public class Arm extends Subsystem {
     return speed;
   }
 
+  /**
+   * Sets Vertical speed manually to a given value
+   * only used for testing
+   */
+  public void setVerticalSpeedManually(double speed) {
+    logger.info("setVerticalSpeedManually Position: " + verticalTalon.getPosition() + "Speed: " + speed);
+    verticalTalon.set(speed);
+  }
+
   /** Set the level of the arm to a number from 0 to 4. */
   public void setLevel(int level) {
     logger.info("setLevel level: " + level);
@@ -158,7 +174,7 @@ public class Arm extends Subsystem {
     swivelTalon.reset();
   }
 
-  private boolean doNextPeriodic3 = false;
+  private boolean doNextPeriodic3 = true;
   public void periodic9(long timestamp) {
     if (verticalTalon.getPosition() > targetVerticalPosition - 20) {
       doNextPeriodic3 = true;
@@ -175,7 +191,7 @@ public class Arm extends Subsystem {
   private double nextSpeed = STOP_SPEED;
   public void periodic3(long timestamp) {
     if (System.currentTimeMillis() > nextChangeTimestamp) {
-      nextSpeed += 0.01;
+      nextSpeed -= 0.01;
       nextChangeTimestamp = System.currentTimeMillis() + 1000;
       verticalTalon.set(nextSpeed);
     }
@@ -287,9 +303,10 @@ public class Arm extends Subsystem {
     * @return calculated stopping speed based on previously determined quantity of vroom graph
     */
   public double getStopSpeed() {
-    double position = verticalTalon.getPosition();
+    /*double position = verticalTalon.getPosition();
     double speed = (-0.0000456 * position) + 0.5;
-    return (position > 2750) ? 0.3 : speed;
+    return (position > 2750) ? 0.3 : speed;*/
+    return STOP_SPEED;
   }
 
   @Override

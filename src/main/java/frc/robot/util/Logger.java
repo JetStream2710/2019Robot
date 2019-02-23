@@ -17,10 +17,10 @@ public class Logger {
     LOG_LEVELS.put(OI.class.getName(), Level.INFO);
 
     // Subsystems
-    LOG_LEVELS.put(Arm.class.getName(), Level.DETAIL);
+    LOG_LEVELS.put(Arm.class.getName(), Level.WARNING);
     LOG_LEVELS.put(Cargo.class.getName(), Level.WARNING);
     LOG_LEVELS.put(Climb.class.getName(), Level.WARNING);
-    LOG_LEVELS.put(Drivetrain.class.getName(), Level.WARNING);
+    LOG_LEVELS.put(Drivetrain.class.getName(), Level.DETAIL);
     LOG_LEVELS.put(Elevator.class.getName(), Level.WARNING);
     LOG_LEVELS.put(Hatch.class.getName(), Level.WARNING);
 
@@ -35,8 +35,8 @@ public class Logger {
     LOG_LEVELS.put(ArmHatchDown.class.getName(), Level.WARNING);
     LOG_LEVELS.put(ArmHatchHover.class.getName(), Level.WARNING);
     LOG_LEVELS.put(DriveWithAdjustment.class.getName(), Level.INFO);
-    LOG_LEVELS.put(MoveArm.class.getName(), Level.INFO);
-    LOG_LEVELS.put(MoveElevator.class.getName(), Level.INFO);
+    LOG_LEVELS.put(MoveArm.class.getName(), Level.WARNING);
+    LOG_LEVELS.put(MoveElevator.class.getName(), Level.DETAIL);
     LOG_LEVELS.put(CalibratePosition.class.getName(), Level.INFO);
     LOG_LEVELS.put(CargoIntake.class.getName(), Level.WARNING);
     LOG_LEVELS.put(CargoOuttake.class.getName(), Level.WARNING);
@@ -46,7 +46,7 @@ public class Logger {
     LOG_LEVELS.put(ClimbRearExtend.class.getName(), Level.WARNING);
     LOG_LEVELS.put(ClimbRearMove.class.getName(), Level.WARNING);
     LOG_LEVELS.put(ClimbRearRetract.class.getName(), Level.WARNING);
-    LOG_LEVELS.put(DriveCommand.class.getName(), Level.WARNING);
+    LOG_LEVELS.put(DriveCommand.class.getName(), Level.INFO);
     LOG_LEVELS.put(DriveDistance.class.getName(), Level.WARNING);
     LOG_LEVELS.put(ElevatorAndArmMove.class.getName(), Level.INFO);
     LOG_LEVELS.put(HatchPush.class.getName(), Level.WARNING);

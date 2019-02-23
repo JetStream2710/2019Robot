@@ -19,17 +19,17 @@ public class Elevator extends Subsystem {
   public static final int ELEVATOR_MAX = 0;
   public static final double ELEVATOR_MIN_OUTPUT = -0.52;
   public static final double ELEVATOR_MAX_OUTPUT = 0.2;
+  public static final double STOP_SPEED = -0.18;
 
-  
   private static final int FAST_MOVEMENT_THRESHOLD = 1024 * 2;
   //private static final int FAST_MOVEMENT_THRESHOLD = 1024 * 4; works with -0.45 min output
   //private static final int FAST_MOVEMENT_THRESHOLD = 1024 * 6; works with -0.45 min output
   private static final int SLOW_MOVEMENT_THRESHOLD = 1024 / 4;
   private static final int FINE_MOVEMENT_THRESHOLD = 1024 / 25;
   private static final double FINE_INCREMENT = 0.001;
-  private static final double STOP_SPEED = -0.18;
   private static final double MIN_UP_SPEED = STOP_SPEED - .02;
-
+  private static final double VICTOR_SPEED_LIMIT  = -0.6;
+ 
   private static final double MAX_VELOCITY = (1024.0 / 4) / 1000; // 1/4 revolution per second, in millis
   
   // CHECK
@@ -64,7 +64,7 @@ public class Elevator extends Subsystem {
     lastTimestamp = System.currentTimeMillis();
     lastElevatorPosition = talon.getPosition();
 
-//    targetElevatorPosition = -30000;
+    //targetElevatorPosition = -50000;
   }
 
   public int getPosition() {
@@ -79,9 +79,11 @@ public class Elevator extends Subsystem {
   public void elevatorMove(double speed) {
     logger.info("elevatorMove speed: " + speed + " position: " + talon.getPosition() + " talon voltage: " + talon.getVoltage()
         + " victor voltage: " + victor.getMotorOutputVoltage());
-    group.set(speed);
-//    victor.set(speed);
-//    talon.set(speed);
+
+        talon.set(speed);
+        double victorSpeed = (speed < VICTOR_SPEED_LIMIT) ? VICTOR_SPEED_LIMIT : speed;
+        victor.set(victorSpeed);
+        logger.detail("elevatorMove speed: " + speed + " victorSpeed: " + victorSpeed);
 }
 
   public void elevatorStop() {
@@ -141,10 +143,14 @@ public class Elevator extends Subsystem {
 
   private void autoMoveFast(int currentPosition, int targetPosition, int relativePosition, double minOutput, double maxOutput) {
     double speed = relativePosition > 0 ? maxOutput : minOutput;
-    logger.detail(String.format("autoMoveFast speed: %.4f current-position: %d target-position: %d relative-position: %d",
+    logger.detail(String.format("autoMoveFast speed: %f current-position: %d target-position: %d relative-position: %d",
         speed, currentPosition, targetPosition, relativePosition));
-    group.set(speed);
-  }
+    
+        talon.set(speed);
+      double victorSpeed = (speed < VICTOR_SPEED_LIMIT) ? VICTOR_SPEED_LIMIT : speed;
+      victor.set(victorSpeed);
+      logger.detail("autoMoveFast speed: " + speed + " victorSpeed: " + victorSpeed);
+    }
 
   private double minSlowSpeed = -0.23;
   private void autoMoveSlow(int currentPosition, int targetPosition, int relativePosition, double minOutput, double maxOutput) {
@@ -165,7 +171,11 @@ public class Elevator extends Subsystem {
     }
     logger.detail(String.format("autoMoveSlow speed: %f ratio: %f current-position: %d target-position: %d relative-position: %d",
         speed, ratio, currentPosition, targetPosition, relativePosition));
-    group.set(speed);
+    
+        talon.set(speed);
+      double victorSpeed = (speed < VICTOR_SPEED_LIMIT) ? VICTOR_SPEED_LIMIT : speed;
+      victor.set(victorSpeed);
+      logger.detail("autoMoveSlow speed: " + speed + " victorSpeed: " + victorSpeed);
   }
 
   private void autoMoveFine(int currentPosition, int targetPosition, int relativePosition, double maxOutput) {
@@ -176,7 +186,11 @@ public class Elevator extends Subsystem {
     }
     logger.detail(String.format("autoMoveFine speed: %f increment: %f current-position: %d target-position: %d relative-position: %d",
         speed, increment, currentPosition, targetPosition, relativePosition));
-    group.set(speed);
+    
+        talon.set(speed);
+      double victorSpeed = (speed < VICTOR_SPEED_LIMIT) ? VICTOR_SPEED_LIMIT : speed;
+      victor.set(victorSpeed);
+      logger.detail("autoMoveFine speed: " + speed + " victorSpeed: " + victorSpeed);
   }
 
   private void autoMoveStop() {
@@ -198,7 +212,11 @@ public class Elevator extends Subsystem {
     double speed = targetVelocity * timeDelta;
     logger.detail(String.format("autoMoveVelocity speed: %.4f target-velocity: %.4f velocity-ratio: %.4f ratio: %.4f current-velocity: %.4f relative-position: %d currentPosition: %d time-delta: %d",
       speed, targetVelocity, velocityRatio, ratio, velocity, relativePosition, position, timeDelta));
-    group.set(speed);
+    
+      talon.set(speed);
+      double victorSpeed = (speed < VICTOR_SPEED_LIMIT) ? VICTOR_SPEED_LIMIT : speed;
+      victor.set(victorSpeed);
+      logger.detail("autoMoveVelocity speed: " + speed + " victorSpeed: " + victorSpeed);
   }
 
   public void calibrate(){

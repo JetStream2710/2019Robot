@@ -3,6 +3,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.OI;
 import frc.robot.Robot;
+import frc.robot.subsystems.Elevator;
 import frc.robot.util.Logger;
 
 public class ElevatorAndArmMove extends Command {
@@ -60,7 +61,7 @@ public class ElevatorAndArmMove extends Command {
     if (elevatorSpeed < 0.08 && elevatorSpeed > -0.08) {
       if (Robot.isMovingElevator){
         logger.info("execute stop elevator");
-        Robot.elevator.elevatorMove(0);
+        Robot.elevator.elevatorMove(Elevator.STOP_SPEED);
       }
       Robot.isMovingElevator = false;
     } else {

@@ -96,12 +96,7 @@ public class Robot extends TimedRobot {
     /*autonomousCommand = autoChooser.getSelected();
     autonomousCommand.start();*/
     
-    TestAuto guccio = new TestAuto();
-    TurnDegrees turn = new TurnDegrees(90, 0.6);
-    //guccio.start();
-    //AutoCargo4 auto = new AutoCargo4();
-    //auto.start();
-    turn.start();
+    
   }
 
   @Override
@@ -119,7 +114,6 @@ public class Robot extends TimedRobot {
     arm.reset();
     elevator.reset();
 
-    DriveWithAdjustment gucci = new DriveWithAdjustment();
   }
 
   @Override
@@ -127,6 +121,7 @@ public class Robot extends TimedRobot {
     logger.detail("teleopInit");
     Scheduler.getInstance().run();
     updateSubsystems();
+    //arm.setVerticalSpeedManually(arm.getStopSpeed());
   }
 
 
