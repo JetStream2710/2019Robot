@@ -11,7 +11,7 @@ import frc.robot.util.Logger;
 public class Cargo extends Subsystem {
 
   public static final double SPEED_IN = -0.7;
-  public static final double SPEED_OUT = 0.7;
+  public static final double SPEED_OUT = 0.25;
 
   private Logger logger = new Logger(Cargo.class.getName());
 //  private JetstreamVictor victor;

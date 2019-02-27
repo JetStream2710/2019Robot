@@ -25,9 +25,13 @@ public class DriveCommand extends Command {
       return;
     }
 
-    double moveSpeed = Robot.oi.drivestick.getRawAxis(OI.DRIVER_MOVE_AXIS);
-    double rotateSpeed = Robot.oi.drivestick.getRawAxis(OI.DRIVER_ROTATE_AXIS);
-    logger.detail("execute moveSpeed: " + moveSpeed + " rotateSpeed: " + rotateSpeed);
+//    double moveSpeed = Robot.oi.drivestick.getRawAxis(OI.DRIVER_MOVE_AXIS);
+//    double rotateSpeed = Robot.oi.drivestick.getRawAxis(OI.DRIVER_ROTATE_AXIS);
+
+// changed received joystick values for less sensitvity
+    double moveSpeed = getAxis(Robot.oi.drivestick.getRawAxis(OI.DRIVER_MOVE_AXIS));
+    double rotateSpeed = getAxis(Robot.oi.drivestick.getRawAxis(OI.DRIVER_ROTATE_AXIS));
+  logger.detail("execute moveSpeed: " + moveSpeed + " rotateSpeed: " + rotateSpeed);
 
     Robot.drivetrain.tankDrive(moveSpeed, rotateSpeed);
 
@@ -58,5 +62,9 @@ public class DriveCommand extends Command {
   protected void interrupted() {
     logger.warning("interrupted");
     end();
+  }
+
+  private double getAxis(double value){
+    return value*(Math.abs(value));
   }
 }
