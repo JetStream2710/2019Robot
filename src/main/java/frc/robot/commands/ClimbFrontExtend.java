@@ -7,7 +7,6 @@ import frc.robot.util.Logger;
 public class ClimbFrontExtend extends Command {
 
   private Logger logger = new Logger(ClimbFrontExtend.class.getName());
-  private static final double SPEED = 0.5;
 
   public ClimbFrontExtend() {
     logger.detail("constructor");
@@ -16,19 +15,19 @@ public class ClimbFrontExtend extends Command {
 
   @Override
   protected void initialize() {
-    logger.info("initialize");
-    Robot.climb.setFrontMotorSpeed(SPEED);
+    logger.detail("initialize");
   }
 
   @Override
   protected void execute() {
-    logger.detail("execute");
+    logger.info("execute");
+    Robot.climb.climbFrontExtend();
   }
 
   @Override
   protected boolean isFinished() {
     logger.detail("finished");
-    return false;
+    return true;
   }
 
   @Override

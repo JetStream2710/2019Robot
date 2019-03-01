@@ -16,6 +16,7 @@ public class ClimbRearExtend extends Command {
   @Override
   protected void initialize() {
     logger.info("initialize");
+    Robot.climb.climbRearExtend();
   }
 
   @Override
@@ -26,7 +27,7 @@ public class ClimbRearExtend extends Command {
   @Override
   protected boolean isFinished() {
     logger.detail("isFinished");
-    return false;
+    return true;
   }
 
   @Override
@@ -37,5 +38,6 @@ public class ClimbRearExtend extends Command {
   @Override
   protected void interrupted() {
     logger.warning("interrupted");
+    end();
   }
 }

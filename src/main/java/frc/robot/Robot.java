@@ -3,6 +3,8 @@ package frc.robot;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.kauailabs.navx.frc.AHRS;
+
+import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
@@ -58,6 +60,8 @@ public class Robot extends TimedRobot {
     oi = new OI();
     pixyVision = new PixyVision(true, false);
     //pixyVision.start();
+//		CameraServer.getInstance().startAutomaticCapture();
+
 
     autoChooser = new SendableChooser<Command>();
     autoChooser.setDefaultOption("AutoCargo 3", new AutoCargo3());

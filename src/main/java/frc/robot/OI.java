@@ -15,9 +15,14 @@ public class OI {
   public static final int JOYSTICK_DRIVER = 0;
   public static final int DRIVER_MOVE_AXIS = 1;
   public static final int DRIVER_ROTATE_AXIS = 2;
-  public static final int CARGO_INTAKE = 5;  // driver LB
-  public static final int CARGO_OUTTAKE = 6; // driver RB
-  public static final int HATCH_PUSH = 7;    // driver LT
+  public static final int CARGO_INTAKE = 5;        // driver LB
+  public static final int CARGO_OUTTAKE = 6;       // driver RB
+  public static final int HATCH_PUSH = 7;          // driver LT
+  public static final int CLIMB_FRONT_EXTEND = 4;  // driver Y
+  public static final int CLIMB_FRONT_RETRACT = 2; // driver A
+  public static final int CLIMB_REAR_EXTEND = 3;   // driver B
+  public static final int CLIMB_REAR_RETRACT = 1;  // driver X
+  public static final int CLIMB_MOVE = 8;          // driver RT
 
   // figure out feeder station stuff -- waiting on the stuff FEEDER STATION
   public static final int JOYSTICK_AUX = 1;
@@ -39,6 +44,11 @@ public class OI {
   public Button cargoIntake = new JoystickButton(drivestick, CARGO_INTAKE);
   public Button cargoOuttake = new JoystickButton(drivestick, CARGO_OUTTAKE);
   public Button hatchPush = new JoystickButton(drivestick, HATCH_PUSH);
+  public Button climbFrontExtend = new JoystickButton(drivestick, CLIMB_FRONT_EXTEND);
+  public Button climbFrontRetract = new JoystickButton(drivestick, CLIMB_FRONT_RETRACT);
+  public Button climbRearExtend = new JoystickButton(drivestick, CLIMB_REAR_EXTEND);
+  public Button climbRearRetract = new JoystickButton(drivestick, CLIMB_REAR_RETRACT);
+  public Button climbMove = new JoystickButton(drivestick, CLIMB_MOVE);
 
   public Button switchToHatch = new JoystickButton(auxstick, SWITCH_TO_HATCH);
   public Button switchToCargo = new JoystickButton(auxstick, SWITCH_TO_CARGO);
@@ -52,6 +62,11 @@ public class OI {
     cargoIntake.whileHeld(new CargoIntake());
     cargoOuttake.whileHeld(new CargoOuttake());
     hatchPush.whenPressed(new HatchPush());
+    climbFrontExtend.whenPressed(new ClimbFrontExtend());
+    climbFrontRetract.whileHeld(new ClimbFrontRetract());
+    climbRearExtend.whenPressed(new ClimbRearExtend());
+    climbRearRetract.whileHeld(new ClimbRearRetract());
+    climbMove.whileHeld(new ClimbRearMove());
 
     switchToHatch.whenPressed(new SwitchToHatch());
     switchToCargo.whenPressed(new SwitchToCargo());

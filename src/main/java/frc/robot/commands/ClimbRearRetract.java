@@ -16,6 +16,7 @@ public class ClimbRearRetract extends Command {
   @Override
   protected void initialize() {
     logger.info("initialize");
+    Robot.climb.climbRearRetract();
   }
 
   @Override
@@ -37,5 +38,6 @@ public class ClimbRearRetract extends Command {
   @Override
   protected void interrupted() {
     logger.warning("interrupted");
+    end();
   }
 }
