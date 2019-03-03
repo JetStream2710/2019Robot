@@ -11,33 +11,33 @@ public class ElevatorAndArmMove extends Command {
   private static long lastPovChange = 0;
   private static final long POV_TIME_BUFFER = 1000;
 
-  private Logger logger = new Logger(ElevatorAndArmMove.class.getName());
+//  private Logger logger = new Logger(ElevatorAndArmMove.class.getName());
 
   public ElevatorAndArmMove() {
-    logger.detail("constructor");
+  //  logger.detail("constructor");
     requires(Robot.elevator);
     requires(Robot.arm);
   }
 
   @Override
   protected void initialize() {
-    logger.detail("initailize");
+  //  logger.detail("initailize");
   }
 
   @Override
   protected void execute() {
-    logger.detail("execute");
+  //  logger.detail("execute");
     // Aux Joypad Control
     int dPov = Robot.oi.auxstick.getPOV();
     if (dPov == 0) {
       int position = Robot.arm.getSwivelPosition();
       int target = position + 300;
-      logger.info(String.format("execute swivel: target: %d current %d", target, position));
+    //  logger.info(String.format("execute swivel: target: %d current %d", target, position));
       Robot.arm.setSwivelPosition(target);
     } else if (dPov == 180) {
       int position = Robot.arm.getSwivelPosition();
       int target = position - 300;
-      logger.info(String.format("execute swivel: target: %d current %d", target, position));
+    //  logger.info(String.format("execute swivel: target: %d current %d", target, position));
       Robot.arm.setSwivelPosition(target);
     }
     /*
@@ -60,13 +60,13 @@ public class ElevatorAndArmMove extends Command {
     double elevatorSpeed = Robot.oi.auxstick.getRawAxis(OI.ELEVATOR_AXIS);
     if (elevatorSpeed < 0.08 && elevatorSpeed > -0.08) {
       if (Robot.isMovingElevator){
-        logger.info("execute stop elevator");
+      //  logger.info("execute stop elevator");
         Robot.elevator.elevatorMove(Elevator.STOP_SPEED);
       }
       Robot.isMovingElevator = false;
     } else {
       Robot.isMovingElevator = true;
-      logger.info("execute elevatorSpeed: " + elevatorSpeed);
+    //  logger.info("execute elevatorSpeed: " + elevatorSpeed);
       Robot.elevator.elevatorMove(elevatorSpeed);
     }
     // Arm Joystick
@@ -75,7 +75,7 @@ public class ElevatorAndArmMove extends Command {
       int position = Robot.arm.getVerticalArmPosition();
       // TODO: investigate changing this
       int target = position + (int) (armSpeed * 600);
-      logger.info(String.format("execute arm: target: %d current %d", target, position));
+    //  logger.info(String.format("execute arm: target: %d current %d", target, position));
       Robot.arm.setVerticalPosition(target);
     }
 /*
@@ -99,20 +99,20 @@ public class ElevatorAndArmMove extends Command {
 
   @Override
   protected boolean isFinished() {
-    logger.detail("finished");
+  //  logger.detail("finished");
     return false;
   }
 
   @Override
   protected void end() {
-    logger.warning("end");
+  //  logger.warning("end");
     Robot.isMovingElevator = false;
     Robot.isMovingArm = false;
   }
 
   @Override
   protected void interrupted() {
-    logger.warning("interrupted");
+  //  logger.warning("interrupted");
     end();
   }
 }

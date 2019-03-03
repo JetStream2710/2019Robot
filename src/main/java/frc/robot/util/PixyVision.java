@@ -3,7 +3,7 @@ package frc.robot.util;
 public class PixyVision {
   private static final long POLL_FREQUENCY_MILLIS = 1 + (1000 / 60);
 
-  private Logger logger = new Logger(PixyVision.class.getName());
+// private Logger logger = new Logger(PixyVision.class.getName());
 
   private PixyLine latestLine;
   private PixyBlock leftBlock;
@@ -19,7 +19,7 @@ public class PixyVision {
 
 
   public PixyVision(boolean trackLines, boolean trackObjects) {
-    logger.detail("constructor");
+  //  logger.detail("constructor");
     this.trackLines = trackLines;
     this.trackObjects = trackObjects;
   }
@@ -66,16 +66,16 @@ public class PixyVision {
     
     @Override
     public void run() {
-      logger.info("running thread");
+    //  logger.info("running thread");
       while (isRunning) {
         if (turnOnLamp) {
-          logger.info("turning on lamp");
+        //  logger.info("turning on lamp");
           driver.turnOnLamp();
           driver2.turnOnLamp();
           turnOnLamp = false;
         }
         if (turnOffLamp) {
-          logger.info("turning off lamp");
+        //  logger.info("turning off lamp");
           driver.turnOffLamp();
           driver2.turnOffLamp();
           turnOffLamp = false;
@@ -83,7 +83,7 @@ public class PixyVision {
         if (trackLines) {
           PixyLine line = driver.lineTracking();
           if (line != null && isValid(line)) {
-            logger.info("found line: " + line);
+          //  logger.info("found line: " + line);
             latestLine = line;
           }
         }
@@ -97,14 +97,14 @@ public class PixyVision {
               leftBlock = blocks[1];
               rightBlock = blocks[0];
             }
-            logger.info("found objects left: " + leftBlock + " right: " + rightBlock);
+          //  logger.info("found objects left: " + leftBlock + " right: " + rightBlock);
           }
         }
 
         try {
           Thread.sleep(POLL_FREQUENCY_MILLIS);
         } catch (InterruptedException e) {
-          logger.warning("interrupted thread");
+        //  logger.warning("interrupted thread");
         }
       }
     }

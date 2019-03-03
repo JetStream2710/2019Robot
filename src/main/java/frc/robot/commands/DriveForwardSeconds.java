@@ -9,7 +9,7 @@ import frc.robot.util.Logger;
  */
 public class DriveForwardSeconds extends Command {
 
-    Logger logger = new Logger(DriveForwardSeconds.class.getName());
+//    Logger logger = new Logger(DriveForwardSeconds.class.getName());
 
 	private long targetTime;
 	private long millis;
@@ -24,7 +24,7 @@ public class DriveForwardSeconds extends Command {
 
     protected void initialize() {
         targetTime = System.currentTimeMillis() + millis;
-        logger.info("initialize: " + targetTime + " " + maxSpeed);
+    //    logger.info("initialize: " + targetTime + " " + maxSpeed);
     	Robot.drivetrain.arcadeDrive(maxSpeed, 0.0);
     }
 
@@ -34,7 +34,7 @@ public class DriveForwardSeconds extends Command {
     protected boolean isFinished() {
         time = System.currentTimeMillis();
         if (time > targetTime) {
-            logger.info("finished");
+        //    logger.info("finished");
         }
         return (time >= targetTime);
     }

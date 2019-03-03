@@ -46,11 +46,11 @@ public class Robot extends TimedRobot {
   public static boolean isMovingElevator;
   public static boolean isMovingArm;
 
-  private static Logger logger = new Logger(Robot.class.getName());
+//  private static Logger logger = new Logger(Robot.class.getName());
 
   @Override
   public void robotInit() {
-    logger.detail("robotInit");
+  //  logger.detail("robotInit");
     drivetrain = new Drivetrain();
     elevator = new Elevator();
     arm = new Arm();
@@ -60,6 +60,7 @@ public class Robot extends TimedRobot {
     oi = new OI();
     pixyVision = new PixyVision(true, false);
     //pixyVision.start();
+
 //		CameraServer.getInstance().startAutomaticCapture();
 
 
@@ -75,23 +76,23 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotPeriodic() {
-    logger.detail("robotPeriodic");
+  //  logger.detail("robotPeriodic");
   }
 
   @Override
   public void disabledInit() {
-    logger.detail("disabledInit");
+  //  logger.detail("disabledInit");
   }
 
   @Override
   public void disabledPeriodic() {
-    logger.detail("disabledPeriodic");
+  //  logger.detail("disabledPeriodic");
     Scheduler.getInstance().run();
   }
 
   @Override
   public void autonomousInit() {
-    logger.detail("autonomousInit");
+  //  logger.detail("autonomousInit");
     isAuto = true;
     // get rid of reset when we want to start with the arm up
     arm.reset();
@@ -105,14 +106,14 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousPeriodic() {
-    logger.detail("autonomousPeriodic");
+  //  logger.detail("autonomousPeriodic");
     /*Scheduler.getInstance().run();
     updateSubsystems();*/
   }
 
   @Override
   public void teleopInit() {
-    logger.detail("teleopInit");
+  //  logger.detail("teleopInit");
     isAuto = false;
     // get rid of reset when we want to start with the arm up
     arm.reset();
@@ -122,7 +123,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
-    logger.detail("teleopInit");
+  //  logger.detail("teleopInit");
     Scheduler.getInstance().run();
     updateSubsystems();
     //arm.setVerticalSpeedManually(arm.getStopSpeed());
@@ -144,13 +145,13 @@ public class Robot extends TimedRobot {
   }
 
   public static void switchToHatchMode() {
-    logger.info("isHatchMode mode on");
+  //  logger.info("isHatchMode mode on");
     isHatchMode = true;
     arm.setLevel(arm.getLevel());
   }
 
   public static void switchToCargoMode() {
-    logger.info("isHatchMode mode off");
+  //  logger.info("isHatchMode mode off");
     isHatchMode = false;
     arm.setLevel(arm.getLevel());
   }

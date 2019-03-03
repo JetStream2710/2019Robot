@@ -29,7 +29,7 @@ public class Arm3 extends Subsystem {
   public static final int[] SWIVEL_HATCH_POSITIONS = new int[] {0, 0, 0, 0};
   public static final int[] SWIVEL_CARGO_POSITIONS = new int[] {0, 0, 0, 0};
 
-  private Logger logger = new Logger(Arm3.class.getName());
+//  private Logger logger = new Logger(Arm3.class.getName());
   private JetstreamTalon verticalTalon;
   private JetstreamTalon swivelTalon;
 
@@ -42,7 +42,7 @@ public class Arm3 extends Subsystem {
 
   public Arm3() {
     super();
-    logger.detail("constructor");
+  //  logger.detail("constructor");
 
     verticalTalon = new JetstreamTalon("Arm Vertical Talon", RobotMap.ARM_VERTICAL_TALON, VERTICAL_MIN, VERTICAL_MAX, VERTICAL_MIN_OUTPUT, VERTICAL_MAX_OUTPUT, true);
     swivelTalon = new JetstreamTalon("Arm Swivel Talon", RobotMap.ARM_SWIVEL_TALON, SWIVEL_MIN, SWIVEL_MAX, SWIVEL_MIN_OUTPUT, SWIVEL_MAX_OUTPUT, false);
@@ -50,12 +50,12 @@ public class Arm3 extends Subsystem {
 
   public void moveVerticalArm(double speed) {
     targetVerticalPosition = null;
-    logger.info("moveVerticalArm speed: " + speed + " arm-pos: " + verticalTalon.getPosition());
+  //  logger.info("moveVerticalArm speed: " + speed + " arm-pos: " + verticalTalon.getPosition());
     verticalTalon.set(speed);
   }
 
   public void stopMovingVerticalArm(){
-    logger.info("stopMovingVerticalArm");
+  //  logger.info("stopMovingVerticalArm");
     verticalTalon.set(0);
     // Try to stay at the current position
 //    targetVerticalPosition = verticalTalon.getPosition();
@@ -66,7 +66,7 @@ public class Arm3 extends Subsystem {
       return;
     }
     targetSwivelPosition = null;
-    logger.info("moveSwivelArm speed: " + speed + " swivel-pos: " + swivelTalon.getPosition());
+  //  logger.info("moveSwivelArm speed: " + speed + " swivel-pos: " + swivelTalon.getPosition());
     swivelTalon.set(speed);
   }
 
@@ -78,7 +78,7 @@ public class Arm3 extends Subsystem {
   // MAKE SURE TO TEST THIS BECAUSE IT MIGHT BE BACKWARDS
   public void moveTogether(double speed) {
     if (verticalTalon.isValidSpeed(speed) && swivelTalon.isValidSpeed(-speed)) {
-      logger.info("moveTogether speed: " + speed);
+    //  logger.info("moveTogether speed: " + speed);
       verticalTalon.set(speed);
       swivelTalon.set(-speed);
     } 
@@ -86,7 +86,7 @@ public class Arm3 extends Subsystem {
 
   /** Set the level of the arm to a number from 0 to 4. */
   public void setLevel(int level) {
-    logger.info("setLevel level: " + level);
+  //  logger.info("setLevel level: " + level);
     if (level < 0) {
       level = 0;
     }
@@ -109,7 +109,7 @@ public class Arm3 extends Subsystem {
   }
 
   public void resetEncoders() {
-    logger.info("resetEncoder");
+  //  logger.info("resetEncoder");
    }
 
   // reminder to check first that
@@ -140,11 +140,11 @@ public class Arm3 extends Subsystem {
       // if we are far away, move as fast as we can to the target
       if (Math.abs(position) > DECELERATION_DISTANCE) {
         double speed = position > 0 ? -VERTICAL_MAX_OUTPUT : VERTICAL_MAX_OUTPUT;
-        logger.info(String.format("periodic fast move to: %d from: %d relative-position: %d  speed: %f", targetPosition, currentPosition, position, speed));
+      //  logger.info(String.format("periodic fast move to: %d from: %d relative-position: %d  speed: %f", targetPosition, currentPosition, position, speed));
         talon.set(speed);
       } else if (Math.abs(position) < 20) {
         double speed = position / -102.4;
-        logger.info(String.format("periodic still to: %d from: %d relative-position: %d  speed: %f", targetPosition, currentPosition, position, speed));
+      //  logger.info(String.format("periodic still to: %d from: %d relative-position: %d  speed: %f", targetPosition, currentPosition, position, speed));
         talon.set(speed);
     } else if (Math.abs(position) < 200) {
           double speed = talon.get();
@@ -153,17 +153,17 @@ public class Arm3 extends Subsystem {
           } else{
             speed = speed + 0.0008;
           } 
-          logger.info(String.format("fine tune to: %d from: %d relative-position: %d  speed: %f", targetPosition, currentPosition, position, speed));
+        //  logger.info(String.format("fine tune to: %d from: %d relative-position: %d  speed: %f", targetPosition, currentPosition, position, speed));
           talon.set(speed);
       } else {
         // proportional speed calculation
         if (position + DISTANCE_BUFFER < 0) {
           double speed = .9 * position / -1024.0;
-          logger.info(String.format("periodic slow up to: %d from: %d relative-position: %d  speed: %f", targetPosition, currentPosition, position, speed));
+        //  logger.info(String.format("periodic slow up to: %d from: %d relative-position: %d  speed: %f", targetPosition, currentPosition, position, speed));
           talon.set(speed);
         } else if (position - DISTANCE_BUFFER > 0) {
           double speed = 0.2 * position / 1024.0;
-          logger.info(String.format("periodic slow down to: %d from: %d relative-position: %d  speed: %f", targetPosition, currentPosition, position, speed));
+        //  logger.info(String.format("periodic slow down to: %d from: %d relative-position: %d  speed: %f", targetPosition, currentPosition, position, speed));
           talon.set(speed);
         }
         /*

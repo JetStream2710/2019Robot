@@ -21,7 +21,7 @@ public class Drivetrain extends Subsystem {
 //  public static final int MAX_POSITION = Integer.MAX_VALUE;
 //  public static final double MIN_OUTPUT = -1.0;
 //  public static final double MAX_OUTPUT = 1.0;
-  private Logger logger = new Logger(Drivetrain.class.getName());
+//  private Logger logger = new Logger(Drivetrain.class.getName());
 
 //  private JetstreamTalon leftTalon;
 //  private JetstreamVictor leftVictor;
@@ -39,7 +39,7 @@ public class Drivetrain extends Subsystem {
 
   public Drivetrain() {
     super();
-    logger.detail("constructor");
+  //  logger.detail("constructor");
 
 //    leftTalon = new JetstreamTalon("Drivetrain Left Talon", RobotMap.DRIVETRAIN_LEFT_TALON, MIN_POSITION, MAX_POSITION, MIN_OUTPUT, MAX_OUTPUT, false);
 //    leftVictor = new JetstreamVictor("Drivetrain Left Victor", RobotMap.DRIVETRAIN_LEFT_VICTOR, MIN_OUTPUT, MAX_OUTPUT);
@@ -74,7 +74,7 @@ public class Drivetrain extends Subsystem {
 }
 
   public void tankDrive(double leftSpeed, double rightSpeed) {
-    logger.info("tank drive left: " + leftSpeed + " right: " + rightSpeed);
+  //  logger.info("tank drive left: " + leftSpeed + " right: " + rightSpeed);
     leftGroup.set(leftSpeed);
 //    leftTalon.set(leftSpeed);
 //    leftVictor.set(leftSpeed);
@@ -84,8 +84,8 @@ public class Drivetrain extends Subsystem {
   }
 
   public void arcadeDrive(double moveSpeed, double rotateSpeed) {
-    logger.info("arcade drive movespeed: " + moveSpeed + " rotatespeed: " + rotateSpeed);
-    logger.detail("leftGroup: " + leftTalon.get() + " rightGroup: " + rightTalon.get());
+  //  logger.info("arcade drive movespeed: " + moveSpeed + " rotatespeed: " + rotateSpeed);
+  //  logger.detail("leftGroup: " + leftTalon.get() + " rightGroup: " + rightTalon.get());
     differentialDrive.arcadeDrive(moveSpeed, rotateSpeed);
   }
 
@@ -95,7 +95,7 @@ public class Drivetrain extends Subsystem {
     } else {
       moveSpeed = moveSpeed * moveSpeed;
     }
-    logger.info("curvature drive movespeed: " + moveSpeed + " rotatespeed: " + rotateSpeed);
+  //  logger.info("curvature drive movespeed: " + moveSpeed + " rotatespeed: " + rotateSpeed);
     differentialDrive.curvatureDrive(moveSpeed, rotateSpeed, false);
   }
 

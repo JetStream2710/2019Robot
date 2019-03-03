@@ -6,40 +6,40 @@ import frc.robot.util.Logger;
 
 public class WeaponsDown extends Command {
 
-  private Logger logger = new Logger(WeaponsDown.class.getName());
+//  private Logger logger = new Logger(WeaponsDown.class.getName());
 
   public WeaponsDown() {
-    logger.detail("constructor");
+  //  logger.detail("constructor");
     requires(Robot.arm);
     requires(Robot.elevator);
   }
 
   @Override
   protected void initialize() {
-    logger.info("initialize");
+  //  logger.info("initialize");
     Robot.elevator.setLevel(Robot.elevator.getLevel() - 1);
     Robot.arm.setLevel(Robot.arm.getLevel() - 1);
   }
 
   @Override
   protected void execute() {
-    logger.detail("execute");
+  //  logger.detail("execute");
   }
 
   @Override
   protected boolean isFinished() {
-    logger.detail("finished");
+  //  logger.detail("finished");
     return true;
   }
 
   @Override
   protected void end() {
-    logger.info("end");
+  //  logger.info("end");
   }
 
   @Override
   protected void interrupted() {
-    logger.warning("interrupted");
+  //  logger.warning("interrupted");
     end();
   }
 }

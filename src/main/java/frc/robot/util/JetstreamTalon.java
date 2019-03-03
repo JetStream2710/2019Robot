@@ -9,7 +9,7 @@ public class JetstreamTalon implements SpeedController {
 
   public static final double MAX_VOLTAGE = 12.0;
 
-  private Logger logger = new Logger(JetstreamTalon.class.getName());
+//  private Logger logger = new Logger(JetstreamTalon.class.getName());
 
   private WPI_TalonSRX talon;
   private String name;
@@ -20,7 +20,7 @@ public class JetstreamTalon implements SpeedController {
   private boolean invertPosition;
 
   public JetstreamTalon(String name, int id, int minPosition, int maxPosition, double minSpeed, double maxSpeed, boolean invertPosition) {
-    logger.info(String.format("constructor: %s [%d]", name, id));
+  //  logger.info(String.format("constructor: %s [%d]", name, id));
     talon = new WPI_TalonSRX(id);
     this.name = name;
     this.minPosition = minPosition;
@@ -78,7 +78,7 @@ public class JetstreamTalon implements SpeedController {
   @Override
   public void set(double speed) {
     if (!isValidSpeed(speed)) {
-      logger.warning(String.format("%s [%d] INVALID set speed: %f", name, talon.getDeviceID(), speed));
+    //  logger.warning(String.format("%s [%d] INVALID set speed: %f", name, talon.getDeviceID(), speed));
       talon.set(0);
       return;
     }
@@ -88,7 +88,7 @@ public class JetstreamTalon implements SpeedController {
     if (speed < minSpeed) {
       speed = minSpeed;
     }
-    logger.info(String.format("%s [%d] set speed: %f", name, talon.getDeviceID(), speed));
+  //  logger.info(String.format("%s [%d] set speed: %f", name, talon.getDeviceID(), speed));
     talon.set(speed);
   }
 
@@ -99,7 +99,7 @@ public class JetstreamTalon implements SpeedController {
 
   @Override
   public void setInverted(boolean isInverted) {
-    logger.info(String.format("%s [%d] setInverted isInverted: %b", name, talon.getDeviceID(), isInverted));
+  //  logger.info(String.format("%s [%d] setInverted isInverted: %b", name, talon.getDeviceID(), isInverted));
     talon.setInverted(isInverted);
   }
 
@@ -110,19 +110,19 @@ public class JetstreamTalon implements SpeedController {
 
   @Override
   public void disable() {
-    logger.warning(String.format("%s [%d] disable", name, talon.getDeviceID()));
+  //  logger.warning(String.format("%s [%d] disable", name, talon.getDeviceID()));
     talon.disable();
   }
 
   @Override
   public void stopMotor() {
-    logger.info(String.format("%s [%d] stopMotor", name, talon.getDeviceID()));
+  //  logger.info(String.format("%s [%d] stopMotor", name, talon.getDeviceID()));
     talon.stopMotor();
   }
 
   @Override
   public void pidWrite(double output) {
-    logger.info(String.format("%s [%d] pidWrite output: ", name, talon.getDeviceID(), output));
+  //  logger.info(String.format("%s [%d] pidWrite output: ", name, talon.getDeviceID(), output));
     talon.pidWrite(output);
   }
 }

@@ -22,16 +22,16 @@ public class FollowLine extends Command {
   // The ideal slope of the line we want to follow
   public static final double LINE_FOLLOWING_IDEAL_SLOPE = Math.tan(Math.toRadians(IDEAL_ANGLE));
 
-  private Logger logger = new Logger(FollowLine.class.getName());
+//  private Logger logger = new Logger(FollowLine.class.getName());
 
   public FollowLine() {
-    logger.detail("constructor");
+  //  logger.detail("constructor");
     requires(Robot.drivetrain);
   }
 
   @Override
   protected void initialize() {
-    logger.info("initialize");
+  //  logger.info("initialize");
   }
 
   /**

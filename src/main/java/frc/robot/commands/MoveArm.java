@@ -7,40 +7,40 @@ import frc.robot.util.Logger;
 
 public class MoveArm extends Command {
 
-  private Logger logger = new Logger(MoveArm.class.getName());
+//  private Logger logger = new Logger(MoveArm.class.getName());
 
   private int position;
   public MoveArm(int position) {
-    logger.detail("constructor");
+  //  logger.detail("constructor");
     requires(Robot.climb);
     this.position = position;
   }
 
   @Override
   protected void initialize() {
-    logger.detail("initailize");
+  //  logger.detail("initailize");
     Robot.arm.setVerticalPosition(position);
   }
 
   @Override
   protected void execute() {
-    logger.detail("execute");
+  //  logger.detail("execute");
   }
 
   @Override
   protected boolean isFinished() {
-    logger.detail("finished");
+  //  logger.detail("finished");
     return Math.abs(Robot.arm.getVerticalArmPosition() - position) < 20;
   }
 
   @Override
   protected void end() {
-    logger.warning("end");
+  //  logger.warning("end");
   }
 
   @Override
   protected void interrupted() {
-    logger.warning("interrupted");
+  //  logger.warning("interrupted");
     end();
   }
 }

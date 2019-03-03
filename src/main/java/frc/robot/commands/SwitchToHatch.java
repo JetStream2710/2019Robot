@@ -6,38 +6,38 @@ import frc.robot.util.Logger;
 
 public class SwitchToHatch extends Command {
 
-  private Logger logger = new Logger(SwitchToHatch.class.getName());
+//  private Logger logger = new Logger(SwitchToHatch.class.getName());
 
   public SwitchToHatch() {
-    logger.detail("constructor");
+  //  logger.detail("constructor");
     requires(Robot.climb);
   }
 
   @Override
   protected void initialize() {
-    logger.info("initialize");
+  //  logger.info("initialize");
     Robot.switchToHatchMode();
   }
 
   @Override
   protected void execute() {
-    logger.detail("execute");
+  //  logger.detail("execute");
   }
 
   @Override
   protected boolean isFinished() {
-    logger.detail("finished");
+  //  logger.detail("finished");
     return true;
   }
 
   @Override
   protected void end() {
-    logger.info("end");
+  //  logger.info("end");
   }
 
   @Override
   protected void interrupted() {
-    logger.warning("interrupted");
+  //  logger.warning("interrupted");
     end();
   }
 }

@@ -12,7 +12,7 @@ public class Climb extends Subsystem {
   public static final double CLIMB_SPEED = 0.5;
   public static final double MOVE_SPEED = 0.5;
 
-  private Logger logger = new Logger(Climb.class.getName());
+//  private Logger logger = new Logger(Climb.class.getName());
 
   private WPI_VictorSPX frontVictor;
   private WPI_VictorSPX backVictor;
@@ -20,7 +20,7 @@ public class Climb extends Subsystem {
 
   public Climb() {
     super();
-    logger.detail("constructor");
+  //  logger.detail("constructor");
 
     frontVictor = new WPI_VictorSPX(RobotMap.CLIMB_FRONT_VICTOR);
     backVictor = new WPI_VictorSPX(RobotMap.CLIMB_BACK_VICTOR);
@@ -36,42 +36,42 @@ public class Climb extends Subsystem {
   }
 
   public void climbFrontExtend(){
-    logger.info("climbFrontExtend called");
+  //  logger.info("climbFrontExtend called");
     frontVictor.set(CLIMB_SPEED);
   }
 
   public void climbFrontRetract(){
-    logger.info("climbFrontRetract called");
+  //  logger.info("climbFrontRetract called");
     frontVictor.set(-CLIMB_SPEED);
   }
 
   public void climbRearExtend(){
-    logger.info("climbRearExtend called");
+  //  logger.info("climbRearExtend called");
     backVictor.set(CLIMB_SPEED);
   }
 
   public void climbRearRetract(){
-    logger.info("climbRearRetract called");
+  //  logger.info("climbRearRetract called");
     backVictor.set(-CLIMB_SPEED);
   }
 
   public void moveForward(){
-    logger.info("moveForward called");
+  //  logger.info("moveForward called");
     moveVictor.set(MOVE_SPEED);
   }
 
   public void moveBackward(){
-    logger.info("moveBackward called");
+  //  logger.info("moveBackward called");
     moveVictor.set(-MOVE_SPEED);
   }
 
   public void setFrontMotorSpeed(double speed) {
-    logger.info("setFrontMotorSpeed speed: " + speed);
+  //  logger.info("setFrontMotorSpeed speed: " + speed);
     frontVictor.set(speed);
   }
 
   public void setBackMotorSpeed(double speed) {
-    logger.info("setBackMotorSpeed speed : " + speed);
+  //  logger.info("setBackMotorSpeed speed : " + speed);
     backVictor.set(speed);
   }
 

@@ -45,7 +45,7 @@ public class Arm extends Subsystem {
 
   // floor: swivel -2800
 
-  private Logger logger = new Logger(Arm.class.getName());
+//  private Logger logger = new Logger(Arm.class.getName());
   private JetstreamTalon verticalTalon;
   private JetstreamTalon swivelTalon;
 
@@ -61,7 +61,7 @@ public class Arm extends Subsystem {
 
   public Arm() {
     super();
-    logger.detail("constructor");
+  //  logger.detail("constructor");
 
     verticalTalon = new JetstreamTalon("Arm Talon", RobotMap.ARM_VERTICAL_TALON, VERTICAL_MIN, VERTICAL_MAX, VERTICAL_MIN_OUTPUT, VERTICAL_MAX_OUTPUT, false);
     swivelTalon = new JetstreamTalon("Swivel Talon", RobotMap.ARM_SWIVEL_TALON, SWIVEL_MIN, SWIVEL_MAX, SWIVEL_MIN_OUTPUT, SWIVEL_MAX_OUTPUT, true);
@@ -92,12 +92,12 @@ public class Arm extends Subsystem {
 
   public void moveVerticalArm(double speed) {
     targetVerticalPosition = null;
-    logger.info("moveVerticalArm speed: " + speed + " arm-position: " + verticalTalon.getPosition());
+  //  logger.info("moveVerticalArm speed: " + speed + " arm-position: " + verticalTalon.getPosition());
     verticalTalon.set(speed + getCompensation());
   }
 
   public void stopMovingVerticalArm(){
-    logger.info("stopMovingVerticalArm");
+  //  logger.info("stopMovingVerticalArm");
     verticalTalon.set(0);
     // Try to stay at the current position
 //    targetVerticalPosition = verticalTalon.getPosition();
@@ -112,7 +112,7 @@ public class Arm extends Subsystem {
   }
 
   public void moveSwivelArm(double speed) {
-    logger.info("moveSwivelArm speed: " + speed + " swivel-positions: " + swivelTalon.getPosition());
+  //  logger.info("moveSwivelArm speed: " + speed + " swivel-positions: " + swivelTalon.getPosition());
     swivelTalon.set(speed);
   }
 
@@ -123,9 +123,9 @@ public class Arm extends Subsystem {
 
   public void moveTogether(double speed) {
     if (!verticalTalon.isValidSpeed(speed) || !swivelTalon.isValidSpeed(-speed)) {
-      logger.warning(String.format("INVALID set speed: %f", speed));
+    //  logger.warning(String.format("INVALID set speed: %f", speed));
     }
-    logger.info("moveTogether speed: " + speed + " swivel-pos: " + swivelTalon.getPosition() + " vert-pos: " + verticalTalon.getPosition());
+  //  logger.info("moveTogether speed: " + speed + " swivel-pos: " + swivelTalon.getPosition() + " vert-pos: " + verticalTalon.getPosition());
     verticalTalon.set(speed + getCompensation());
     swivelTalon.set(speed * .75);
   }
@@ -141,13 +141,13 @@ public class Arm extends Subsystem {
    * only used for testing
    */
   public void setVerticalSpeedManually(double speed) {
-    logger.info("setVerticalSpeedManually Position: " + verticalTalon.getPosition() + "Speed: " + speed);
+  //  logger.info("setVerticalSpeedManually Position: " + verticalTalon.getPosition() + "Speed: " + speed);
     verticalTalon.set(speed);
   }
 
   /** Set the level of the arm to a number from 0 to 4. */
   public void setLevel(int level) {
-    logger.info("setLevel level: " + level);
+  //  logger.info("setLevel level: " + level);
     if (level < 0) {
       level = 0;
     }
@@ -195,11 +195,11 @@ public class Arm extends Subsystem {
       nextChangeTimestamp = System.currentTimeMillis() + 1000;
       verticalTalon.set(nextSpeed);
     }
-    logger.info("Arm encoder: " + verticalTalon.getPosition() + " speed: " + verticalTalon.get() + " voltage: " + verticalTalon.getVoltage());
+  //  logger.info("Arm encoder: " + verticalTalon.getPosition() + " speed: " + verticalTalon.get() + " voltage: " + verticalTalon.getVoltage());
   }
 
   public void periodic(long timestamp) {
-    logger.info("Arm encoder: " + verticalTalon.getPosition() + " swivel: " + swivelTalon.getPosition() + " target: " + targetVerticalPosition);
+  //  logger.info("Arm encoder: " + verticalTalon.getPosition() + " swivel: " + swivelTalon.getPosition() + " target: " + targetVerticalPosition);
     verticalTalon.sendTelemetry();
     swivelTalon.sendTelemetry();
     SmartDash.put("Arm Level", currentLevel);
@@ -240,7 +240,7 @@ public class Arm extends Subsystem {
     int relativePosition = targetSwivelPosition - swivelPosition;
     int relativeDistance = Math.abs(relativePosition);
     if (relativeDistance < FINE_MOVEMENT_THRESHOLD) {
-      logger.detail("swivelMoveStop");
+    //  logger.detail("swivelMoveStop");
       swivelTalon.set(0);
     } else if (relativeDistance < FAST_MOVEMENT_THRESHOLD) {
       autoMoveSlow(swivelPosition, targetSwivelPosition, relativePosition, swivelTalon, SWIVEL_MIN_OUTPUT, SWIVEL_MAX_OUTPUT);
@@ -251,8 +251,7 @@ public class Arm extends Subsystem {
 
   private void autoMoveFast(int currentPosition, int targetPosition, int relativePosition, JetstreamTalon talon, double minOutput, double maxOutput) {
     double speed = relativePosition < 0 ? minOutput : maxOutput;
-    logger.detail(String.format("autoMoveFast speed: %.4f current-position: %d target-position: %d relative-position: %d",
-        speed, currentPosition, targetPosition, relativePosition));
+  //  logger.detail(String.format("autoMoveFast speed: %.4f current-position: %d target-position: %d relative-position: %d", speed, currentPosition, targetPosition, relativePosition));
     talon.set(speed);
   }
 
@@ -263,16 +262,14 @@ public class Arm extends Subsystem {
     if (speed < 0 && speed > -0.2) {
       speed = -0.2;
     }
-    logger.detail(String.format("autoMoveSlow speed: %.4f ratio: %.4f current-position: %d target-position: %d relative-position: %d",
-        speed, ratio, currentPosition, targetPosition, relativePosition));
+  //  logger.detail(String.format("autoMoveSlow speed: %.4f ratio: %.4f current-position: %d target-position: %d relative-position: %d",speed, ratio, currentPosition, targetPosition, relativePosition));
     talon.set(speed);
   }
 
   private void autoMoveFine(int currentPosition, int targetPosition, int relativePosition, JetstreamTalon talon, double maxOutput) {
     double increment = relativePosition > 0 ? FINE_INCREMENT : -FINE_INCREMENT;
     double speed = verticalTalon.get() + increment;
-    logger.detail(String.format("autoMoveFine speed: %.4f increment: %.4f current-position: %d target-position: %d relative-position: %d",
-        speed, increment, currentPosition, targetPosition, relativePosition));
+  //  logger.detail(String.format("autoMoveFine speed: %.4f increment: %.4f current-position: %d target-position: %d relative-position: %d",  speed, increment, currentPosition, targetPosition, relativePosition));
     talon.set(speed);
   }
 
@@ -281,7 +278,7 @@ public class Arm extends Subsystem {
 //    double speed = STOP_SPEED;// * Math.cos(angleInRadians);
 //    logger.detail(String.format("autoMoveStop speed: %.4f angle %.4f", speed, Math.toDegrees(angleInRadians)));
     double speed = getStopSpeed();
-    logger.detail(String.format("autoMoveStop speed: %.4f", speed));
+  //  logger.detail(String.format("autoMoveStop speed: %.4f", speed));
     talon.set(speed);
   }
 
@@ -294,8 +291,7 @@ public class Arm extends Subsystem {
     double velocityRatio = Math.sqrt(ratio);
     double targetVelocity = MAX_VELOCITY * velocityRatio;
     double speed = targetVelocity * timeDelta;
-    logger.detail(String.format("autoMoveVelocity speed: %.4f target-velocity: %.4f velocity-ratio: %.4f ratio: %.4f current-velocity: %.4f relative-position: %d currentPosition: %d time-delta: %d",
-      speed, targetVelocity, velocityRatio, ratio, velocity, relativePosition, position, timeDelta));
+  //  logger.detail(String.format("autoMoveVelocity speed: %.4f target-velocity: %.4f velocity-ratio: %.4f ratio: %.4f current-velocity: %.4f relative-position: %d currentPosition: %d time-delta: %d", speed, targetVelocity, velocityRatio, ratio, velocity, relativePosition, position, timeDelta));
     verticalTalon.set(speed);
   }
 

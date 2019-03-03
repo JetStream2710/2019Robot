@@ -36,7 +36,8 @@ public class Elevator extends Subsystem {
   public static final int[] HATCH_POSITIONS = new int[] {300, 400, 700, 1000};
   public static final int[] CARGO_POSITIONS = new int[] {300, 500, 800, 1100};
 
-  private Logger logger = new Logger(Elevator.class.getName());
+//  private Logger logger = new Logger(Elevator.class.getName());
+
   private JetstreamTalon talon;
 //  private JetstreamVictor victor;
   private WPI_VictorSPX victor;
@@ -49,7 +50,7 @@ public class Elevator extends Subsystem {
 
   public Elevator() {
     super();
-    logger.detail("constructor");
+  //  logger.detail("constructor");
 
     talon = new JetstreamTalon("Elevator Talon", RobotMap.ELEVATOR_TALON, ELEVATOR_MIN, ELEVATOR_MAX, ELEVATOR_MIN_OUTPUT, ELEVATOR_MAX_OUTPUT, true);
 //    victor = new JetstreamVictor("Elevator Victor", RobotMap.ELEVATOR_VICTOR, ELEVATOR_MIN_OUTPUT, ELEVATOR_MAX_OUTPUT);
@@ -77,23 +78,22 @@ public class Elevator extends Subsystem {
 
   /** Manually change the elevator move speed, like through a joystick. */
   public void elevatorMove(double speed) {
-    logger.info("elevatorMove speed: " + speed + " position: " + talon.getPosition() + " talon voltage: " + talon.getVoltage()
-        + " victor voltage: " + victor.getMotorOutputVoltage());
+  //  logger.info("elevatorMove speed: " + speed + " position: " + talon.getPosition() + " talon voltage: " + talon.getVoltage() + " victor voltage: " + victor.getMotorOutputVoltage());
 
         talon.set(speed);
         double victorSpeed = (speed < VICTOR_SPEED_LIMIT) ? VICTOR_SPEED_LIMIT : speed;
         victor.set(victorSpeed);
-        logger.detail("elevatorMove speed: " + speed + " victorSpeed: " + victorSpeed);
+      //  logger.detail("elevatorMove speed: " + speed + " victorSpeed: " + victorSpeed);
 }
 
   public void elevatorStop() {
-    logger.info("elevatorStop");
+  //  logger.info("elevatorStop");
     group.set(0);
   }
 
   /** Set the level of the elevator to a number from 0 to 4. */
   public void setLevel(int level) {
-    logger.info("setLevel level: " + level);
+  //  logger.info("setLevel level: " + level);
     if (level < 0) {
       level = 0;
     }
@@ -143,13 +143,12 @@ public class Elevator extends Subsystem {
 
   private void autoMoveFast(int currentPosition, int targetPosition, int relativePosition, double minOutput, double maxOutput) {
     double speed = relativePosition > 0 ? maxOutput : minOutput;
-    logger.detail(String.format("autoMoveFast speed: %f current-position: %d target-position: %d relative-position: %d",
-        speed, currentPosition, targetPosition, relativePosition));
+    //logger.detail(String.format("autoMoveFast speed: %f current-position: %d target-position: %d relative-position: %d",speed, currentPosition, targetPosition, relativePosition));
     
         talon.set(speed);
       double victorSpeed = (speed < VICTOR_SPEED_LIMIT) ? VICTOR_SPEED_LIMIT : speed;
       victor.set(victorSpeed);
-      logger.detail("autoMoveFast speed: " + speed + " victorSpeed: " + victorSpeed);
+    //  logger.detail("autoMoveFast speed: " + speed + " victorSpeed: " + victorSpeed);
     }
 
   private double minSlowSpeed = -0.23;
@@ -169,13 +168,12 @@ public class Elevator extends Subsystem {
         speed = -.15;
       }
     }
-    logger.detail(String.format("autoMoveSlow speed: %f ratio: %f current-position: %d target-position: %d relative-position: %d",
-        speed, ratio, currentPosition, targetPosition, relativePosition));
+  //  logger.detail(String.format("autoMoveSlow speed: %f ratio: %f current-position: %d target-position: %d relative-position: %d", speed, ratio, currentPosition, targetPosition, relativePosition));
     
         talon.set(speed);
       double victorSpeed = (speed < VICTOR_SPEED_LIMIT) ? VICTOR_SPEED_LIMIT : speed;
       victor.set(victorSpeed);
-      logger.detail("autoMoveSlow speed: " + speed + " victorSpeed: " + victorSpeed);
+    //  logger.detail("autoMoveSlow speed: " + speed + " victorSpeed: " + victorSpeed);
   }
 
   private void autoMoveFine(int currentPosition, int targetPosition, int relativePosition, double maxOutput) {
@@ -184,20 +182,18 @@ public class Elevator extends Subsystem {
     if (speed < 0 && speed > -.15) {
       speed = -.15;
     }
-    logger.detail(String.format("autoMoveFine speed: %f increment: %f current-position: %d target-position: %d relative-position: %d",
-        speed, increment, currentPosition, targetPosition, relativePosition));
+  //  logger.detail(String.format("autoMoveFine speed: %f increment: %f current-position: %d target-position: %d relative-position: %d",  speed, increment, currentPosition, targetPosition, relativePosition));
     
         talon.set(speed);
       double victorSpeed = (speed < VICTOR_SPEED_LIMIT) ? VICTOR_SPEED_LIMIT : speed;
       victor.set(victorSpeed);
-      logger.detail("autoMoveFine speed: " + speed + " victorSpeed: " + victorSpeed);
+    //  logger.detail("autoMoveFine speed: " + speed + " victorSpeed: " + victorSpeed);
   }
 
   private void autoMoveStop() {
     int elevatorPosition = talon.getPosition();
     int relativePosition = targetElevatorPosition - elevatorPosition;
-    logger.detail(String.format("autoMoveStop speed: %f current-position: %d target-position: %d relative-position: %d",
-     STOP_SPEED, elevatorPosition, targetElevatorPosition, relativePosition));
+  //  logger.detail(String.format("autoMoveStop speed: %f current-position: %d target-position: %d relative-position: %d",STOP_SPEED, elevatorPosition, targetElevatorPosition, relativePosition));
     group.set(STOP_SPEED);
   }
 
@@ -210,13 +206,12 @@ public class Elevator extends Subsystem {
     double velocityRatio = Math.sqrt(ratio);
     double targetVelocity = MAX_VELOCITY * velocityRatio;
     double speed = targetVelocity * timeDelta;
-    logger.detail(String.format("autoMoveVelocity speed: %.4f target-velocity: %.4f velocity-ratio: %.4f ratio: %.4f current-velocity: %.4f relative-position: %d currentPosition: %d time-delta: %d",
-      speed, targetVelocity, velocityRatio, ratio, velocity, relativePosition, position, timeDelta));
+  //  logger.detail(String.format("autoMoveVelocity speed: %.4f target-velocity: %.4f velocity-ratio: %.4f ratio: %.4f current-velocity: %.4f relative-position: %d currentPosition: %d time-delta: %d",speed, targetVelocity, velocityRatio, ratio, velocity, relativePosition, position, timeDelta));
     
       talon.set(speed);
       double victorSpeed = (speed < VICTOR_SPEED_LIMIT) ? VICTOR_SPEED_LIMIT : speed;
       victor.set(victorSpeed);
-      logger.detail("autoMoveVelocity speed: " + speed + " victorSpeed: " + victorSpeed);
+    //  logger.detail("autoMoveVelocity speed: " + speed + " victorSpeed: " + victorSpeed);
   }
 
   public void calibrate(){

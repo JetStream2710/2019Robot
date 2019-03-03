@@ -7,16 +7,16 @@ import frc.robot.util.Logger;
 
 public class ArmHatchHover extends Command {
 
-  private Logger logger = new Logger(ArmHatchHover.class.getName());
+//  private Logger logger = new Logger(ArmHatchHover.class.getName());
 
   public ArmHatchHover() {
-    logger.detail("constructor");
+  //  logger.detail("constructor");
     requires(Robot.climb);
   }
 
   @Override
   protected void initialize() {
-    logger.info("initialize");
+  //  logger.info("initialize");
     Robot.arm.setVerticalPosition(Arm.VERTICAL_HATCH_HOVER_POSITION);
     Robot.arm.setSwivelPosition(Arm.SWIVEL_HATCH_HOVER_POSITION);
   }
@@ -27,18 +27,18 @@ public class ArmHatchHover extends Command {
 
   @Override
   protected boolean isFinished() {
-    logger.info("isFinished");
+  //  logger.info("isFinished");
     return true;
   }
 
   @Override
   protected void end() {
-    logger.info("end");
+  //  logger.info("end");
   }
 
   @Override
   protected void interrupted() {
-    logger.warning("interrupted");
+  //  logger.warning("interrupted");
     end();
   }
 }

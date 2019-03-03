@@ -11,7 +11,7 @@ public class DriveDistance extends Command {
   public static final double WHEEL_CIRCUMFERENCE_INCHES = WHEEL_DIAMETER_INCHES * Math.PI;
   public static final double ENCODER_UNITS_PER_INCH = ENCODER_UNITS_PER_REVOLUTION / WHEEL_CIRCUMFERENCE_INCHES;
 
-  private Logger logger = new Logger(DriveDistance.class.getName());
+//  private Logger logger = new Logger(DriveDistance.class.getName());
 
   private double targetPosition;
   private double distance;
@@ -20,8 +20,8 @@ public class DriveDistance extends Command {
   private double minSpeed;
 
   // Enter distance in inches
-  public DriveDistance(int distanceInInches, double maxSpeed) {
-    logger.detail("constructor " + toString());
+  public DriveDistance(double distanceInInches, double maxSpeed) {
+  //  logger.detail("constructor " + toString());
     requires(Robot.drivetrain);
     this.distance = distanceInInches * ENCODER_UNITS_PER_INCH;
     this.maxSpeed = maxSpeed;
@@ -36,7 +36,7 @@ public class DriveDistance extends Command {
   protected void initialize() {
     targetPosition = getPosition() + distance;
     minSpeed = distance < 1000 ? 0.6 : 0.4;
-    logger.info("initialize " + toString());
+  //  logger.info("initialize " + toString());
 }
 
   @Override
@@ -49,25 +49,25 @@ public class DriveDistance extends Command {
     if (speed < minSpeed) {
       speed = minSpeed;
     }
-    logger.info(String.format("execute speed: %f error-distance: %f %s", speed, errorDistance, toString()));
+  //  logger.info(String.format("execute speed: %f error-distance: %f %s", speed, errorDistance, toString()));
     Robot.drivetrain.arcadeDrive(speed, 0);
   }
 
   @Override
   protected boolean isFinished() {
-    logger.detail("finished");
+  //  logger.detail("finished");
     return distance > 0 ? getPosition() >= targetPosition : getPosition() <= targetPosition;
   }
 
   @Override
   protected void end() {
-    logger.info("end");
+  //  logger.info("end");
     Robot.drivetrain.arcadeDrive(0, 0);
   }
 
   @Override
   protected void interrupted() {
-    logger.warning("interrupted");
+  //  logger.warning("interrupted");
     end();
   }
 

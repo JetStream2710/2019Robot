@@ -15,7 +15,7 @@ import frc.robot.util.Logger;
 
 public class DriveWithAdjustment extends Command {
 
-  private Logger logger = new Logger(DriveWithAdjustment.class.getName());
+//  private Logger logger = new Logger(DriveWithAdjustment.class.getName());
 
   private static int driveState = 0;
 
@@ -23,13 +23,13 @@ public class DriveWithAdjustment extends Command {
   private double speedScalar = 1.0;
 
   public DriveWithAdjustment() {
-    logger.detail("constructor");
+  //  logger.detail("constructor");
     requires(Robot.drivetrain);
   }
 
   @Override
   protected void initialize() {
-    logger.info("initialize");
+  //  logger.info("initialize");
   }
 
   @Override
@@ -40,21 +40,21 @@ public class DriveWithAdjustment extends Command {
     
     int dPov = Robot.oi.drivestick.getPOV();
     if(dPov == 0 ) { 
-      logger.info("driveState changed from " + driveState + " to 0");
+    //  logger.info("driveState changed from " + driveState + " to 0");
       driveState = 0;
       Robot.drivetrain.setCoastMode();
       speedScalar = 1.0;
     }
 
     if(dPov == 270) {
-      logger.info("driveState changed from " + driveState + " to 1");
+    //  logger.info("driveState changed from " + driveState + " to 1");
       driveState = 1;
       Robot.drivetrain.setBrakeMode();
       speedScalar = 1.0;
     }
 
     if (dPov == 180) {
-      logger.info("driveState changed from " + driveState + " to 2");
+    //  logger.info("driveState changed from " + driveState + " to 2");
       driveState = 2;
       Robot.drivetrain.setBrakeMode();
       speedScalar = LOW_SPEED_SCALAR;
@@ -62,8 +62,8 @@ public class DriveWithAdjustment extends Command {
 
     double moveSpeed = Robot.oi.drivestick.getRawAxis(OI.DRIVER_MOVE_AXIS) * speedScalar;
     double rotateSpeed = Robot.oi.drivestick.getRawAxis(OI.DRIVER_ROTATE_AXIS);
-    logger.detail("execute moveSpeed: " + moveSpeed + " rotateSpeed: " + rotateSpeed);
-    logger.detail("driveState: " + driveState);
+  //  logger.detail("execute moveSpeed: " + moveSpeed + " rotateSpeed: " + rotateSpeed);
+  //  logger.detail("driveState: " + driveState);
     if (Math.abs(moveSpeed) < 0.1) {
       Robot.drivetrain.arcadeDrive(moveSpeed, rotateSpeed);
     } else {
@@ -73,19 +73,19 @@ public class DriveWithAdjustment extends Command {
 
   @Override
   protected boolean isFinished() {
-    logger.detail("finished");
+  //  logger.detail("finished");
     return false;
   }
 
   @Override
   protected void end() {
-    logger.info("end");
+  //  logger.info("end");
     Robot.drivetrain.arcadeDrive(0, 0);
   }
 
   @Override
   protected void interrupted() {
-    logger.warning("interrupted");
+  //  logger.warning("interrupted");
     end();
   }
 }

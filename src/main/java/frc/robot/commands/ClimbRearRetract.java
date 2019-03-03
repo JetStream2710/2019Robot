@@ -6,38 +6,38 @@ import frc.robot.util.Logger;
 
 public class ClimbRearRetract extends Command {
 
-  private Logger logger = new Logger(ClimbRearRetract.class.getName());
+//  private Logger logger = new Logger(ClimbRearRetract.class.getName());
 
   public ClimbRearRetract() {
-    logger.detail("constructor");
+  //  logger.detail("constructor");
     requires(Robot.climb);
   }
 
   @Override
   protected void initialize() {
-    logger.info("initialize");
+  //  logger.info("initialize");
     Robot.climb.climbRearRetract();
   }
 
   @Override
   protected void execute() {
-    logger.detail("execute");
+  //  logger.detail("execute");
   }
 
   @Override
   protected boolean isFinished() {
-    logger.detail("isFinished");
+  //  logger.detail("isFinished");
     return false;
   }
 
   @Override
   protected void end() {
-    logger.info("end");
+  //  logger.info("end");
   }
 
   @Override
   protected void interrupted() {
-    logger.warning("interrupted");
+  //  logger.warning("interrupted");
     end();
   }
 }
