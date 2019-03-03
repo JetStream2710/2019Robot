@@ -94,7 +94,9 @@ public class Elevator extends Subsystem {
   /** Set the level of the elevator to a number from 0 to 4. */
   public void setLevel(int level) {
   //  logger.info("setLevel level: " + level);
-    if (level < 0) {
+   
+  
+  /*if (level < 0) {
       level = 0;
     }
     if (level > 3) {
@@ -106,6 +108,7 @@ public class Elevator extends Subsystem {
     } else {
       targetElevatorPosition = CARGO_POSITIONS[currentLevel];
     }
+    */
   }
 
   /** return the level the elevator is currently at (a number from 0 to 4) */
@@ -212,14 +215,6 @@ public class Elevator extends Subsystem {
       double victorSpeed = (speed < VICTOR_SPEED_LIMIT) ? VICTOR_SPEED_LIMIT : speed;
       victor.set(victorSpeed);
     //  logger.detail("autoMoveVelocity speed: " + speed + " victorSpeed: " + victorSpeed);
-  }
-
-  public void calibrate(){
-    if (Robot.isHatchMode) {
-      HATCH_POSITIONS[currentLevel] = getPosition();
-    } else {
-      CARGO_POSITIONS[currentLevel] = getPosition();
-    }
   }
 
   @Override

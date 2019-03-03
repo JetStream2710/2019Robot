@@ -42,9 +42,9 @@ public class Robot extends TimedRobot {
   public static SendableChooser<Command> autoChooser;
 
   public static boolean isAuto;
-  public static boolean isHatchMode;
   public static boolean isMovingElevator;
   public static boolean isMovingArm;
+  public static boolean isAuxClimbing;
 
 //  private static Logger logger = new Logger(Robot.class.getName());
 
@@ -69,7 +69,7 @@ public class Robot extends TimedRobot {
     autoChooser.addOption("AutoCargo 4", new AutoCargo4());
     autoChooser.addOption("AutoCargo 5", new AutoCargo5());
 
-    isHatchMode = true;
+    isAuxClimbing = false;
     isMovingElevator = false;
     isMovingArm = false;
   }
@@ -132,27 +132,15 @@ public class Robot extends TimedRobot {
 
   private void updateSubsystems() {
     long time = System.currentTimeMillis();
-    SmartDash.put("Robot Mode", isHatchMode?"Hatch":"Cargo");
+    SmartDash.put("Climb Mode", isAuxClimbing?"Climb":"Drive");
     SmartDash.put("Arm Status", isMovingArm?"Moving":"NOT Moving");
     SmartDash.put("Elevator Status", isMovingElevator?"Moving":"NOT Moving");
     arm.periodic(time);
     elevator.periodic(time);
   }
 
-
-  public static boolean isHatchMode() {
-    return isHatchMode;
-  }
-
-  public static void switchToHatchMode() {
-  //  logger.info("isHatchMode mode on");
-    isHatchMode = true;
-    arm.setLevel(arm.getLevel());
-  }
-
-  public static void switchToCargoMode() {
-  //  logger.info("isHatchMode mode off");
-    isHatchMode = false;
-    arm.setLevel(arm.getLevel());
+  public static void toggleClimbMode() {
+  //  logger.info("ClimbMode Enabled");
+    isAuxClimbing = !isAuxClimbing;
   }
 }

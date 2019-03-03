@@ -4,11 +4,11 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 import frc.robot.util.Logger;
 
-public class SwitchToCargo extends Command {
+public class ClimbMoveForward extends Command {
 
-//  private Logger logger = new Logger(SwitchToCargo.class.getName());
+//  private Logger logger = new Logger(ClimbRearMove.class.getName());
 
-  public SwitchToCargo() {
+  public ClimbMoveForward() {
   //  logger.detail("constructor");
     requires(Robot.climb);
   }
@@ -16,7 +16,7 @@ public class SwitchToCargo extends Command {
   @Override
   protected void initialize() {
   //  logger.info("initialize");
-    Robot.switchToCargoMode();
+    Robot.climb.moveForward();
   }
 
   @Override
@@ -26,7 +26,7 @@ public class SwitchToCargo extends Command {
 
   @Override
   protected boolean isFinished() {
-  //  logger.detail("finished");
+  //  logger.detail("isFinished");
     return true;
   }
 

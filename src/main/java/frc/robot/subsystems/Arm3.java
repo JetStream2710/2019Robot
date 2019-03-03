@@ -87,7 +87,9 @@ public class Arm3 extends Subsystem {
   /** Set the level of the arm to a number from 0 to 4. */
   public void setLevel(int level) {
   //  logger.info("setLevel level: " + level);
-    if (level < 0) {
+   
+  /*
+  if (level < 0) {
       level = 0;
     }
     if (level > 3) {
@@ -101,6 +103,7 @@ public class Arm3 extends Subsystem {
       targetVerticalPosition = VERTICAL_CARGO_POSITIONS[currentLevel];
       targetSwivelPosition = SWIVEL_CARGO_POSITIONS[currentLevel];
     }
+    */
   }
 
   /** return the level the arm is currently at (a number from 0 to 4) */

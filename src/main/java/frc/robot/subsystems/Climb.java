@@ -5,11 +5,11 @@ import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
+import frc.robot.commands.ClimbCommand;
 import frc.robot.util.Logger;
 
 public class Climb extends Subsystem {
 
-  public static final double CLIMB_SPEED = 0.5;
   public static final double MOVE_SPEED = 0.5;
 
 //  private Logger logger = new Logger(Climb.class.getName());
@@ -35,24 +35,14 @@ public class Climb extends Subsystem {
     moveVictor.setNeutralMode(NeutralMode.Brake);
   }
 
-  public void climbFrontExtend(){
+  public void climbFrontExtend(double climbSpeed){
   //  logger.info("climbFrontExtend called");
-    frontVictor.set(CLIMB_SPEED);
+    frontVictor.set(climbSpeed);
   }
 
-  public void climbFrontRetract(){
-  //  logger.info("climbFrontRetract called");
-    frontVictor.set(-CLIMB_SPEED);
-  }
-
-  public void climbRearExtend(){
+  public void climbRearExtend(double climbSpeed){
   //  logger.info("climbRearExtend called");
-    backVictor.set(CLIMB_SPEED);
-  }
-
-  public void climbRearRetract(){
-  //  logger.info("climbRearRetract called");
-    backVictor.set(-CLIMB_SPEED);
+    backVictor.set(climbSpeed);
   }
 
   public void moveForward(){
@@ -77,5 +67,6 @@ public class Climb extends Subsystem {
 
   @Override
   public void initDefaultCommand() {
+    setDefaultCommand(new ClimbCommand());
   }
 }

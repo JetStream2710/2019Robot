@@ -73,6 +73,7 @@ public class Arm extends Subsystem {
   }
 
   public void calibrate() {
+    /*
     if (Robot.isHatchMode) {
       VERTICAL_HATCH_POSITIONS[currentLevel] = getVerticalArmPosition();
       SWIVEL_HATCH_POSITIONS[currentLevel] = getSwivelPosition();
@@ -80,6 +81,7 @@ public class Arm extends Subsystem {
       VERTICAL_CARGO_POSITIONS[currentLevel] = getVerticalArmPosition();
       SWIVEL_CARGO_POSITIONS[currentLevel] = getSwivelPosition();
     }
+    */
   }
 
   public int getVerticalArmPosition() {
@@ -148,6 +150,8 @@ public class Arm extends Subsystem {
   /** Set the level of the arm to a number from 0 to 4. */
   public void setLevel(int level) {
   //  logger.info("setLevel level: " + level);
+
+  /*
     if (level < 0) {
       level = 0;
     }
@@ -162,6 +166,8 @@ public class Arm extends Subsystem {
       targetVerticalPosition = VERTICAL_CARGO_POSITIONS[currentLevel];
       targetSwivelPosition = SWIVEL_CARGO_POSITIONS[currentLevel];
     }
+
+    */
   }
 
   /** return the level the arm is currently at (a number from 0 to 4) */
