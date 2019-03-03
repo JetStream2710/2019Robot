@@ -9,43 +9,43 @@ import frc.robot.util.Logger;
  */
 public class DriveForwardSeconds extends Command {
 
-//    Logger logger = new Logger(DriveForwardSeconds.class.getName());
-
-	private long targetTime;
-	private long millis;
-    private long time; 
-    private double maxSpeed;
-
-	public DriveForwardSeconds(long millis, double maxSpeed) {
-        this.millis = millis/3;
-        this.maxSpeed = maxSpeed;
-        requires(Robot.drivetrain);
+	long startTime;
+	long targetTime;
+	long error;
+	
+    public DriveForwardSeconds(long durationSeconds) {
+        startTime = System.currentTimeMillis();
+        targetTime = startTime + 1000*durationSeconds;
     }
 
+    public DriveForwardSeconds(long durationSeconds, double maxspeed) {
+        startTime = System.currentTimeMillis();
+        targetTime = startTime + 1000*durationSeconds;
+    }
+
+    // Called just before this Command runs the first time
     protected void initialize() {
-        targetTime = System.currentTimeMillis() + millis;
-    //    logger.info("initialize: " + targetTime + " " + maxSpeed);
-    	Robot.drivetrain.arcadeDrive(maxSpeed, 0.0);
     }
 
+    // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+
+        
+//    	error = (targetTime - System.currentTimeMillis())/(targetTime-startTime);
+    	Robot.drivetrain.arcadeDrive(0.5, 0.0);
     }
 
+    // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        time = System.currentTimeMillis();
-        if (time > targetTime) {
-        //    logger.info("finished");
-        }
-        return (time >= targetTime);
+        return System.currentTimeMillis() >= targetTime;
     }
 
+    // Called once after isFinished returns true
     protected void end() {
-    	Robot.drivetrain.arcadeDrive(0, 0);
-		System.out.println("STOP");
     }
 
+    // Called when another command which requires one or more of the same
+    // subsystems is scheduled to run
     protected void interrupted() {
-    	end();
     }
 }
- 

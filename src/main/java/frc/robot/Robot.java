@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.commands.Auto1;
 import frc.robot.commands.AutoCargo3;
 import frc.robot.commands.AutoCargo4;
 import frc.robot.commands.AutoCargo5;
@@ -60,6 +61,7 @@ public class Robot extends TimedRobot {
     oi = new OI();
     pixyVision = new PixyVision(true, false);
     //pixyVision.start();
+  
 
 //		CameraServer.getInstance().startAutomaticCapture();
 
@@ -97,6 +99,9 @@ public class Robot extends TimedRobot {
     // get rid of reset when we want to start with the arm up
     arm.reset();
     elevator.reset();
+    Auto1 auto = new Auto1();
+    auto.start();
+
 
     /*autonomousCommand = autoChooser.getSelected();
     autonomousCommand.start();*/
@@ -107,8 +112,8 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousPeriodic() {
   //  logger.detail("autonomousPeriodic");
-    /*Scheduler.getInstance().run();
-    updateSubsystems();*/
+    Scheduler.getInstance().run();
+    updateSubsystems();
   }
 
   @Override

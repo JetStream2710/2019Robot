@@ -8,36 +8,21 @@ import frc.robot.util.Logger;
 
 public class DriveCommand extends Command {
 
+  private static double leftValue = 0;
+  private static double rightValue = 0;
+  private static double prevLeftValue = 0;
+  private static double prevRightValue = 0;
+  private static double leftSpeed = 0;
+  private static double rightSpeed = 0;
+
+  private static final double maxDriveAccel = 0.02;
+  private static final double maxTurnAccel = 0.04;
+
 //  private Logger logger = new Logger(DriveCommand.class.getName());
-
-private static Timer leftTimer = new Timer();
-private static Timer rightTimer = new Timer();
-
-private static double leftTime = 0;
-private static double rightTime = 0;
-
-private static final long leftMaxTime = 1000;
-private static final long rightMaxTime = 500;
-
-private static double leftValue = 0;
-private static double rightValue = 0;
-
-private static double prevLeftValue = 0;
-private static double prevRightValue = 0;
 
   public DriveCommand() {
   //  logger.detail("constructor");
     requires(Robot.drivetrain);
-  }
-
-  public double[] getAdjustedDriveSpeeds() {
-    double leftMovespeed = leftTime / leftMaxTime;
-    double rightMovespeed = rightTime / rightMaxTime;
-    leftMovespeed = (leftMovespeed > leftValue) ? leftValue : leftMovespeed;
-    rightMovespeed = (rightMovespeed > rightValue) ? rightValue : rightMovespeed;
-
-    double[] speeds = new double[] {leftMovespeed, rightMovespeed};
-    return speeds;
   }
 
   @Override
@@ -51,46 +36,62 @@ private static double prevRightValue = 0;
       return;
     }
 
-//    double moveSpeed = Robot.oi.drivestick.getRawAxis(OI.DRIVER_MOVE_AXIS);
-//    double rotateSpeed = Robot.oi.drivestick.getRawAxis(OI.DRIVER_ROTATE_AXIS);
+    leftValue = -1 *Robot.oi.drivestick.getRawAxis(1);
+    rightValue = -1 * Robot.oi.drivestick.getRawAxis(2);
 
-// changed received joystick values for less sensitvity
-    prevLeftValue = leftValue;
-    rightValue = rightValue;
-    leftValue = getAxis(Robot.oi.drivestick.getRawAxis(OI.DRIVER_MOVE_AXIS));
-    rightValue = getAxis(Robot.oi.drivestick.getRawAxis(OI.DRIVER_ROTATE_AXIS));
-
-    if(leftValue < 0.1) {
-      leftTimer.stop();
-      leftTimer.reset();
-    } 
-    if(rightValue < 0.1) {
-      rightTimer.stop();
-      rightTimer.reset();
-    }
-    if(prevLeftValue < 0.1 && leftValue >= 0.1) {
-      leftTimer.start();
-    }
-    if(prevRightValue < 0.1 && rightValue >= 0.1) {
-      rightTimer.start();
+    if(leftValue > leftSpeed) {
+      if(Math.abs(leftSpeed - leftValue) > maxDriveAccel) {
+        leftSpeed += maxDriveAccel;
+      } else {
+        leftSpeed = leftValue;
+      } 
     }
 
-    leftTime = leftTimer.get();
-    rightTime = rightTimer.get();
-  
-    double leftSpeed = getAdjustedDriveSpeeds()[0];
-    double rightSpeed = getAdjustedDriveSpeeds()[1];
+    if(leftValue < leftSpeed) {
+      if(Math.abs(leftSpeed - leftValue) > maxDriveAccel) {
+        leftSpeed -= maxDriveAccel;
+      } else {
+        leftSpeed = leftValue;
+      }
+    }
 
-//  logger.detail("execute moveSpeed: " + moveSpeed + " rotateSpeed: " + rotateSpeed);
+    if(rightValue > rightSpeed) {
+      if(Math.abs(rightSpeed - rightValue) > maxTurnAccel) {
+        rightSpeed += maxTurnAccel;
+      } else {
+        rightSpeed = rightValue;
+      } 
+    }
 
-    //Robot.drivetrain.tankDrive(leftValue, rightValue);
-    
-    if (Math.abs(leftValue) < 0.1) {
-      
-      Robot.drivetrain.arcadeDrive(leftSpeed, rightSpeed);
+    if(rightValue < rightSpeed) {
+      if(Math.abs(rightSpeed - rightValue) > maxTurnAccel) {
+        rightSpeed -= maxTurnAccel;
+      } else {
+        rightSpeed = rightValue;
+      }
+    }
+
+    if(rightValue > 0.4 && Math.abs(rightSpeed) < 0.4) {
+      rightSpeed = 0.4;
+    }
+    if(rightValue < 0.4 && Math.abs(rightSpeed) < 0.4) {
+      rightSpeed = -0.4;
+    }
+
+
+    if(Math.abs(leftValue) <= 0.1) {
+      leftSpeed = leftValue;
+    }
+    if(Math.abs(rightValue) <= 0.1) {
+      rightSpeed = rightValue;
+    }
+
+    if(leftValue > 0.1) {
+    Robot.drivetrain.curvatureDrive(leftSpeed, rightSpeed);
     } else {
-      Robot.drivetrain.curvatureDrive(leftSpeed, rightSpeed);
+      Robot.drivetrain.arcadeDrive(leftSpeed, rightSpeed);
     }
+
   }
 
   @Override
