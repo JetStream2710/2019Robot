@@ -121,7 +121,7 @@ public class Elevator extends Subsystem {
   }
 
   public void periodic(long timestamp) {
-    talon.sendTelemetry();
+//    talon.sendTelemetry();
     SmartDash.put("Elevator Level", currentLevel);
     if (Robot.isMovingElevator || targetElevatorPosition == null) {
       return;

@@ -33,7 +33,7 @@ public class JetstreamTalon implements SpeedController {
     talon.configVoltageCompSaturation(MAX_VOLTAGE);
     talon.enableVoltageCompensation(true);
     talon.setSelectedSensorPosition(0);
-    sendTelemetry();
+//    sendTelemetry();
   }
 
   public void reset() {

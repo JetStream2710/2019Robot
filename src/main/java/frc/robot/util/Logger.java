@@ -42,7 +42,7 @@ public class Logger {
     LOG_LEVELS.put(ClimbMech.class.getName(), Level.WARNING);
     LOG_LEVELS.put(DriveCommand.class.getName(), Level.INFO);
     LOG_LEVELS.put(DriveDistance.class.getName(), Level.WARNING);
-    LOG_LEVELS.put(ElevatorAndArmMove.class.getName(), Level.INFO);
+    LOG_LEVELS.put(ElevatorAndArmMove.class.getName(), Level.DETAIL);
     LOG_LEVELS.put(HatchPush.class.getName(), Level.WARNING);
     LOG_LEVELS.put(TurnDegrees.class.getName(), Level.WARNING);
     LOG_LEVELS.put(VisionFollow.class.getName(), Level.WARNING);

@@ -25,7 +25,7 @@ public class RobotMap {
   // label as, but also mislabelled
   public static final int ARM_SWIVEL_TALON = 13;
   // climb
-  public static final int CLIMB_FRONT_VICTOR = 4;
+  public static final int CLIMB_FRONT_VICTOR = 10;
   public static final int CLIMB_BACK_VICTOR = 9;
   public static final int CLIMB_MOVE_VICTOR = 5;
 

@@ -2,10 +2,12 @@ package frc.robot.util;
 
 public class PixyVision {
   private static final long POLL_FREQUENCY_MILLIS = 1 + (1000 / 60);
+  private static final long LINE_TIMEOUT_MILLIS = 250;
 
 // private Logger logger = new Logger(PixyVision.class.getName());
 
-  private PixyLine latestLine;
+  private PixyLine latestLine1;
+  private PixyLine latestLine2;
   private PixyBlock leftBlock;
   private PixyBlock rightBlock;
 
@@ -17,6 +19,9 @@ public class PixyVision {
   private boolean isRunning;
   private PixyVisionThread thread;
 
+  private long lastLine1Valid;
+  private long lastLine2Valid;
+
 
   public PixyVision(boolean trackLines, boolean trackObjects) {
   //  logger.detail("constructor");
@@ -24,8 +29,12 @@ public class PixyVision {
     this.trackObjects = trackObjects;
   }
 
-  public PixyLine getLatestLine() {
-    return latestLine;
+  public PixyLine getLatestLine1() {
+    return latestLine1;
+  }
+
+  public PixyLine getLatestLine2() {
+    return latestLine2;
   }
 
   public PixyBlock getLeftBlock() {
@@ -68,6 +77,7 @@ public class PixyVision {
     public void run() {
     //  logger.info("running thread");
       while (isRunning) {
+        long currentTime = System.currentTimeMillis();
         if (turnOnLamp) {
         //  logger.info("turning on lamp");
           driver.turnOnLamp();
@@ -81,10 +91,21 @@ public class PixyVision {
           turnOffLamp = false;
         }
         if (trackLines) {
-          PixyLine line = driver.lineTracking();
+          PixyLine line = driver.lineTracking(true);
+          PixyLine line2 = driver2.lineTracking(false);
           if (line != null && isValid(line)) {
           //  logger.info("found line: " + line);
-            latestLine = line;
+            latestLine1 = line;
+            lastLine1Valid = currentTime;
+          } else if (lastLine1Valid + LINE_TIMEOUT_MILLIS < currentTime) {
+            latestLine1 = null;
+          }
+          if (line2 != null && isValid(line2)) {
+            //  logger.info("found line: " + line);
+              latestLine2 = line2;
+              lastLine2Valid = currentTime;
+          } else if (lastLine2Valid + LINE_TIMEOUT_MILLIS < currentTime) {
+            latestLine2 = null;
           }
         }
         if (trackObjects) {

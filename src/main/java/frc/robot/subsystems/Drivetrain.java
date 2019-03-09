@@ -65,7 +65,7 @@ public class Drivetrain extends Subsystem {
     rightVictor.setNeutralMode(NeutralMode.Brake);
     rightVictor.configVoltageCompSaturation(12);
     rightVictor.enableVoltageCompensation(true);
-    
+
     leftGroup = new SpeedControllerGroup(leftTalon, leftVictor);
     rightGroup = new SpeedControllerGroup(rightTalon, rightVictor);
     differentialDrive = new DifferentialDrive(leftGroup, rightGroup);

@@ -15,6 +15,6 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class Auto2 extends CommandGroup {
 
   public Auto2() {
-    addSequential(new DriveDistance(110, 0.5));
+    addSequential(new DriveForwardSeconds(5));
   }
 }

@@ -33,8 +33,16 @@ public class ClimbCommand extends Command {
     double leftValue = Robot.oi.auxstick.getRawAxis(OI.ELEVATOR_AXIS);
     double rightValue = Robot.oi.auxstick.getRawAxis(OI.ARM_AXIS);
 
-    Robot.climb.climbFrontExtend(leftValue);
-    Robot.climb.climbRearExtend(rightValue);
+    if (Math.abs(leftValue) > 0.1) {
+      Robot.climb.climbFrontExtend(leftValue);
+    } else{
+      Robot.climb.climbFrontExtend(0);
+    }
+    if (Math.abs(rightValue) > 0.1) {
+      Robot.climb.climbRearExtend(rightValue);
+    } else{
+      Robot.climb.climbRearExtend(0);
+    }
   }
 
   // Make this return true when this Command no longer needs to run execute()

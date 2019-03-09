@@ -11,12 +11,9 @@ import frc.robot.util.SmartDash;
 public class Arm extends Subsystem {
 
   public static final int VERTICAL_MAX = 3500;
-  public static final int VERTICAL_MIN = 0;
+  public static final int VERTICAL_MIN = -3500;
   public static final double VERTICAL_MIN_OUTPUT = -0.5;
-  public static final double VERTICAL_MAX_OUTPUT = 0.6;
-  public static final int fivehundo = 500;
-  public static final int two = 3;
-  
+  public static final double VERTICAL_MAX_OUTPUT = 0.6;  
 
   public static final int VERTICAL_HATCH_HOVER_POSITION = 500;
   public static final int VERTICAL_HATCH_DOWN_POSITION = 0;  
@@ -45,15 +42,13 @@ public class Arm extends Subsystem {
 
   // floor: swivel -2800
 
-//  private Logger logger = new Logger(Arm.class.getName());
+  private Logger logger = new Logger(Arm.class.getName());
   private JetstreamTalon verticalTalon;
   private JetstreamTalon swivelTalon;
 
   private int currentLevel;
 
   private Integer targetVerticalPosition;
-  //public static final int fivehundo = 500;
-  //targetVerticalPosition = fivehundo;
 
   private Integer targetSwivelPosition;
   private long lastTimestamp;
@@ -84,6 +79,11 @@ public class Arm extends Subsystem {
     */
   }
 
+  public void setLevel1() {
+    targetSwivelPosition = 2000;
+    targetVerticalPosition = -2000;
+  }
+
   public int getVerticalArmPosition() {
     return verticalTalon.getPosition();
   }
@@ -94,7 +94,7 @@ public class Arm extends Subsystem {
 
   public void moveVerticalArm(double speed) {
     targetVerticalPosition = null;
-  //  logger.info("moveVerticalArm speed: " + speed + " arm-position: " + verticalTalon.getPosition());
+    logger.info("moveVerticalArm speed: " + speed + " arm-position: " + verticalTalon.getPosition());
     verticalTalon.set(speed + getCompensation());
   }
 
@@ -114,8 +114,12 @@ public class Arm extends Subsystem {
   }
 
   public void moveSwivelArm(double speed) {
-  //  logger.info("moveSwivelArm speed: " + speed + " swivel-positions: " + swivelTalon.getPosition());
+    logger.info("moveSwivelArm speed: " + speed + " swivel-positions: " + swivelTalon.getPosition());
     swivelTalon.set(speed);
+  }
+
+  public int getVerticalPosition() { 
+    return verticalTalon.getPosition();
   }
 
   public void stopMovingSwivelArm() {
@@ -206,8 +210,8 @@ public class Arm extends Subsystem {
 
   public void periodic(long timestamp) {
   //  logger.info("Arm encoder: " + verticalTalon.getPosition() + " swivel: " + swivelTalon.getPosition() + " target: " + targetVerticalPosition);
-    verticalTalon.sendTelemetry();
-    swivelTalon.sendTelemetry();
+//    verticalTalon.sendTelemetry();
+//    swivelTalon.sendTelemetry();
     SmartDash.put("Arm Level", currentLevel);
     if (Robot.isMovingArm) {
       return;

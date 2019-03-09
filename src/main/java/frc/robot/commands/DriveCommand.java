@@ -8,10 +8,6 @@ import frc.robot.util.Logger;
 
 public class DriveCommand extends Command {
 
-  private static double leftValue = 0;
-  private static double rightValue = 0;
-  private static double prevLeftValue = 0;
-  private static double prevRightValue = 0;
   private static double leftSpeed = 0;
   private static double rightSpeed = 0;
 
@@ -36,8 +32,8 @@ public class DriveCommand extends Command {
       return;
     }
 
-    leftValue = -1 *Robot.oi.drivestick.getRawAxis(1);
-    rightValue = -1 * Robot.oi.drivestick.getRawAxis(2);
+    double leftValue = Robot.oi.drivestick.getRawAxis(1)*0.7;
+    double rightValue = Robot.oi.drivestick.getRawAxis(2)*0.7;
 
     if(leftValue > leftSpeed) {
       if(Math.abs(leftSpeed - leftValue) > maxDriveAccel) {
@@ -74,7 +70,7 @@ public class DriveCommand extends Command {
     if(rightValue > 0.4 && Math.abs(rightSpeed) < 0.4) {
       rightSpeed = 0.4;
     }
-    if(rightValue < 0.4 && Math.abs(rightSpeed) < 0.4) {
+    if(rightValue < -0.4 && Math.abs(rightSpeed) < 0.4) {
       rightSpeed = -0.4;
     }
 
@@ -86,8 +82,9 @@ public class DriveCommand extends Command {
       rightSpeed = rightValue;
     }
 
-    if(leftValue > 0.1) {
-    Robot.drivetrain.curvatureDrive(leftSpeed, rightSpeed);
+//    System.out.println("left joy: " + leftValue + " right joy: " + rightValue + " drivespeed: " + leftSpeed + " turnspeed: " + rightSpeed);
+    if (Math.abs(leftValue) > 0.1) {
+      Robot.drivetrain.curvatureDrive(leftSpeed, rightSpeed);
     } else {
       Robot.drivetrain.arcadeDrive(leftSpeed, rightSpeed);
     }

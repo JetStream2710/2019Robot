@@ -47,12 +47,16 @@ public class Climb extends Subsystem {
 
   public void moveForward(){
   //  logger.info("moveForward called");
-    moveVictor.set(MOVE_SPEED);
+    moveVictor.set(-MOVE_SPEED);
   }
 
   public void moveBackward(){
   //  logger.info("moveBackward called");
-    moveVictor.set(-MOVE_SPEED);
+    moveVictor.set(MOVE_SPEED);
+  }
+
+  public void moveStop(){
+    moveVictor.set(0);
   }
 
   public void setFrontMotorSpeed(double speed) {

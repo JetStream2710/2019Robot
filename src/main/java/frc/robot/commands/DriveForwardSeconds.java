@@ -10,21 +10,25 @@ import frc.robot.util.Logger;
 public class DriveForwardSeconds extends Command {
 
 	long startTime;
-	long targetTime;
-	long error;
+    long targetTime;
+    long durationSeconds;
+    long error;
+    double maxSpeed;
 	
     public DriveForwardSeconds(long durationSeconds) {
-        startTime = System.currentTimeMillis();
-        targetTime = startTime + 1000*durationSeconds;
+        this.durationSeconds = durationSeconds;
+        this.maxSpeed = 0.5;
     }
 
     public DriveForwardSeconds(long durationSeconds, double maxspeed) {
-        startTime = System.currentTimeMillis();
-        targetTime = startTime + 1000*durationSeconds;
+        this.durationSeconds = durationSeconds;
+        this.maxSpeed = maxspeed;
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
+        startTime = System.currentTimeMillis();
+        targetTime = startTime + 1000*durationSeconds;
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -32,7 +36,7 @@ public class DriveForwardSeconds extends Command {
 
         
 //    	error = (targetTime - System.currentTimeMillis())/(targetTime-startTime);
-    	Robot.drivetrain.arcadeDrive(0.5, 0.0);
+    	Robot.drivetrain.arcadeDrive(maxSpeed, 0.0);
     }
 
     // Make this return true when this Command no longer needs to run execute()

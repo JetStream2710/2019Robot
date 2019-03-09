@@ -20,6 +20,7 @@ public class OI {
   public static final int HATCH_PUSH = 7;          // driver LT
   public static final int CLIMB_MOVE_FORWARD = 2;  // driver A
   public static final int CLIMB_MOVE_BACK = 3;     // driver B
+  public static final int PIXY_FOLLOW_LINE = 4;          // driver Y
 
   // figure out feeder station stuff -- waiting on the stuff FEEDER STATION
   public static final int JOYSTICK_AUX = 1;
@@ -28,6 +29,7 @@ public class OI {
   public static final int TOGGLE_CLIMB = 1; // aux X
   public static final int WEAPONS_UP = 4;      // aux Y
   public static final int WEAPONS_DOWN = 2;    // aux A
+  public static final int LEVEL_1 = 3;
 
   // controllers defined
   public Joystick drivestick = new Joystick(JOYSTICK_DRIVER);
@@ -39,10 +41,12 @@ public class OI {
   public Button hatchPush = new JoystickButton(drivestick, HATCH_PUSH);
   public Button climbMoveForward = new JoystickButton(drivestick, CLIMB_MOVE_FORWARD);
   public Button climbMoveBackward = new JoystickButton(drivestick, CLIMB_MOVE_BACK);
+  public Button pixyFollowLine = new JoystickButton(drivestick, PIXY_FOLLOW_LINE);
 
   public Button weaponsUp = new JoystickButton(auxstick, WEAPONS_UP);
   public Button weaponsDown = new JoystickButton(auxstick, WEAPONS_DOWN);
   public Button toggleClimb = new JoystickButton(auxstick, TOGGLE_CLIMB);
+  public Button armLevel1 = new JoystickButton(auxstick, LEVEL_1);
 
   public OI() {
     cargoIntake.whileHeld(new CargoIntake());
@@ -50,9 +54,11 @@ public class OI {
     hatchPush.whenPressed(new HatchPush());
     climbMoveForward.whileHeld(new ClimbMoveForward());
     climbMoveBackward.whileHeld(new ClimbMoveBackward());
+    //pixyFollowLine.whenPressed(new FollowLine());
 
     weaponsUp.whenPressed(new WeaponsUp());
     weaponsDown.whenPressed(new WeaponsDown());
     toggleClimb.whileHeld(new ToggleClimb());
+    armLevel1.whenActive(new ArmLevel1());
   }
 }

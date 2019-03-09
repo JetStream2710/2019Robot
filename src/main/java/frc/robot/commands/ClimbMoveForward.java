@@ -27,12 +27,13 @@ public class ClimbMoveForward extends Command {
   @Override
   protected boolean isFinished() {
   //  logger.detail("isFinished");
-    return true;
+    return false;
   }
 
   @Override
   protected void end() {
   //  logger.info("end");
+    Robot.climb.moveStop();
   }
 
   @Override

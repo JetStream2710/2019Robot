@@ -24,12 +24,12 @@ public class PixyI2CDriver {
   //  logger.info("turnOffLamp receive: " + PixyMessage.bytesToString(data));
   }
 
-  public PixyLine lineTracking() {
+  public PixyLine lineTracking(boolean isMirror) {
   //  logger.info("lineTracking send: " + PixyMessage.bytesToString(PixyMessage.LINE_TRACKING));
     byte[] data = new byte[14];
     pixy.transaction(PixyMessage.LINE_TRACKING, PixyMessage.LINE_TRACKING.length, data, data.length);
   //  logger.info("lineTracking receive: " + PixyMessage.bytesToString(data));
-    return new PixyLine(data);
+    return new PixyLine(data, isMirror);
   }
 
   public PixyBlock[] objectTracking() {
