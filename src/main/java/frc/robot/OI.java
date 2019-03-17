@@ -54,7 +54,7 @@ public class OI {
     hatchPush.whenPressed(new HatchPush());
     climbMoveForward.whileHeld(new ClimbMoveForward());
     climbMoveBackward.whileHeld(new ClimbMoveBackward());
-    //pixyFollowLine.whenPressed(new FollowLine());
+    pixyFollowLine.whenPressed(new FollowLine());
 
     weaponsUp.whenPressed(new WeaponsUp());
     weaponsDown.whenPressed(new WeaponsDown());

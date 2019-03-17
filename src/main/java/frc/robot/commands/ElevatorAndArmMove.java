@@ -11,7 +11,7 @@ public class ElevatorAndArmMove extends Command {
   private static long lastPovChange = 0;
   private static final long POV_TIME_BUFFER = 1000;
 
-  private Logger logger = new Logger(ElevatorAndArmMove.class.getName());
+  //private Logger logger = new Logger(ElevatorAndArmMove.class.getName());
 
   public ElevatorAndArmMove() {
   //  logger.detail("constructor");
@@ -30,7 +30,7 @@ public class ElevatorAndArmMove extends Command {
       return;
     }
 
-    logger.info("Elevator: " + Robot.elevator.getPosition() + "\nArm: " + Robot.arm.getVerticalPosition() + "\nSwivel: " + Robot.arm.getSwivelPosition());
+    //logger.info("Elevator: " + Robot.elevator.getPosition() + "\nArm: " + Robot.arm.getVerticalPosition() + "\nSwivel: " + Robot.arm.getSwivelPosition());
   //  logger.detail("execute");
     // Aux Joypad Control
     int dPov = Robot.oi.auxstick.getPOV();
@@ -80,7 +80,7 @@ public class ElevatorAndArmMove extends Command {
       int position = Robot.arm.getVerticalArmPosition();
       // TODO: investigate changing this
       int target = position + (int) (armSpeed * 600);
-      logger.info(String.format("execute arm: target: %d current %d", target, position));
+      //logger.info(String.format("execute arm: target: %d current %d", target, position));
       Robot.arm.setVerticalPosition(target);
     }
     // Raw arm movement via joystick

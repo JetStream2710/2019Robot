@@ -35,6 +35,7 @@ import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Hatch;
 import frc.robot.util.Logger;
+import frc.robot.util.PixyLine;
 import frc.robot.util.PixyVision;
 import frc.robot.util.SmartDash;
 
@@ -70,7 +71,7 @@ public class Robot extends TimedRobot {
     climb = new Climb();
     oi = new OI();
     pixy = new PixyVision(true, false);
-    //pixy.start();
+    pixy.start();
 
     //CameraServer.getInstance().startAutomaticCapture();
      
@@ -150,7 +151,7 @@ public class Robot extends TimedRobot {
   public void teleopInit() {
   //  logger.detail("teleopInit");
     isAuto = false;
-    // get rid of reset when we want to start with the arm up
+    //  get rid of reset when we want to start with the arm up
     arm.reset();
     elevator.reset();
 
@@ -161,15 +162,16 @@ public class Robot extends TimedRobot {
   //  logger.detail("teleopInit");
     Scheduler.getInstance().run();
     updateSubsystems();
+ 
     //arm.setVerticalSpeedManually(arm.getStopSpeed());
   }
 
 
   private void updateSubsystems() {
     long time = System.currentTimeMillis();
-    SmartDash.put("Climb Mode", isAuxClimbing?"Climb":"Drive");
+    /*SmartDash.put("Climb Mode", isAuxClimbing?"Climb":"Drive");
     SmartDash.put("Arm Status", isMovingArm?"Moving":"NOT Moving");
-    SmartDash.put("Elevator Status", isMovingElevator?"Moving":"NOT Moving");
+    SmartDash.put("Elevator Status", isMovingElevator?"Moving":"NOT Moving");*/
     arm.periodic(time);
     elevator.periodic(time);
   }

@@ -215,12 +215,12 @@ public class Arm extends Subsystem {
     if (targetVerticalPosition != null) {
       periodicVertical(timestamp);
     }
-    Logger.Level temp = Logger.LOG_LEVELS.get(this.getClass().getName());
-    Logger.LOG_LEVELS.put(this.getClass().getName(), Level.WARNING);
+    //Logger.Level temp = Logger.LOG_LEVELS.get(this.getClass().getName());
+    //Logger.LOG_LEVELS.put(this.getClass().getName(), Level.WARNING);
     if (targetSwivelPosition != null) {
       periodicSwivel(timestamp);
     }
-    Logger.LOG_LEVELS.put(this.getClass().getName(), temp);
+    //Logger.LOG_LEVELS.put(this.getClass().getName(), temp);
   }
 
   private void periodicVertical(long timestamp) {

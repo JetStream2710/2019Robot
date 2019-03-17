@@ -17,7 +17,7 @@ public class PixyLine {
     }
     return mirrorAdjust((int) bytes[8], 78);
   }
-
+  
   /** @return a number between 0 to 51 */
   public int getLowerY() {
     if (shouldFlip()) {

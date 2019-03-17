@@ -30,6 +30,15 @@ public class ClimbCommand extends Command {
       return;
     }
 
+    double leftDriveValue = Robot.oi.drivestick.getRawAxis(OI.DRIVER_MOVE_AXIS);
+    if(Math.abs(leftDriveValue) < .1) {
+      leftDriveValue = 0;
+    } else {
+      leftDriveValue *=0.75;
+    }
+
+    Robot.drivetrain.arcadeDrive(leftDriveValue, 0.0);
+
     double leftValue = Robot.oi.auxstick.getRawAxis(OI.ELEVATOR_AXIS);
     double rightValue = Robot.oi.auxstick.getRawAxis(OI.ARM_AXIS);
 

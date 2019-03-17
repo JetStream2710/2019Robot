@@ -6,8 +6,7 @@ public class PixyVision {
 
 // private Logger logger = new Logger(PixyVision.class.getName());
 
-  private PixyLine latestLine1;
-  private PixyLine latestLine2;
+  private PixyLine latestLine;
   private PixyBlock leftBlock;
   private PixyBlock rightBlock;
 
@@ -19,9 +18,6 @@ public class PixyVision {
   private boolean isRunning;
   private PixyVisionThread thread;
 
-  private long lastLine1Valid;
-  private long lastLine2Valid;
-
 
   public PixyVision(boolean trackLines, boolean trackObjects) {
   //  logger.detail("constructor");
@@ -29,12 +25,8 @@ public class PixyVision {
     this.trackObjects = trackObjects;
   }
 
-  public PixyLine getLatestLine1() {
-    return latestLine1;
-  }
-
-  public PixyLine getLatestLine2() {
-    return latestLine2;
+  public PixyLine getLatestLine() {
+    return latestLine;
   }
 
   public PixyBlock getLeftBlock() {
@@ -70,8 +62,7 @@ public class PixyVision {
   }
 
   class PixyVisionThread extends Thread {
-    private PixyI2CDriver driver = new PixyI2CDriver(0x54);
-    private PixyI2CDriver driver2 = new PixyI2CDriver(0x53);
+    private PixyI2CDriver driver = new PixyI2CDriver(0x53);
     
     @Override
     public void run() {
@@ -81,35 +72,22 @@ public class PixyVision {
         if (turnOnLamp) {
         //  logger.info("turning on lamp");
           driver.turnOnLamp();
-          driver2.turnOnLamp();
           turnOnLamp = false;
         }
         if (turnOffLamp) {
         //  logger.info("turning off lamp");
           driver.turnOffLamp();
-          driver2.turnOffLamp();
           turnOffLamp = false;
         }
         if (trackLines) {
-          PixyLine line = driver.lineTracking(true);
-          PixyLine line2 = driver2.lineTracking(false);
-          if (line != null && isValid(line)) {
+          PixyLine line = driver.lineTracking(false);
+          if (isValid(line)) {
           //  logger.info("found line: " + line);
-            latestLine1 = line;
-            lastLine1Valid = currentTime;
-          } else if (lastLine1Valid + LINE_TIMEOUT_MILLIS < currentTime) {
-            latestLine1 = null;
-          }
-          if (line2 != null && isValid(line2)) {
-            //  logger.info("found line: " + line);
-              latestLine2 = line2;
-              lastLine2Valid = currentTime;
-          } else if (lastLine2Valid + LINE_TIMEOUT_MILLIS < currentTime) {
-            latestLine2 = null;
+            latestLine = line;
           }
         }
         if (trackObjects) {
-          PixyBlock[] blocks = driver2.objectTracking();
+          PixyBlock[] blocks = driver.objectTracking();
           if (blocks != null && isValid(blocks)) {
             if (blocks[0].getCenterX() < blocks[1].getCenterX()) {
               leftBlock = blocks[0];
