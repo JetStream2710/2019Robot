@@ -17,7 +17,8 @@ public class OI {
   public static final int DRIVER_ROTATE_AXIS = 2;
   public static final int CARGO_INTAKE = 5;        // driver LB
   public static final int CARGO_OUTTAKE = 6;       // driver RB
-  public static final int HATCH_PUSH = 7;          // driver LT
+  public static final int HATCH_OUT = 7;           // driver LT
+  public static final int HATCH_IN = 8;            // driver RT
   public static final int CLIMB_MOVE_FORWARD = 2;  // driver A
   public static final int CLIMB_MOVE_BACK = 3;     // driver B
   public static final int PIXY_FOLLOW_LINE = 4;          // driver Y
@@ -38,7 +39,8 @@ public class OI {
   // buttons defined
   public Button cargoIntake = new JoystickButton(drivestick, CARGO_INTAKE);
   public Button cargoOuttake = new JoystickButton(drivestick, CARGO_OUTTAKE);
-  public Button hatchPush = new JoystickButton(drivestick, HATCH_PUSH);
+  public Button hatchOut = new JoystickButton(drivestick, HATCH_OUT);
+  public Button hatchIn = new JoystickButton(drivestick, HATCH_IN);
   public Button climbMoveForward = new JoystickButton(drivestick, CLIMB_MOVE_FORWARD);
   public Button climbMoveBackward = new JoystickButton(drivestick, CLIMB_MOVE_BACK);
   public Button pixyFollowLine = new JoystickButton(drivestick, PIXY_FOLLOW_LINE);
@@ -51,7 +53,8 @@ public class OI {
   public OI() {
     cargoIntake.whileHeld(new CargoIntake());
     cargoOuttake.whileHeld(new CargoOuttake());
-    hatchPush.whenPressed(new HatchPush());
+    hatchOut.whenPressed(new HatchOut());
+    hatchIn.whenPressed(new HatchIn());
     climbMoveForward.whileHeld(new ClimbMoveForward());
     climbMoveBackward.whileHeld(new ClimbMoveBackward());
     pixyFollowLine.whenPressed(new FollowLine());
