@@ -39,8 +39,8 @@ public class ClimbCommand extends Command {
 
     Robot.drivetrain.arcadeDrive(leftDriveValue, 0.0);
 
-    double leftValue = Robot.oi.auxstick.getRawAxis(OI.ELEVATOR_AXIS);
-    double rightValue = Robot.oi.auxstick.getRawAxis(OI.ARM_AXIS);
+    double leftValue = Robot.oi.auxstick.getRawAxis(OI.ELEVATOR_AXIS) / 2;
+    double rightValue = Robot.oi.auxstick.getRawAxis(OI.ARM_AXIS) / 2;
 
     if (Math.abs(leftValue) > 0.1) {
       Robot.climb.climbFrontExtend(leftValue);

@@ -59,6 +59,7 @@ public class JetstreamTalon implements SpeedController {
     return true;
   }
 
+  /*
   public void sendTelemetry() {
     SmartDash.put(String.format("%s [%d] output:", name, talon.getDeviceID()), talon.getMotorOutputPercent());
     SmartDash.put(String.format("%s [%d] bus voltage:", name, talon.getDeviceID()), talon.getBusVoltage());
@@ -68,6 +69,7 @@ public class JetstreamTalon implements SpeedController {
     SmartDash.put(String.format("%s [%d] position:", name, talon.getDeviceID()), getPosition());
     SmartDash.put(String.format("%s [%d] velocity:", name, talon.getDeviceID()), getVelocity());
   }
+  */
 
   public double getVoltage() {
     return talon.getMotorOutputVoltage();

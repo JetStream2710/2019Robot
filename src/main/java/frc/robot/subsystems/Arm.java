@@ -18,8 +18,8 @@ public class Arm extends Subsystem {
   public static final int VERTICAL_HATCH_HOVER_POSITION = 500;
   public static final int VERTICAL_HATCH_DOWN_POSITION = 0;  
 
-  public static final int SWIVEL_MAX = 3500;
-  public static final int SWIVEL_MIN = -3500;
+  public static final int SWIVEL_MAX = 7000;
+  public static final int SWIVEL_MIN = -7000;
   public static final double SWIVEL_MIN_OUTPUT = -0.3;
   public static final double SWIVEL_MAX_OUTPUT = 0.3;
 
@@ -80,8 +80,8 @@ public class Arm extends Subsystem {
   }
 
   public void setLevel1() {
-    targetSwivelPosition = 2000;
-    targetVerticalPosition = -2000;
+    targetSwivelPosition = -530;
+    targetVerticalPosition = -2430;
   }
 
   public int getVerticalArmPosition() {

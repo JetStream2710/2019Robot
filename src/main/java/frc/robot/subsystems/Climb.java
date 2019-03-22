@@ -11,7 +11,7 @@ import frc.robot.util.Logger;
 public class Climb extends Subsystem {
 
   public static final double MOVE_SPEED = 0.5;
-
+  public static final double FRONT_CLIMB_UP = 0.63;
 //  private Logger logger = new Logger(Climb.class.getName());
 
   private WPI_VictorSPX frontVictor;
@@ -67,6 +67,21 @@ public class Climb extends Subsystem {
   public void setBackMotorSpeed(double speed) {
   //  logger.info("setBackMotorSpeed speed : " + speed);
     backVictor.set(speed);
+  }
+
+  public void climbUp(){
+    frontVictor.set(FRONT_CLIMB_UP);
+    backVictor.set(MOVE_SPEED);
+  }
+
+  public void climbDown(){
+    frontVictor.set(-FRONT_CLIMB_UP);
+    backVictor.set(-MOVE_SPEED);
+  }
+
+  public void climbStop(){
+    frontVictor.set(0);
+    backVictor.set(0);
   }
 
   @Override

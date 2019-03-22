@@ -148,11 +148,10 @@ public class Elevator extends Subsystem {
     double speed = relativePosition > 0 ? maxOutput : minOutput;
     //logger.detail(String.format("autoMoveFast speed: %f current-position: %d target-position: %d relative-position: %d",speed, currentPosition, targetPosition, relativePosition));
     
-        talon.set(speed);
-      double victorSpeed = (speed < VICTOR_SPEED_LIMIT) ? VICTOR_SPEED_LIMIT : speed;
-      victor.set(victorSpeed);
+    talon.set(speed);
+    victor.set(speed);
     //  logger.detail("autoMoveFast speed: " + speed + " victorSpeed: " + victorSpeed);
-    }
+  }
 
   private double minSlowSpeed = -0.23;
   private void autoMoveSlow(int currentPosition, int targetPosition, int relativePosition, double minOutput, double maxOutput) {
@@ -173,9 +172,9 @@ public class Elevator extends Subsystem {
     }
   //  logger.detail(String.format("autoMoveSlow speed: %f ratio: %f current-position: %d target-position: %d relative-position: %d", speed, ratio, currentPosition, targetPosition, relativePosition));
     
-        talon.set(speed);
-      double victorSpeed = (speed < VICTOR_SPEED_LIMIT) ? VICTOR_SPEED_LIMIT : speed;
-      victor.set(victorSpeed);
+    talon.set(speed);
+    double victorSpeed = (speed < VICTOR_SPEED_LIMIT) ? VICTOR_SPEED_LIMIT : speed;
+    victor.set(victorSpeed);
     //  logger.detail("autoMoveSlow speed: " + speed + " victorSpeed: " + victorSpeed);
   }
 
@@ -187,15 +186,15 @@ public class Elevator extends Subsystem {
     }
   //  logger.detail(String.format("autoMoveFine speed: %f increment: %f current-position: %d target-position: %d relative-position: %d",  speed, increment, currentPosition, targetPosition, relativePosition));
     
-        talon.set(speed);
-      double victorSpeed = (speed < VICTOR_SPEED_LIMIT) ? VICTOR_SPEED_LIMIT : speed;
-      victor.set(victorSpeed);
+    talon.set(speed);
+    double victorSpeed = (speed < VICTOR_SPEED_LIMIT) ? VICTOR_SPEED_LIMIT : speed;
+    victor.set(victorSpeed);
     //  logger.detail("autoMoveFine speed: " + speed + " victorSpeed: " + victorSpeed);
   }
 
   private void autoMoveStop() {
-    int elevatorPosition = talon.getPosition();
-    int relativePosition = targetElevatorPosition - elevatorPosition;
+  //  int elevatorPosition = talon.getPosition();
+  //  int relativePosition = targetElevatorPosition - elevatorPosition;
   //  logger.detail(String.format("autoMoveStop speed: %f current-position: %d target-position: %d relative-position: %d",STOP_SPEED, elevatorPosition, targetElevatorPosition, relativePosition));
     group.set(STOP_SPEED);
   }

@@ -7,7 +7,7 @@ import frc.robot.util.Logger;
 
 public class Hatch extends Subsystem {
 
-//  private Logger logger = new Logger(Hatch.class.getName());
+  private Logger logger = new Logger(Hatch.class.getName());
   private Solenoid solenoidOn;
   private Solenoid solenoidOff;
 
@@ -19,13 +19,13 @@ public class Hatch extends Subsystem {
   }
 
   public void hatchOut() {
-  //  logger.info("hatchOut called");
+    logger.info("hatchOut called");
     solenoidOn.set(false);
     solenoidOff.set(true);
   }
 
   public void hatchIn(){
-  //  logger.info("hatchIn called");
+    logger.info("hatchIn called");
     solenoidOn.set(true);
     solenoidOff.set(false);
   }

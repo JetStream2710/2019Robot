@@ -83,7 +83,7 @@ public class FollowLine extends Command {
 
     @Override
     public void execute(){
-        
+
         double driverRotateValue = Robot.oi.drivestick.getRawAxis(OI.DRIVER_MOVE_AXIS);
         if(driverRotateValue > 0.1) {
             driverMoving = true;
@@ -103,6 +103,9 @@ public class FollowLine extends Command {
 
         // Returns if there is no line to avoid NullPointerException(s)
         line = Robot.pixy.getLatestLine();
+        System.out.println("LowX" + line.getLowerX() + " upperY" + line.getUpperY());
+        System.out.println("LowY" + line.getLowerY() + " UpperX" + line.getUpperX());
+        System.out.println("angle: " + getAngleFromVertical(line));
         if(line == null) return;
         
         double angle = getAngleFromVertical(line);
@@ -111,10 +114,12 @@ public class FollowLine extends Command {
         else if(spinSpeed < minSpinSpeed) spinSpeed = minSpinSpeed;
         
         if(line.getUpperX() < (getXOnIdealLine(line.getUpperY()))) { // If top of line is left/ideal is right
-            Robot.drivetrain.tankDrive(-spinSpeed, spinSpeed); //spin left
+            Robot.drivetrain.tankDrive(spinSpeed, spinSpeed); //spin left
         } else if(line.getUpperX() > (getXOnIdealLine(line.getUpperY())) ) { // If top of line is right/iedal is left
-            Robot.drivetrain.tankDrive(spinSpeed, -spinSpeed); //spin right
+            Robot.drivetrain.tankDrive(-spinSpeed, -spinSpeed); //spin right
         }
+
+        System.out.println("spinspeed:" + spinSpeed);
     }
 
     @Override

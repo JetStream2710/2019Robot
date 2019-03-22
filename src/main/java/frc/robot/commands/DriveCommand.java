@@ -67,11 +67,11 @@ public class DriveCommand extends Command {
       }
     }
 
-    if(rightValue > 0.4 && Math.abs(rightSpeed) < 0.4) {
-      rightSpeed = 0.4;
+    if(rightValue > 0.5 && Math.abs(rightSpeed) < 0.5) {
+      rightSpeed = 0.5;
     }
-    if(rightValue < -0.4 && Math.abs(rightSpeed) < 0.4) {
-      rightSpeed = -0.4;
+    if(rightValue < -0.5 && Math.abs(rightSpeed) < 0.5) {
+      rightSpeed = -0.5;
     }
 
 
@@ -82,7 +82,7 @@ public class DriveCommand extends Command {
       rightSpeed = rightValue;
     }
 
-//    System.out.println("left joy: " + leftValue + " right joy: " + rightValue + " drivespeed: " + leftSpeed + " turnspeed: " + rightSpeed);
+  //System.out.println("left joy: " + leftValue + " right joy: " + rightValue + " drivespeed: " + leftSpeed + " turnspeed: " + rightSpeed);
     if (Math.abs(leftValue) > 0.1) {
       Robot.drivetrain.curvatureDrive(leftSpeed, rightSpeed);
     } else {

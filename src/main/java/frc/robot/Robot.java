@@ -1,33 +1,14 @@
 package frc.robot;
 
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.kauailabs.navx.frc.AHRS;
 
-import org.opencv.core.Mat;
-import org.opencv.imgproc.Imgproc;
-
-import edu.wpi.cscore.CvSink;
-import edu.wpi.cscore.CvSource;
 import edu.wpi.cscore.UsbCamera;
-import edu.wpi.cscore.VideoMode;
-import edu.wpi.cscore.VideoMode.PixelFormat;
 //import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.cameraserver.CameraServer;
-import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.commands.Auto1;
-import frc.robot.commands.Auto2;
-import frc.robot.commands.AutoCargo3;
-import frc.robot.commands.AutoCargo4;
-import frc.robot.commands.AutoCargo5;
-import frc.robot.commands.DriveWithAdjustment;
-import frc.robot.commands.TestAuto;
-import frc.robot.commands.TurnDegrees;
+import frc.robot.commands.*;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Cargo;
 import frc.robot.subsystems.Climb;
@@ -35,7 +16,6 @@ import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Hatch;
 import frc.robot.util.Logger;
-import frc.robot.util.PixyLine;
 import frc.robot.util.PixyVision;
 import frc.robot.util.SmartDash;
 
@@ -48,9 +28,9 @@ public class Robot extends TimedRobot {
   public static Hatch hatch;
   public static Climb climb;
   public static PixyVision pixy;
-  public static AHRS ahrs = new AHRS(SPI.Port.kMXP);
+  public static AHRS ahrs = null;//new AHRS(SPI.Port.kMXP);
 
-  public static Command autonomousCommand;
+//  public static Command autonomousCommand;
 //  public static SendableChooser<Command> autoChooser;
 
   public static boolean isAuto;
@@ -73,36 +53,10 @@ public class Robot extends TimedRobot {
     pixy = new PixyVision(true, false);
     pixy.start();
 
-    //CameraServer.getInstance().startAutomaticCapture();
+UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
+
+//CameraServer.getInstance().startAutomaticCapture();
      
-    new Thread(() -> {
-      UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
-//      camera.setResolution(640, 480);
-//camera.setVideoMode(new VideoMode(PixelFormat.kGray, 320, 240, 30));
-//camera.setVideoMode(new VideoMode(PixelFormat.kRGB565, 640, 480, 30));
-//camera.setVideoMode(new VideoMode(PixelFormat.kGray, 1280, 960, 10));
-      /*
-      CvSink cvSink = CameraServer.getInstance().getVideo();
-      CvSource outputStream = CameraServer.getInstance().putVideo("POV", 640, 480);
-
-      Mat source = new Mat();
-      Mat output = new Mat();
-
-      while(!Thread.interrupted()) {
-        cvSink.grabFrame(source);
-        Imgproc.cvtColor(source, output, Imgproc.COLOR_BGR2GRAY);
-        outputStream.putFrame(output);
-      }
-      */
-    }).start();
-
-
-/*
-    autoChooser = new SendableChooser<Command>();
-    autoChooser.setDefaultOption("AutoCargo 3", new AutoCargo3());
-    autoChooser.addOption("AutoCargo 4", new AutoCargo4());
-    autoChooser.addOption("AutoCargo 5", new AutoCargo5());
-*/
     isAuxClimbing = false;
     isMovingElevator = false;
     isMovingArm = false;
@@ -131,13 +85,6 @@ public class Robot extends TimedRobot {
     // get rid of reset when we want to start with the arm up
     arm.reset();
     elevator.reset();
-    Auto2 auto = new Auto2();
-    //auto.start();
-
-    /*autonomousCommand = autoChooser.getSelected();
-    autonomousCommand.start();*/
-    
-    
   }
 
   @Override
@@ -154,7 +101,6 @@ public class Robot extends TimedRobot {
     //  get rid of reset when we want to start with the arm up
     arm.reset();
     elevator.reset();
-
   }
 
   @Override
@@ -162,8 +108,6 @@ public class Robot extends TimedRobot {
   //  logger.detail("teleopInit");
     Scheduler.getInstance().run();
     updateSubsystems();
- 
-    //arm.setVerticalSpeedManually(arm.getStopSpeed());
   }
 
 

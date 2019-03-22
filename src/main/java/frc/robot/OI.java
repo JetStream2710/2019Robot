@@ -31,6 +31,8 @@ public class OI {
   public static final int WEAPONS_UP = 4;      // aux Y
   public static final int WEAPONS_DOWN = 2;    // aux A
   public static final int LEVEL_1 = 3;
+  public static final int CLIMB_UP = 5;     // aux LB
+  public static final int CLIMB_DOWN = 6;   // aux RB
 
   // controllers defined
   public Joystick drivestick = new Joystick(JOYSTICK_DRIVER);
@@ -49,6 +51,8 @@ public class OI {
   public Button weaponsDown = new JoystickButton(auxstick, WEAPONS_DOWN);
   public Button toggleClimb = new JoystickButton(auxstick, TOGGLE_CLIMB);
   public Button armLevel1 = new JoystickButton(auxstick, LEVEL_1);
+  public Button climbUp = new JoystickButton(auxstick, CLIMB_UP);
+  public Button climbDown = new JoystickButton(auxstick, CLIMB_DOWN);
 
   public OI() {
     cargoIntake.whileHeld(new CargoIntake());
@@ -57,11 +61,13 @@ public class OI {
     hatchIn.whenPressed(new HatchIn());
     climbMoveForward.whileHeld(new ClimbMoveForward());
     climbMoveBackward.whileHeld(new ClimbMoveBackward());
-    pixyFollowLine.whenPressed(new FollowLine());
+    pixyFollowLine.whenPressed(new FollowLine2());
 
     weaponsUp.whenPressed(new WeaponsUp());
     weaponsDown.whenPressed(new WeaponsDown());
-    toggleClimb.whileHeld(new ToggleClimb());
+    toggleClimb.whenPressed(new ToggleClimb());
     armLevel1.whenActive(new ArmLevel1());
+    climbUp.whileHeld(new ClimbUp());
+    climbDown.whileHeld(new ClimbDown());
   }
 }
