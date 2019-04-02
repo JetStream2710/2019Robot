@@ -29,7 +29,7 @@ public class JetstreamTalon implements SpeedController {
     this.maxSpeed = maxSpeed;
     this.invertPosition = invertPosition;
     talon.setSafetyEnabled(false);
-    talon.setNeutralMode(NeutralMode.Coast);
+    talon.setNeutralMode(NeutralMode.Brake);
     talon.configVoltageCompSaturation(MAX_VOLTAGE);
     talon.enableVoltageCompensation(true);
     talon.setSelectedSensorPosition(0);
@@ -126,5 +126,13 @@ public class JetstreamTalon implements SpeedController {
   public void pidWrite(double output) {
   //  logger.info(String.format("%s [%d] pidWrite output: ", name, talon.getDeviceID(), output));
     talon.pidWrite(output);
+  }
+
+  public void brakeMode(){
+    talon.setNeutralMode(NeutralMode.Brake);
+  }
+
+  public void coastMode(){
+    talon.setNeutralMode(NeutralMode.Coast);
   }
 }

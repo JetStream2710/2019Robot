@@ -102,7 +102,7 @@ public class Arm extends Subsystem {
   //  //logger.info("stopMovingVerticalArm");
     verticalTalon.set(0);
     // Try to stay at the current position
-//    targetVerticalPosition = verticalTalon.getPosition();
+    targetVerticalPosition = verticalTalon.getPosition();
   }
 
   public int getSwivelPosition() {
@@ -124,7 +124,7 @@ public class Arm extends Subsystem {
 
   public void stopMovingSwivelArm() {
     swivelTalon.set(0);
-//    targetSwivelPosition = swivelTalon.getPosition();
+    targetSwivelPosition = swivelTalon.getPosition();
   }
 
   public void moveTogether(double speed) {
@@ -182,6 +182,8 @@ public class Arm extends Subsystem {
   public void reset() {
     verticalTalon.reset();
     swivelTalon.reset();
+    verticalTalon.brakeMode();
+    swivelTalon.brakeMode();
   }
 
   private boolean doNextPeriodic3 = true;
@@ -318,5 +320,10 @@ public class Arm extends Subsystem {
   @Override
   public void initDefaultCommand() {
     // Do nothing, the Elevator subsystem already initializes the ElevatorAndArmMove class.
+  }
+
+  public void talonsCoastMode(){
+    verticalTalon.coastMode();
+    swivelTalon.coastMode();
   }
 }

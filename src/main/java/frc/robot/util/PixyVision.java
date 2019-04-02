@@ -50,6 +50,7 @@ public class PixyVision {
       thread = new PixyVisionThread();
       isRunning = true;
       thread.start();
+      turnOnLamp = true;
     }
   }
 
@@ -62,7 +63,7 @@ public class PixyVision {
   }
 
   class PixyVisionThread extends Thread {
-    private PixyI2CDriver driver = new PixyI2CDriver(0x53);
+    private PixyI2CDriver driver = new PixyI2CDriver(0x54);
     
     @Override
     public void run() {

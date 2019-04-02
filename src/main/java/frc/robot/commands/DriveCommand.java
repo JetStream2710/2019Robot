@@ -32,8 +32,8 @@ public class DriveCommand extends Command {
       return;
     }
 
-    double leftValue = Robot.oi.drivestick.getRawAxis(1)*0.7;
-    double rightValue = Robot.oi.drivestick.getRawAxis(2)*0.7;
+    double leftValue = Robot.oi.drivestick.getRawAxis(1)*0.8;
+    double rightValue = Robot.oi.drivestick.getRawAxis(2)*0.8;
 
     if(leftValue > leftSpeed) {
       if(Math.abs(leftSpeed - leftValue) > maxDriveAccel) {

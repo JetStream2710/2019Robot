@@ -8,6 +8,7 @@ import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.*;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Cargo;
@@ -37,6 +38,7 @@ public class Robot extends TimedRobot {
   public static boolean isMovingElevator;
   public static boolean isMovingArm;
   public static boolean isAuxClimbing;
+  public static boolean isFollowingLine;
 
 //  private static Logger logger = new Logger(Robot.class.getName());
 
@@ -65,11 +67,13 @@ UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
   @Override
   public void robotPeriodic() {
   //  logger.detail("robotPeriodic");
-  }
+  //  SmartDashboard.putNumber("Vertical Arm Encoder Position", Robot.arm.getVerticalArmPosition());
+}
 
   @Override
   public void disabledInit() {
   //  logger.detail("disabledInit");
+    Robot.arm.talonsCoastMode();
   }
 
   @Override
@@ -92,6 +96,7 @@ UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
   //  logger.detail("autonomousPeriodic");
     Scheduler.getInstance().run();
     updateSubsystems();
+
   }
 
   @Override

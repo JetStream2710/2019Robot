@@ -10,7 +10,8 @@ import frc.robot.util.Logger;
 
 public class Climb extends Subsystem {
 
-  public static final double MOVE_SPEED = 0.5;
+  public static final double MOVE_SPEED = 0.7;
+  public static final double CLIMB_SPEED = 0.5;
   public static final double FRONT_CLIMB_UP = 0.63;
 //  private Logger logger = new Logger(Climb.class.getName());
 
@@ -71,12 +72,12 @@ public class Climb extends Subsystem {
 
   public void climbUp(){
     frontVictor.set(FRONT_CLIMB_UP);
-    backVictor.set(MOVE_SPEED);
+    backVictor.set(CLIMB_SPEED);
   }
 
   public void climbDown(){
     frontVictor.set(-FRONT_CLIMB_UP);
-    backVictor.set(-MOVE_SPEED);
+    backVictor.set(-CLIMB_SPEED);
   }
 
   public void climbStop(){

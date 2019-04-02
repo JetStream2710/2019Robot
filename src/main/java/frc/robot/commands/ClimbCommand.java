@@ -29,7 +29,7 @@ public class ClimbCommand extends Command {
     if(!Robot.isAuxClimbing) {
       return;
     }
-
+/*
     double leftDriveValue = Robot.oi.drivestick.getRawAxis(OI.DRIVER_MOVE_AXIS);
     if(Math.abs(leftDriveValue) < .1) {
       leftDriveValue = 0;
@@ -38,17 +38,17 @@ public class ClimbCommand extends Command {
     }
 
     Robot.drivetrain.arcadeDrive(leftDriveValue, 0.0);
-
+*/
     double leftValue = Robot.oi.auxstick.getRawAxis(OI.ELEVATOR_AXIS) / 2;
     double rightValue = Robot.oi.auxstick.getRawAxis(OI.ARM_AXIS) / 2;
 
     if (Math.abs(leftValue) > 0.1) {
-      Robot.climb.climbFrontExtend(leftValue);
+      Robot.climb.climbFrontExtend(-leftValue);
     } else{
       Robot.climb.climbFrontExtend(0);
     }
     if (Math.abs(rightValue) > 0.1) {
-      Robot.climb.climbRearExtend(rightValue);
+      Robot.climb.climbRearExtend(-rightValue);
     } else{
       Robot.climb.climbRearExtend(0);
     }

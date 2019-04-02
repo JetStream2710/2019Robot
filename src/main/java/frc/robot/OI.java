@@ -22,14 +22,15 @@ public class OI {
   public static final int CLIMB_MOVE_FORWARD = 2;  // driver A
   public static final int CLIMB_MOVE_BACK = 3;     // driver B
   public static final int PIXY_FOLLOW_LINE = 4;          // driver Y
+  public static final int PIXY_FOLLOW_LINE_STOP = 1;          // driver X
 
   // figure out feeder station stuff -- waiting on the stuff FEEDER STATION
   public static final int JOYSTICK_AUX = 1;
   public static final int ELEVATOR_AXIS = 1;
   public static final int ARM_AXIS = 3;
   public static final int TOGGLE_CLIMB = 1; // aux X
-  public static final int WEAPONS_UP = 4;      // aux Y
-  public static final int WEAPONS_DOWN = 2;    // aux A
+  //public static final int WEAPONS_UP = 4;      // aux Y
+  //public static final int WEAPONS_DOWN = 2;    // aux A
   public static final int LEVEL_1 = 3;
   public static final int CLIMB_UP = 5;     // aux LB
   public static final int CLIMB_DOWN = 6;   // aux RB
@@ -46,9 +47,10 @@ public class OI {
   public Button climbMoveForward = new JoystickButton(drivestick, CLIMB_MOVE_FORWARD);
   public Button climbMoveBackward = new JoystickButton(drivestick, CLIMB_MOVE_BACK);
   public Button pixyFollowLine = new JoystickButton(drivestick, PIXY_FOLLOW_LINE);
+  public Button pixyFollowLineStop = new JoystickButton(drivestick, PIXY_FOLLOW_LINE_STOP);
 
-  public Button weaponsUp = new JoystickButton(auxstick, WEAPONS_UP);
-  public Button weaponsDown = new JoystickButton(auxstick, WEAPONS_DOWN);
+  //public Button weaponsUp = new JoystickButton(auxstick, WEAPONS_UP);
+  //public Button weaponsDown = new JoystickButton(auxstick, WEAPONS_DOWN);
   public Button toggleClimb = new JoystickButton(auxstick, TOGGLE_CLIMB);
   public Button armLevel1 = new JoystickButton(auxstick, LEVEL_1);
   public Button climbUp = new JoystickButton(auxstick, CLIMB_UP);
@@ -62,9 +64,10 @@ public class OI {
     climbMoveForward.whileHeld(new ClimbMoveForward());
     climbMoveBackward.whileHeld(new ClimbMoveBackward());
     pixyFollowLine.whenPressed(new FollowLine2());
+    pixyFollowLineStop.whenPressed(new FollowLineStop());
 
-    weaponsUp.whenPressed(new WeaponsUp());
-    weaponsDown.whenPressed(new WeaponsDown());
+    //weaponsUp.whenPressed(new WeaponsUp());
+    //weaponsDown.whenPressed(new WeaponsDown());
     toggleClimb.whenPressed(new ToggleClimb());
     armLevel1.whenActive(new ArmLevel1());
     climbUp.whileHeld(new ClimbUp());
