@@ -1,5 +1,7 @@
 package frc.robot.util;
 
+import java.util.List;
+
 public class PixyVision {
   private static final long POLL_FREQUENCY_MILLIS = 1 + (1000 / 60);
   private static final long LINE_TIMEOUT_MILLIS = 250;
@@ -18,6 +20,7 @@ public class PixyVision {
   private boolean isRunning;
   private PixyVisionThread thread;
 
+  private int badVisionCounter;
 
   public PixyVision(boolean trackLines, boolean trackObjects) {
   //  logger.detail("constructor");
@@ -88,18 +91,33 @@ public class PixyVision {
           }
         }
         if (trackObjects) {
-          PixyBlock[] blocks = driver.objectTracking();
-          if (blocks != null && isValid(blocks)) {
-            if (blocks[0].getCenterX() < blocks[1].getCenterX()) {
-              leftBlock = blocks[0];
-              rightBlock = blocks[1];
-            } else {
-              leftBlock = blocks[1];
-              rightBlock = blocks[0];
-            }
-          //  logger.info("found objects left: " + leftBlock + " right: " + rightBlock);
+          PixyBlock[] blocks = new PixyBlock[2];
+          int blockIndex = 0;
+            //debug("Trying sig: "+ sig);
+          List<PixyBlock> blockList = driver.objectTrackingForSig();
+          for (PixyBlock block : blockList) {
+              //debug("Considering " + sig + ": " + block);
+              // check to make sure block is valid
+              if (blockIndex < 2 && block.getHeight() > block.getWidth()) {
+                //debug("... added block");
+                blocks[blockIndex] = block;
+                blockIndex++;
+              }
           }
-        }
+          if (blockIndex == 2){
+              badVisionCounter = 0;
+              if (blocks[0].getCenterX() < blocks[1].getCenterX()) {
+                  leftBlock = blocks[0];
+                  rightBlock = blocks[1];
+              } else {
+                  leftBlock = blocks[1];
+                  rightBlock = blocks[0];
+              }
+              //debug("found objects left: " + leftBlock + " right: " + rightBlock);
+          } else{
+              badVisionCounter ++;
+          }
+}
 
         try {
           Thread.sleep(POLL_FREQUENCY_MILLIS);
@@ -117,6 +135,10 @@ public class PixyVision {
     }
     return true;
   }
+
+  public int getBadVisionCount(){
+    return badVisionCounter;
+}
 
   private boolean isValid(PixyBlock[] blocks) {
     return blocks.length == 2 && blocks[0].getSignature() != 0 && blocks[1].getSignature() != 0;

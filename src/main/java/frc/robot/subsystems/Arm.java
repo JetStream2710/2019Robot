@@ -211,7 +211,7 @@ public class Arm extends Subsystem {
   }
 
   public void periodic(long timestamp) {
-  //  //logger.info("Arm encoder: " + verticalTalon.getPosition() + " swivel: " + swivelTalon.getPosition() + " target: " + targetVerticalPosition);
+    //logger.info("Arm encoder: " + verticalTalon.getPosition() + " swivel: " + swivelTalon.getPosition() + " target: " + targetVerticalPosition);
 //    verticalTalon.sendTelemetry();
 //    swivelTalon.sendTelemetry();
     SmartDash.put("Arm Level", currentLevel);

@@ -62,6 +62,8 @@ UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
     isAuxClimbing = false;
     isMovingElevator = false;
     isMovingArm = false;
+
+    Robot.drivetrain.setCoastMode();
   }
 
   @Override
@@ -73,7 +75,8 @@ UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
   @Override
   public void disabledInit() {
   //  logger.detail("disabledInit");
-    Robot.arm.talonsCoastMode();
+  //  Robot.arm.talonsCoastMode();
+  Robot.drivetrain.setCoastMode();
   }
 
   @Override
@@ -89,6 +92,7 @@ UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
     // get rid of reset when we want to start with the arm up
     arm.reset();
     elevator.reset();
+    Robot.drivetrain.setBrakeMode();
   }
 
   @Override
@@ -106,6 +110,7 @@ UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
     //  get rid of reset when we want to start with the arm up
     arm.reset();
     elevator.reset();
+    Robot.drivetrain.setBrakeMode();
   }
 
   @Override

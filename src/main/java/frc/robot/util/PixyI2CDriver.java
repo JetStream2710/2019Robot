@@ -1,5 +1,8 @@
 package frc.robot.util;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import edu.wpi.first.wpilibj.I2C;
 
 public class PixyI2CDriver {
@@ -32,13 +35,25 @@ public class PixyI2CDriver {
     return new PixyLine(data, isMirror);
   }
 
-  public PixyBlock[] objectTracking() {
-  //  logger.info("objectTracking send: " + PixyMessage.bytesToString(PixyMessage.OBJECT_TRACKING));
+  private int numBlocks = 8;
+  public List<PixyBlock> objectTrackingForSig() {
+    //System.out.println("objectTrackingForSig called");
+    //  logger.info("objectTracking send: " + PixyMessage.bytesToString(PixyMessage.OBJECT_TRACKING));
     //byte[] data = new byte[17];
-    byte[] data = new byte[34];
-    pixy.transaction(PixyMessage.OBJECT_TRACKING, PixyMessage.OBJECT_TRACKING.length, data, data.length);
-  //  logger.info("objectTracking receive: " + PixyMessage.bytesToString(data));
-    // FIX THIS LINE
-    return new PixyBlock[] {new PixyBlock(data), new PixyBlock(data)};
+    byte[] data = new byte[6 + (14 * numBlocks)];
+    byte[] request = PixyMessage.OBJECT_TRACKING;
+    pixy.transaction(request, request.length, data, data.length);
+    List<PixyBlock> blockList = new ArrayList<>();
+    for (int i = 0; i < numBlocks; i++) {
+      //System.out.println("found: " + i);
+      byte[] block = new byte[14];
+      //System.arraycopy(data, 6, block, 0, 14);
+      System.arraycopy(data, 6 + (i * 14), block, 0, 14);
+      PixyBlock pixyBlock = new PixyBlock(block);
+      if (pixyBlock.getSignature() >= 1 && pixyBlock.getSignature() <= 4) {
+        blockList.add(pixyBlock);
+      }
+    }
+    return blockList;
   }
 }

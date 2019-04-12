@@ -17,7 +17,7 @@ public class Logger {
     LOG_LEVELS.put(OI.class.getName(), Level.INFO);
 
     // Subsystems
-    LOG_LEVELS.put(Arm.class.getName(), Level.WARNING);
+    LOG_LEVELS.put(Arm.class.getName(), Level.INFO);
     LOG_LEVELS.put(Cargo.class.getName(), Level.WARNING);
     LOG_LEVELS.put(Climb.class.getName(), Level.WARNING);
     LOG_LEVELS.put(Drivetrain.class.getName(), Level.DETAIL);
