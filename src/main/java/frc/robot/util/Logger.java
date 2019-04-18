@@ -53,7 +53,7 @@ public class Logger {
     LOG_LEVELS.put(JetstreamTalon.class.getName(), Level.WARNING);
     LOG_LEVELS.put(JetstreamVictor.class.getName(), Level.WARNING);
     LOG_LEVELS.put(PixyI2CDriver.class.getName(), Level.WARNING);
-    LOG_LEVELS.put(PixyVision.class.getName(), Level.WARNING);
+    LOG_LEVELS.put(PixyVision.class.getName(), Level.INFO);
   }
 
   public enum Level {

@@ -14,6 +14,12 @@ public class PixyMessage {
     (byte) 174, (byte) 193, (byte) 48, (byte) 2, (byte) 0, (byte) 7
   };
 
+  public static final byte[] getBlockRequest(int sig) {
+    return new byte[] {
+      (byte) 174, (byte) 193, (byte) 32, (byte) 2, (byte) sig, (byte) 2
+    };
+  }
+
   // signature number -- second to last number
   // The number in this array should be the binary representation of all of the
   // signatures we want to track. For example: 15 = 00001111 (in binary)

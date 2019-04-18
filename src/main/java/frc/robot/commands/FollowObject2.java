@@ -1,12 +1,10 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.OI;
 import frc.robot.Robot;
 import frc.robot.util.PixyBlock;
 
-public class FollowObject extends Command {
-
+public class FollowObject2 extends Command {
   // CHANGE WHEN NEEDED
   public static final double MOVE_SPEED = 0.6;
   public static final double MAX_SPEED = 0.6;
@@ -19,27 +17,18 @@ public class FollowObject extends Command {
   // before the command finishes.
   public static final double STOP_DISTANCE = 20;
 
-  public FollowObject() {
-    requires(Robot.drivetrain);
+  private boolean isFinished;
+
+  public FollowObject2() {
   }
 
   @Override
   protected void initialize() {
-    Robot.isFollowingLine = true;
-    Robot.isAuto = true;
+    isFinished = false;
   }
 
   @Override
   protected void execute() {
-    // driver movement joystick -- stop executing
-    double driverMoveValue = Robot.oi.drivestick.getRawAxis(OI.DRIVER_MOVE_AXIS);
-    double driverRotateValue = Robot.oi.drivestick.getRawAxis(OI.DRIVER_ROTATE_AXIS);
-    if(driverRotateValue > 0.1 || driverMoveValue > 0.1) {
-        Robot.isFollowingLine = false;
-//            System.out.println("really driver moving...");
-        return;
-    }
-
     PixyBlock leftBlock = Robot.pixy.getLeftBlock();
     PixyBlock rightBlock = Robot.pixy.getRightBlock();
  
@@ -100,33 +89,27 @@ public class FollowObject extends Command {
       }
     }
 
+    isFinished = isFinished || (edgeLeft < STOP_DISTANCE && edgeRight < STOP_DISTANCE);
+
 //    System.out.println("leftblock: " + leftBlock + " rightblock: " + rightBlock);
     System.out.println("height diff: " + heightDifference + " center: " + centerX +
       " angle turn: " + angleTurnValue + " center turn: " + centerTurnValue +
-     " edge turn: " + edgeTurnValue + " turn: "  + turnValue);
+      " edge turn: " + edgeTurnValue + " turn: "  + turnValue);
     Robot.drivetrain.arcadeDrive(MOVE_SPEED, turnValue);
   }
 
   @Override
   protected boolean isFinished() {
-    if (!Robot.isFollowingLine) {
-      System.out.println("exit: driver moving");
-      return true;
-    }      
-    System.out.println("exit: bad vision count" + Robot.pixy.getBadVisionCount());
     return Robot.pixy.getBadVisionCount() > 3;
   }
-
+ 
   @Override
   protected void end() {
     System.out.println("FollowObject end");
-    Robot.isFollowingLine = false;
-    Robot.isAuto = false;
     Robot.drivetrain.arcadeDrive(0, 0);
   }
 
   @Override
   protected void interrupted() {
-    end();
   }
 }

@@ -52,7 +52,7 @@ public class Robot extends TimedRobot {
     hatch = new Hatch();
     climb = new Climb();
     oi = new OI();
-    pixy = new PixyVision(true, false);
+    pixy = new PixyVision(false, true);
     pixy.start();
 
 UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
@@ -93,7 +93,11 @@ UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
     arm.reset();
     elevator.reset();
     Robot.drivetrain.setBrakeMode();
-  }
+
+    //test stuff
+//    Command follow = new FollowObject2();
+//    follow.start();
+    }
 
   @Override
   public void autonomousPeriodic() {

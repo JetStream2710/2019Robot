@@ -36,12 +36,12 @@ public class PixyI2CDriver {
   }
 
   private int numBlocks = 8;
-  public List<PixyBlock> objectTrackingForSig() {
+  public List<PixyBlock> objectTrackingForSig(int sig) {
     //System.out.println("objectTrackingForSig called");
     //  logger.info("objectTracking send: " + PixyMessage.bytesToString(PixyMessage.OBJECT_TRACKING));
     //byte[] data = new byte[17];
     byte[] data = new byte[6 + (14 * numBlocks)];
-    byte[] request = PixyMessage.OBJECT_TRACKING;
+    byte[] request = PixyMessage.getBlockRequest(sig);
     pixy.transaction(request, request.length, data, data.length);
     List<PixyBlock> blockList = new ArrayList<>();
     for (int i = 0; i < numBlocks; i++) {

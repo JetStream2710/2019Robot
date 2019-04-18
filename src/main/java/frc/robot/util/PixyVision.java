@@ -6,7 +6,7 @@ public class PixyVision {
   private static final long POLL_FREQUENCY_MILLIS = 1 + (1000 / 60);
   private static final long LINE_TIMEOUT_MILLIS = 250;
 
-// private Logger logger = new Logger(PixyVision.class.getName());
+  private Logger logger = new Logger(PixyVision.class.getName());
 
   private PixyLine latestLine;
   private PixyBlock leftBlock;
@@ -21,6 +21,9 @@ public class PixyVision {
   private PixyVisionThread thread;
 
   private int badVisionCounter;
+
+  private int[] signatures = new int[] {15};
+
 
   public PixyVision(boolean trackLines, boolean trackObjects) {
   //  logger.detail("constructor");
@@ -53,7 +56,7 @@ public class PixyVision {
       thread = new PixyVisionThread();
       isRunning = true;
       thread.start();
-      turnOnLamp = true;
+      turnOnLamp = false;
     }
   }
 
@@ -66,7 +69,7 @@ public class PixyVision {
   }
 
   class PixyVisionThread extends Thread {
-    private PixyI2CDriver driver = new PixyI2CDriver(0x54);
+    private PixyI2CDriver driver = new PixyI2CDriver(0x53);
     
     @Override
     public void run() {
@@ -93,29 +96,33 @@ public class PixyVision {
         if (trackObjects) {
           PixyBlock[] blocks = new PixyBlock[2];
           int blockIndex = 0;
+          for (int sig : signatures) {
             //debug("Trying sig: "+ sig);
-          List<PixyBlock> blockList = driver.objectTrackingForSig();
-          for (PixyBlock block : blockList) {
-              //debug("Considering " + sig + ": " + block);
-              // check to make sure block is valid
-              if (blockIndex < 2 && block.getHeight() > block.getWidth()) {
-                //debug("... added block");
-                blocks[blockIndex] = block;
-                blockIndex++;
-              }
+            List<PixyBlock> blockList = driver.objectTrackingForSig(sig);
+            for (PixyBlock block : blockList) {
+               // System.out.println("Considering " + sig + ": " + block);
+                // check to make sure block is valid
+                if (blockIndex < 2 &&
+                    block.getHeight() > block.getWidth()) {
+               //         System.out.println("... added block");
+                        blocks[blockIndex] = block;
+                        blockIndex++;
+                }
+            }
           }
           if (blockIndex == 2){
-              badVisionCounter = 0;
-              if (blocks[0].getCenterX() < blocks[1].getCenterX()) {
-                  leftBlock = blocks[0];
-                  rightBlock = blocks[1];
-              } else {
-                  leftBlock = blocks[1];
-                  rightBlock = blocks[0];
-              }
-              //debug("found objects left: " + leftBlock + " right: " + rightBlock);
+            badVisionCounter = 0;
+            if (blocks[0].getCenterX() < blocks[1].getCenterX()) {
+                leftBlock = blocks[0];
+                rightBlock = blocks[1];
+            } else {
+                leftBlock = blocks[1];
+                rightBlock = blocks[0];
+            }
+            System.out.println("found objects left: " + leftBlock + " right: " + rightBlock);
           } else{
-              badVisionCounter ++;
+            //System.out.println("didn't find two blocks : " + badVisionCounter);
+            badVisionCounter ++;
           }
 }
 
